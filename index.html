@@ -684,6 +684,7 @@ form{display:flex;gap:8px;margin-top:14px}
       <div class="forms" id="modal-forms" data-forms></div>
       <div class="shinyline" id="modal-shiny" data-shiny></div>
     </div>
+    <p class="fine" id="modal-lock" hidden>You can change your diver and scenery between dives.</p>
     <div class="row">
       <button class="btn ghost" id="btn-quit">Surface</button>
       <button class="btn primary" id="btn-close">Done</button>
@@ -1364,6 +1365,7 @@ function shinyReady(id){return (store.shinyCount[id]||0)>=3;}
 function dstr(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}
 function today(){return dstr(new Date());}
 function yesterday(){var d=new Date();return dstr(new Date(d.getFullYear(),d.getMonth(),d.getDate()-1));}
+function dayBefore(date){var p=date.split('-');return dstr(new Date(+p[0],+p[1]-1,+p[2]-1));}
 function liveStreak(){return (store.lastDaily===today()||store.lastDaily===yesterday())?store.streak:0;}
 
 /* ================= DOM HELPERS ================= */
@@ -1984,10 +1986,12 @@ function regionLabel(F){
   var on=REGIONS.filter(function(r,i){return F[i];});
   return on.length<=3?on.join(', '):on.length+' regions';
 }
-function dailyOf(diff){
-  var d=store.dailies[diff],t=today();
-  if(!d||d.date!==t)d=store.dailies[diff]={date:t,res:[],cur:-1,done:false};
-  return d;
+/* the daily record for a given day (today by default); a dive that runs past midnight keeps using its own day's record */
+function dailyOf(diff,date){
+  var t=date||today(),d=store.dailies[diff];
+  if(d&&d.date===t)return d;
+  if(d&&d.date>t)return {date:t,res:[],cur:-1,done:false};
+  return store.dailies[diff]={date:t,res:[],cur:-1,done:false};
 }
 function renderStart(){
   run=null;mp=null;state='idle';clearTimeout(nextT);
@@ -2080,7 +2084,7 @@ function ask(){
   hideSug();run.declined='';run.tried={};
   $('ring').classList.remove('low');
   deadline=performance.now()+LIMIT;state='ask';
-  if(run.mode==='daily'){dailyOf(run.diff).cur=i;save();}
+  if(run.mode==='daily'){dailyOf(run.diff,run.date).cur=i;save();}
 }
 
 function hideSug(){$('sug').hidden=true;$('sug').textContent='';$('answer').classList.remove('fixed');sugRaw=null;}
@@ -2134,7 +2138,7 @@ function settle(r){
   state='reveal';hideSug();
   var p=run.prompts[run.res.length],mine=run;
   run.res.push(r);
-  if(run.mode==='daily'){dailyOf(run.diff).res=run.res.slice();}
+  if(run.mode==='daily'){dailyOf(run.diff,run.date).res=run.res.slice();}
   if(r.t!=='X'&&r.id){if(!store.dex[r.id]){store.dex[r.id]=1;r.fresh=true;}}
   save();
   target=total(run.res)*10;
@@ -2202,10 +2206,10 @@ function endRun(){
     if(before<3&&before+shinies>=3)toast('SHINY UNLOCKED','SHINY '+avatar(r.av)[1].toUpperCase(),'Toggle it in the diver picker');
   }
   if(r.mode==='daily'){
-    var t=today();
-    if(store.lastDaily!==t){store.streak=(store.lastDaily===yesterday())?store.streak+1:1;store.lastDaily=t;}
+    var t=r.date;
+    if(!store.lastDaily||store.lastDaily<t){store.streak=(store.lastDaily===dayBefore(t))?store.streak+1:1;store.lastDaily=t;}
     if(store.streak>store.longest)store.longest=store.streak;
-    var dd=dailyOf(r.diff);dd.res=r.res.slice();dd.done=true;
+    var dd=dailyOf(r.diff,t);dd.res=r.res.slice();dd.done=true;
   }
   r.prevBest=store.bestBy[r.diff]||0;
   if(depth>r.prevBest)store.bestBy[r.diff]=depth;
@@ -3604,11 +3608,13 @@ function raidCells(g,a){
 }
 var RAIDCOLS=['Pokémon','Type 1','Type 2','Evolution Stage','Fully Evolved','Color','Habitats','Gen'];
 var DOTCOL={red:'#e8433a',blue:'#3f7fe8',yellow:'#f2cf3a',green:'#4caa3e',black:'#22242a',brown:'#8a5a32',purple:'#9a5ad8',gray:'#9aa0a8',white:'#ffffff',pink:'#ff8ac0'};
-var raidTok=0,raidBusy=false,raidTimer=0,raidSugRaw=null;
-function raidState(){
-  var t=today(),r=store.raid;
-  if(!r||r.date!==t||!Array.isArray(r.g))r=store.raid={date:t,g:[],done:false,won:false};
-  return r;
+var raidTok=0,raidBusy=false,raidTimer=0,raidSugRaw=null,raidDate='';
+/* the raid record for a given day; renderRaid() fixes raidDate, so a raid open at midnight finishes as the old day's raid */
+function raidState(date){
+  var t=date||today(),r=store.raid;
+  if(r&&r.date===t&&Array.isArray(r.g))return r;
+  if(r&&r.date>t)return {date:t,g:[],done:false,won:false};
+  return store.raid={date:t,g:[],done:false,won:false};
 }
 function raidStreak(){var s=store.raidStats;return (s.last===today()||s.last===yesterday())?s.streak:0;}
 function monImg(m,size){
@@ -3652,7 +3658,8 @@ function raidSub(){
 }
 function renderRaid(){
   raidTok++;raidBusy=false;clearInterval(raidTimer);
-  var r=raidState(),a=raidAnswer(r.date);
+  raidDate=today();
+  var r=raidState(raidDate),a=raidAnswer(r.date);
   show('raid');
   /* den */
   var motes=$('den-motes');
@@ -3737,7 +3744,7 @@ function raidFinal(r,a){
   var cd=el('p','fine');cd.style.marginTop='12px';end.appendChild(cd);
   function tick(){
     if($('s-raid').hidden){clearInterval(raidTimer);return;}
-    if(today()!==r.date){clearInterval(raidTimer);renderRaid();return;}
+    if(today()!==r.date){clearInterval(raidTimer);cd.textContent='A new raid is ready. Reopen Max Raid to play it.';return;}
     var n=new Date(),mid=new Date(n.getFullYear(),n.getMonth(),n.getDate()+1),s=Math.max(0,Math.floor((mid-n)/1000));
     cd.textContent='Next raid in '+('0'+Math.floor(s/3600)).slice(-2)+':'+('0'+Math.floor(s%3600/60)).slice(-2)+':'+('0'+s%60).slice(-2);
   }
@@ -3752,7 +3759,7 @@ function raidFinal(r,a){
 }
 function raidLater(tok,ms,fn){setTimeout(function(){if(tok===raidTok&&!$('s-raid').hidden)fn();},calm?0:ms);}
 function raidGuess(m){
-  var r=raidState(),a=raidAnswer(r.date);
+  var r=raidState(raidDate||today()),a=raidAnswer(r.date);
   if(r.done||raidBusy)return;
   if(r.g.indexOf(m.id)>=0){raidReject('You already guessed '+m.name+'.');return;}
   raidBusy=true;raidHideSug();$('raid-ac').hidden=true;$('raid-input').value='';$('raid-swap').hidden=true;
@@ -3762,7 +3769,8 @@ function raidGuess(m){
     r.done=true;r.won=won;st.played++;
     if(won){
       st.wins++;st.dist[r.g.length-1]++;
-      st.streak=(st.last===yesterday()||st.last===today())?st.streak+1:1;st.last=today();
+      st.streak=(st.last===dayBefore(r.date)||st.last===r.date)?st.streak+1:1;
+      if(!st.last||st.last<r.date)st.last=r.date;
       if(st.streak>st.best)st.best=st.streak;
       if(r.g.length<=2)st.perfect=1;
       store.dex[a.id]=1;store.raidCaught[a.id]=1;
@@ -3785,6 +3793,7 @@ function raidGuess(m){
     raidMove(greens/7,function(){});
   });
   raidLater(tok,1750+(calm?400:1500),function(){
+    if(won)return;
     /* wrong: the boss lunges, the den shakes, a shield breaks */
     var boss=$('raid-boss'),den=$('den');
     boss.className='boss';den.className='den';void boss.offsetWidth;boss.className='boss lunge';den.className='den shake';
@@ -3798,7 +3807,7 @@ function raidGuess(m){
 }
 /* ---------- raid moves: the partner attacks with its scenery's type ---------- */
 /* Drawn as chunky pixels on a low-res canvas over the den, from the partner to the storm cloud. */
-var MOVES={
+var RAID_MOVES={
   ocean:{w:'Water Gun',s:'Hydro Pump',x:'Max Geyser'},
   lava:{w:'Ember',s:'Flamethrower',x:'Max Flare'},
   forest:{w:'Razor Leaf',s:'Leaf Storm',x:'Max Overgrowth'}
@@ -3811,7 +3820,7 @@ function movePoint(elm,fx,fy){
 }
 /* power: 0 to 1 for a normal guess, 1.6 for the finishing move */
 function raidMove(power,onHit){
-  var kind=moveKind(),M=MOVES[kind],name=power>1.2?M.x:power>=0.4?M.s:M.w;
+  var kind=moveKind(),M=RAID_MOVES[kind],name=power>1.2?M.x:power>=0.4?M.s:M.w;
   var who=DEX[EVO[store.avatar][myForm(store.avatar)]-1];
   var lab=$('den-move');lab.textContent=who+' used '+name+'!';lab.className='den-move';void lab.offsetWidth;lab.className='den-move on';
   var pt=$('raid-partner');pt.className='partner';void pt.offsetWidth;pt.className='partner cast';
@@ -3931,7 +3940,7 @@ function raidSubmit(){
   host.hidden=false;
 }
 function raidAuto(){
-  var inp=$('raid-input'),n=norm(inp.value),host=$('raid-ac'),r=raidState();
+  var inp=$('raid-input'),n=norm(inp.value),host=$('raid-ac'),r=raidState(raidDate||today());
   if(raidSugRaw!==null)raidHideSug();
   host.textContent='';
   if(n.length<1||raidBusy){host.hidden=true;return;}
@@ -3957,12 +3966,16 @@ function openSettings(){
   $('modal-h').textContent=run&&run.mode==='mp'?'Theme only: divers are set per player':'Choose your diver';
   $('grid-modal').hidden=!!(run&&run.mode==='mp');$('modal-shiny').hidden=$('modal-forms').hidden=!!(run&&run.mode==='mp');
   $('btn-quit').hidden=$('s-play').hidden;
+  var diving=!$('s-play').hidden;
+  $('modal-lock').hidden=!diving;$('modal-h').hidden=diving;
+  if(diving){$('modal-theme').hidden=true;$('grid-modal').hidden=true;$('modal-shiny').hidden=true;$('modal-forms').hidden=true;}
   $('modal').hidden=false;
   renderThemes();renderPickers();
 }
 function openPicker(title,selected,cb){
   pickCb=cb;
   $('modal-theme').hidden=true;$('modal-shiny').hidden=true;$('modal-forms').hidden=true;$('btn-quit').hidden=true;$('grid-modal').hidden=false;
+  $('modal-lock').hidden=true;$('modal-h').hidden=false;
   $('modal-h').textContent=title;
   buildGrid($('grid-modal'),selected,function(id){var f=pickCb;closeModal();if(f)f(id);});
   $('modal').hidden=false;
