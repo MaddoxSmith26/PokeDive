@@ -78,6 +78,14 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline
 .pick.locked{cursor:default}
 .pick.locked img{filter:brightness(0);opacity:.75}
 .pick.locked span{font-size:10px}
+.forms{display:flex;gap:8px;margin-top:12px}
+.forms:empty{display:none}
+.form{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px 8px;border-radius:12px;border:2px solid var(--line);background:rgba(255,255,255,.05);font-size:11px;font-weight:600}
+.form img{width:44px;height:44px;image-rendering:pixelated;object-fit:contain}
+.form span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px}
+.form[aria-pressed="true"]{border-color:var(--accent);background:rgba(255,255,255,.14)}
+.form.locked{cursor:default;color:var(--ink-dim);font-weight:500}
+.form.locked img{filter:brightness(0);opacity:.6}
 .shinyline{margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;color:var(--ink-dim);min-height:34px}
 .switch{padding:8px 12px;border-radius:999px;border:2px solid var(--line);font-size:12px;font-weight:600;color:#fff;white-space:nowrap}
 .switch[aria-pressed="true"]{border-color:#ffe066;background:rgba(255,224,102,.18);color:#ffe066}
@@ -438,6 +446,7 @@ form{display:flex;gap:8px;margin-top:14px}
       <h2>Scenery and diver</h2>
       <div class="seg" id="theme-seg2" style="margin-bottom:12px"></div>
       <div class="grid" id="grid-start"></div>
+      <div class="forms" data-forms></div>
       <div class="shinyline" data-shiny></div>
     </div>
     <div class="panel sect">
@@ -661,6 +670,7 @@ form{display:flex;gap:8px;margin-top:14px}
     <h2 id="modal-h">Choose your diver</h2>
     <div>
       <div class="grid" id="grid-modal"></div>
+      <div class="forms" id="modal-forms" data-forms></div>
       <div class="shinyline" id="modal-shiny" data-shiny></div>
     </div>
     <div class="row">
@@ -1302,7 +1312,7 @@ function badgeSVG(b){
 /* ================= STORAGE ================= */
 var KEY='pokedive.v1';
 var store={avatar:'ocean:7',avatarBy:{},shinyOn:{},theme:'ocean',played:0,best:0,streak:0,longest:0,lastDaily:'',dailies:{},mode:'normal',regions:null,
-  bestBy:{},regionsDived:{},exp:0,title:'rookie',trail:'none',badges:{},unlocked:{},dex:{},shinyCount:{},tc:{},cat:{},rarest:null,mpPlayed:0,themesUsed:{},party:null,
+  bestBy:{},regionsDived:{},exp:0,title:'rookie',trail:'none',badges:{},unlocked:{},dex:{},shinyCount:{},tc:{},cat:{},rarest:null,mpPlayed:0,themesUsed:{},party:null,formsOpen:{},formSel:{},
   raid:null,raidCaught:{},raidStats:{played:0,wins:0,streak:0,best:0,last:'',perfect:0,dist:[0,0,0,0,0,0]}};
 try{var saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&typeof saved==='object'){for(var k0 in store){if(saved[k0]!==undefined&&saved[k0]!==null)store[k0]=saved[k0];}}}catch(e){}
 if(!DIFFS[store.mode])store.mode='normal';
@@ -1310,6 +1320,7 @@ if(typeof store.exp!=='number'||!(store.exp>=0))store.exp=0;
 if(!Array.isArray(store.regions)||store.regions.length!==REGIONS.length||!store.regions.some(Boolean))store.regions=ALLF.slice();
 ['shinyOn','dailies','bestBy','regionsDived','badges','unlocked','dex','shinyCount','tc','cat','themesUsed'].forEach(function(k){if(!store[k]||typeof store[k]!=='object')store[k]={};});
 if(!store.raidCaught||typeof store.raidCaught!=='object')store.raidCaught={};
+['formsOpen','formSel'].forEach(function(k){if(!store[k]||typeof store[k]!=='object')store[k]={};});
 (function(){var s=store.raidStats,d={played:0,wins:0,streak:0,best:0,last:'',perfect:0};
   if(!s||typeof s!=='object')s=store.raidStats={};
   for(var k in d){if(typeof s[k]!==typeof d[k])s[k]=d[k];}
@@ -1376,7 +1387,7 @@ function loadSprite(img,o){
 }
 function myShiny(){return !!store.shinyOn[store.avatar]&&shinyReady(store.avatar);}
 
-function buildGrid(host,selected,onPick,shinyFor){
+function buildGrid(host,selected,onPick,shinyFor,formFor){
   host.textContent='';
   lineup(store.theme).forEach(function(av){
     var open=isOpen(av[0]);
@@ -1385,16 +1396,34 @@ function buildGrid(host,selected,onPick,shinyFor){
     b.setAttribute('aria-label',open?av[1]:av[1]+', locked: '+LOCKS[av[0]].t);
     if(!open)b.disabled=true;
     var img=el('img');img.alt='';img.width=56;img.height=56;
-    loadSprite(img,{av:av[0],shiny:open&&shinyFor&&shinyFor(av[0])});
-    b.appendChild(img);b.appendChild(el('span','',open?av[1]:LOCKS[av[0]].t));
+    loadSprite(img,{av:av[0],shiny:open&&shinyFor&&shinyFor(av[0]),stage:open&&formFor?formFor(av[0]):0});
+    b.appendChild(img);b.appendChild(el('span','',open?(formFor?DEX[EVO[av[0]][formFor(av[0])]-1]:av[1]):LOCKS[av[0]].t));
     if(open)b.addEventListener('click',function(){onPick(av[0]);});
     host.appendChild(b);
   });
 }
 function mineShiny(id){return !!store.shinyOn[id]&&shinyReady(id);}
+/* evolved forms: unlocked only by evolving that diver during a solo dive */
+function formOpen(k){return Math.min(store.formsOpen[k]||0,EVO[k].length-1);}
+function myForm(k){return Math.min(store.formSel[k]||0,formOpen(k));}
 function renderPickers(){
-  buildGrid($('grid-start'),store.avatar,chooseAvatar,mineShiny);
-  if(!$('modal').hidden&&!pickCb)buildGrid($('grid-modal'),store.avatar,chooseAvatar,mineShiny);
+  buildGrid($('grid-start'),store.avatar,chooseAvatar,mineShiny,myForm);
+  if(!$('modal').hidden&&!pickCb)buildGrid($('grid-modal'),store.avatar,chooseAvatar,mineShiny,myForm);
+  var fl=document.querySelectorAll('[data-forms]'),k=store.avatar,line=EVO[k];
+  for(var f=0;f<fl.length;f++){
+    var fh=fl[f];fh.textContent='';
+    if(line.length<2)continue;
+    line.forEach(function(id,st){
+      var open=st<=formOpen(k),b=el('button','form'+(open?'':' locked'));b.type='button';
+      b.setAttribute('aria-pressed',String(open&&myForm(k)===st));
+      var im=el('img');im.alt='';im.width=44;im.height=44;loadSprite(im,{av:k,stage:st,shiny:open&&myShiny()});b.appendChild(im);
+      b.appendChild(el('span','',open?DEX[id-1]:'Evolve to unlock'));
+      b.setAttribute('aria-label',open?'Dive as '+DEX[id-1]:DEX[id-1]+', locked: evolve into it during a dive');
+      if(open)b.addEventListener('click',function(){store.formSel[k]=st;save();if(run&&run.mode!=='mp'&&!run.res.length){run.start=st;}renderPickers();refreshDiver();if(!$('s-raid').hidden)raidPartner();});
+      else b.disabled=true;
+      fh.appendChild(b);
+    });
+  }
   var lines=document.querySelectorAll('[data-shiny]');
   for(var i=0;i<lines.length;i++){
     var host=lines[i],av=avatar(store.avatar),n=store.shinyCount[av[0]]||0;host.textContent='';
@@ -1409,7 +1438,7 @@ function renderPickers(){
 function chooseAvatar(id){
   if(!isOpen(id))return;
   store.avatar=id;store.avatarBy[store.theme]=id;save();renderPickers();
-  if(run&&run.mode!=='mp'){run.av=id;run.shiny=myShiny();}
+  if(run&&run.mode!=='mp'){run.av=id;run.shiny=myShiny();run.start=myForm(id);}
   refreshDiver();
 }
 
@@ -1475,7 +1504,7 @@ function setSkin(name,quiet){
     store.avatarBy[store.theme]=store.avatar;
     var nx=store.avatarBy[name];if(!nx||!EVO[nx]||!isOpen(nx))nx=lineup(name)[0][0];
     store.avatar=nx;
-    if(run&&run.mode!=='mp'){run.av=nx;run.shiny=myShiny();}
+    if(run&&run.mode!=='mp'){run.av=nx;run.shiny=myShiny();run.start=myForm(nx);}
   }
   store.theme=name;skin=SKINS[name];
   document.documentElement.setAttribute('data-skin',name);
@@ -1887,7 +1916,7 @@ function drawScene(t){
 /* ================= DIVER ================= */
 function levelFor(depth){return depth>=5000?2:depth>=2500?1:0;}
 function refreshDiver(){
-  var av=run?run.av:store.avatar,sh=run?run.shiny:myShiny(),lv=run?run.level:0,line=EVO[av],st=Math.min(lv,line.length-1);
+  var av=run?run.av:store.avatar,sh=run?run.shiny:myShiny(),lv=(run?run.start+run.level:myForm(av)),line=EVO[av],st=Math.min(lv,line.length-1);
   loadSprite($('diver-img'),{av:av,stage:st,shiny:sh,animated:true});
   $('diver').className=lv>st?'aura'+Math.min(2,lv-st):'';
 }
@@ -1909,9 +1938,14 @@ function evolveCheck(mine){
   if(run!==mine)return;
   var want=levelFor(total(run.res)*10);
   if(want<=run.level)return;
-  var line=EVO[run.av],oldSt=Math.min(run.level,line.length-1);
+  var line=EVO[run.av],oldSt=Math.min(run.start+run.level,line.length-1);
   run.level++;
-  var newSt=Math.min(run.level,line.length-1),base=avatar(run.av)[1];
+  var newSt=Math.min(run.start+run.level,line.length-1),base=avatar(run.av)[1];
+  if(newSt>oldSt&&run.mode!=='mp'&&newSt>formOpen(run.av)){
+    store.formsOpen[run.av]=newSt;save();
+    var nm=DEX[line[newSt]-1];
+    setTimeout(function(){toast('NEW DIVER FORM',nm.toUpperCase(),'Pick '+nm+' in the diver picker to start dives as it');},calm?0:400);
+  }
   if(newSt>oldSt){
     var evo=$('diver-evo');evo.className='evo';void evo.offsetWidth;evo.className='evo evolving';
     var b=el('span','burst');$('diver').appendChild(b);
@@ -1921,7 +1955,7 @@ function evolveCheck(mine){
     toast('EVOLUTION',DEX[line[newSt]-1].toUpperCase(),DEX[line[oldSt]-1]+' evolved at '+fmt(run.level===1?2500:5000)+' m');
   }else{
     refreshDiver();
-    toast('POWER SURGE',base.toUpperCase(),'Aura '+(run.level-newSt)+' at '+fmt(run.level===1?2500:5000)+' m');
+    toast('POWER SURGE',DEX[line[newSt]-1].toUpperCase(),'Aura '+(run.start+run.level-newSt)+' at '+fmt(run.level===1?2500:5000)+' m');
   }
 }
 
@@ -2010,6 +2044,7 @@ function beginRun(r){
   run=r;
   if(r.mode!=='mp'){r.av=store.avatar;r.shiny=myShiny();}
   disp=target=total(r.res)*10;lastZone=zoneAt(disp)[1];
+  r.start=r.mode==='mp'?0:myForm(r.av);
   r.level=levelFor(disp);
   store.themesUsed[store.theme]=1;
   var dl=r.diff==='legend'?'LEGENDARY':'NORMAL';
@@ -3587,11 +3622,11 @@ function raidRow(g,a,animate){
   return row;
 }
 function raidPartner(){
-  var img=$('raid-partner-img'),line=EVO[store.avatar],id=line[0],av=avatar(store.avatar),sh=myShiny();
+  var img=$('raid-partner-img'),line=EVO[store.avatar],st=myForm(store.avatar),id=line[st],av=avatar(store.avatar),sh=myShiny();
   var chain=[];if(sh)chain.push(SPR+'back/shiny/'+id+'.png');
-  chain.push(SPR+'back/'+id+'.png',SPR+id+'.png',helmet(av[2],0,sh));
+  chain.push(SPR+'back/'+id+'.png',SPR+id+'.png',helmet(av[2],st,sh));
   var i=0;img.onerror=function(){i++;if(i<chain.length)img.src=chain[i];else img.onerror=null;};
-  img.alt=av[1];img.src=chain[0];
+  img.alt=DEX[id-1];img.src=chain[0];
 }
 function raidPips(left,breaking){
   var host=$('raid-pips');host.textContent='';
@@ -3822,16 +3857,16 @@ function raidAuto(){
 var pickCb=null;
 function openSettings(){
   pickCb=null;
-  $('modal-theme').hidden=false;$('modal-shiny').hidden=false;
+  $('modal-theme').hidden=false;$('modal-shiny').hidden=false;$('modal-forms').hidden=false;
   $('modal-h').textContent=run&&run.mode==='mp'?'Theme only: divers are set per player':'Choose your diver';
-  $('grid-modal').hidden=!!(run&&run.mode==='mp');$('modal-shiny').hidden=!!(run&&run.mode==='mp');
+  $('grid-modal').hidden=!!(run&&run.mode==='mp');$('modal-shiny').hidden=$('modal-forms').hidden=!!(run&&run.mode==='mp');
   $('btn-quit').hidden=$('s-play').hidden;
   $('modal').hidden=false;
   renderThemes();renderPickers();
 }
 function openPicker(title,selected,cb){
   pickCb=cb;
-  $('modal-theme').hidden=true;$('modal-shiny').hidden=true;$('btn-quit').hidden=true;$('grid-modal').hidden=false;
+  $('modal-theme').hidden=true;$('modal-shiny').hidden=true;$('modal-forms').hidden=true;$('btn-quit').hidden=true;$('grid-modal').hidden=false;
   $('modal-h').textContent=title;
   buildGrid($('grid-modal'),selected,function(id){var f=pickCb;closeModal();if(f)f(id);});
   $('modal').hidden=false;
