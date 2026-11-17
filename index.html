@@ -287,6 +287,98 @@ form{display:flex;gap:8px;margin-top:14px}
 .bdg.off svg{filter:grayscale(1) brightness(.55)}
 .bdg.off b{color:var(--ink-dim)}
 
+/* ---------- max raid ---------- */
+.raidbtn{background:linear-gradient(180deg,#3a0f2a,#1c0714);border:2px solid #ff4f8b;color:#fff;box-shadow:0 5px 0 #7a1238}
+.raidbtn:active{transform:translateY(3px);box-shadow:0 2px 0 #7a1238}
+.den{position:relative;width:100%;aspect-ratio:16/10;max-height:40vh;border-radius:18px;overflow:hidden;border:1px solid #6a1838;background:#0d0510}
+.den-bg{position:absolute;inset:0;width:100%;height:100%}
+.den .swirl ellipse{animation:swirl 3.2s linear infinite}
+.den .swirl ellipse:nth-child(2){animation-duration:2.2s;animation-direction:reverse}
+.den .mote{position:absolute;width:4px;height:4px;border-radius:50%;background:#ffb3cf;box-shadow:0 0 6px #ff4f8b;opacity:0;animation:mote 4s linear infinite}
+.den.shake{animation:denshake .45s linear}
+.den-flash{position:absolute;inset:0;background:#ff1f3d;opacity:0;pointer-events:none}
+.den-flash.on{animation:denflash .9s ease-out}
+.pips{position:absolute;left:10px;top:10px;display:flex;gap:5px;z-index:2}
+.pip{width:16px;height:19px;background:linear-gradient(180deg,#ffd0e2,#ff4f8b);clip-path:polygon(50% 0,100% 16%,100% 58%,50% 100%,0 58%,0 16%)}
+.pip.gone{background:#4a3a44;opacity:.55}
+.pip.breaking{animation:pipbreak .5s ease-out}
+.boss{position:absolute;right:3%;top:-5%;height:92%;aspect-ratio:1;max-width:64%}
+.boss.lunge{animation:lunge .5s ease-in-out}
+.boss.roar{animation:roar .9s ease-in-out}
+.boss.flee{transition:opacity 1s,transform 1s;opacity:0;transform:translateY(-30%) scale(.8)}
+.boss-s{width:100%;height:100%;transition:transform .8s,opacity .3s;transform-origin:50% 78%}
+.boss-s.small{transform:scale(.42)}
+.boss-s.captured{transform:scale(0);opacity:0}
+.boss img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;filter:brightness(0) drop-shadow(0 0 5px #ff2e63) drop-shadow(0 0 12px #ff5fa2);
+  animation:breath 3.2s ease-in-out infinite,raidaura 1.8s ease-in-out infinite;transition:filter .9s}
+.boss img.revealed{filter:drop-shadow(0 4px 6px rgba(0,0,0,.5));animation:breath 3.2s ease-in-out infinite}
+.hit{position:absolute;color:#fff;font-size:18px;text-shadow:0 0 8px #43D63C,0 0 3px #fff;pointer-events:none;animation:hitspark .5s ease-out both}
+.partner{position:absolute;left:5%;bottom:1%;height:36%;aspect-ratio:1}
+.partner img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 4px 5px rgba(0,0,0,.6))}
+.partner.attack{animation:pattack .6s ease-in-out}
+.ball{position:absolute;left:18%;top:62%;width:9%;aspect-ratio:1;min-width:22px;border-radius:50%;border:2px solid #14080e;overflow:hidden;
+  background:linear-gradient(180deg,#ee3d2f 0 44%,#14080e 44% 56%,#fff 56%)}
+.ball::after{content:"";position:absolute;left:50%;top:50%;width:34%;height:34%;transform:translate(-50%,-50%);border-radius:50%;background:#fff;border:2px solid #14080e}
+.ball.throw{animation:bthrow .7s cubic-bezier(.3,.1,.6,1) forwards}
+.ball.drop{left:70%;top:30%;animation:bdrop .45s ease-in forwards}
+.ball.rest{left:70%;top:70%}
+.ball.wobble{animation:bwobble .7s ease-in-out 3}
+.ball.shut{animation:bshut .4s ease-out}
+.den-msg{position:absolute;left:8px;right:8px;bottom:8px;padding:10px 12px;border-radius:12px;background:rgba(10,4,10,.88);border:1px solid #ff4f8b;
+  font-family:var(--display);font-size:10px;line-height:1.6;color:#fff;text-align:center;animation:rise .3s both;z-index:3}
+.raidform{display:flex;gap:8px;margin-top:0;position:relative}
+.ac{position:absolute;left:0;right:0;top:100%;margin-top:6px;z-index:4;background:var(--panel-solid);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 10px 24px rgba(0,0,0,.5)}
+.ac button{display:flex;align-items:center;gap:10px;width:100%;padding:6px 12px;text-align:left;font-size:15px;font-weight:500;border-top:1px solid var(--line)}
+.ac button:first-child{border-top:0}
+.ac button img,.ac button .blob{width:32px;height:32px;image-rendering:pixelated;object-fit:contain;flex:none}
+.ac button .blob{border-radius:50%;background:var(--tc);transform:scale(.6)}
+.rt-wrap{overflow-x:auto;border-radius:14px;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.rt{display:inline-flex;flex-direction:column;gap:6px;min-width:100%}
+.rt-row{display:grid;grid-template-columns:60px repeat(7,74px);gap:6px}
+.rt-row>*{height:58px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.rt-row>:first-child{position:sticky;left:0;z-index:1}
+.rt-head>*{height:auto;min-height:30px;padding:6px 2px;background:#fff;color:#1a1020;font-family:var(--display);font-size:6px;line-height:1.5;border-radius:999px}
+.rt-mon{background:#fff;box-shadow:4px 0 8px rgba(0,0,0,.35)}
+.rt-mon img{width:52px;height:52px;image-rendering:pixelated;object-fit:contain}
+.rt-mon .blob{width:34px;height:34px;border-radius:50%;background:var(--tc)}
+.rc{font-family:var(--display);font-size:7px;line-height:1.5;color:#fff;text-shadow:1px 1px 0 rgba(0,0,0,.55);gap:3px;padding:2px;overflow:hidden}
+.rc.g{background:#43D63C}.rc.y{background:#F5C518}.rc.r{background:#EE3D2F}
+.rc .ar{font-family:var(--body);font-size:13px;font-weight:700;line-height:1}
+.rc .big{font-size:11px}
+.rc .dot{width:12px;height:12px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.4)}
+.rt-row.flip>*{animation:cellflip .5s ease-out both}
+.habs{display:flex;gap:3px;width:100%;height:100%;padding:4px}
+.habs svg{flex:1;min-width:0;height:100%;border-radius:7px;border:2px solid rgba(255,255,255,.9)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:12.5px;color:var(--ink-dim);align-items:center}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:5px}
+.habkey{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}
+.habkey div{text-align:center;font-size:10.5px;color:var(--ink-dim);line-height:1.25}
+.habkey svg{display:block;width:100%;aspect-ratio:4/3;border-radius:7px;border:1px solid var(--line);margin-bottom:3px}
+.ans{display:flex;gap:12px;align-items:center}
+.ans .tile{width:84px;height:84px;border-radius:14px;background:#fff;flex:none;display:grid;place-items:center;padding:0}
+.ans .tile img{width:76px;height:76px;image-rendering:pixelated;object-fit:contain}
+.ans b{display:block;font-family:var(--display);font-size:12px;font-weight:400;line-height:1.5}
+.ans small{display:block;margin-top:5px;font-size:13px;color:var(--ink-dim);line-height:1.45}
+.rhead{font-family:var(--display);font-size:13px;line-height:1.5;margin-bottom:6px}
+.rhead.win{color:#43D63C}.rhead.lose{color:#ff8a80}
+.dx .rtag{display:inline-block;margin-top:2px;padding:1px 4px;border-radius:4px;background:#ff4f8b;color:#fff;font-family:var(--display);font-size:5px;font-style:normal;line-height:1.6}
+@keyframes swirl{to{stroke-dashoffset:-200}}
+@keyframes mote{0%{transform:translateY(0);opacity:0}15%{opacity:.9}100%{transform:translateY(-90px);opacity:0}}
+@keyframes breath{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+@keyframes raidaura{0%,100%{filter:brightness(0) drop-shadow(0 0 4px #ff2e63) drop-shadow(0 0 10px #ff5fa2)}50%{filter:brightness(0) drop-shadow(0 0 9px #ff2e63) drop-shadow(0 0 22px #ff5fa2)}}
+@keyframes lunge{0%,100%{transform:none}40%{transform:translate(-22%,16%) scale(1.14)}}
+@keyframes roar{0%,100%{transform:none}20%{transform:scale(1.2) rotate(-3deg)}40%{transform:scale(1.25) rotate(3deg)}60%{transform:scale(1.22) rotate(-3deg)}80%{transform:scale(1.15) rotate(2deg)}}
+@keyframes denshake{0%,100%{transform:none}20%{transform:translate(-6px,3px)}40%{transform:translate(6px,-3px)}60%{transform:translate(-4px,-2px)}80%{transform:translate(4px,2px)}}
+@keyframes denflash{0%{opacity:0}20%{opacity:.6}100%{opacity:0}}
+@keyframes pipbreak{0%{transform:scale(1.5) rotate(0);background:#fff}100%{transform:scale(1) rotate(20deg)}}
+@keyframes pattack{0%,100%{transform:none}45%{transform:translate(70%,-55%) scale(1.1)}}
+@keyframes hitspark{0%{transform:scale(.3) rotate(0);opacity:1}100%{transform:scale(1.6) rotate(120deg);opacity:0}}
+@keyframes bthrow{0%{left:18%;top:62%;transform:rotate(0)}50%{left:46%;top:6%}100%{left:70%;top:30%;transform:rotate(720deg)}}
+@keyframes bdrop{0%{top:30%}70%{top:70%}85%{top:64%}100%{top:70%}}
+@keyframes bwobble{0%,100%{transform:rotate(0)}25%{transform:rotate(-24deg) translateX(-3px)}75%{transform:rotate(24deg) translateX(3px)}}
+@keyframes bshut{0%{filter:brightness(2.4);transform:scale(1.25)}100%{filter:none;transform:none}}
+@keyframes cellflip{0%{transform:rotateX(90deg);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
+
 /* ---------- modal ---------- */
 #modal{position:fixed;inset:0;z-index:5;background:rgba(0,0,0,.6);display:grid;place-items:end center;padding:12px}
 #modal .sheet{width:100%;max-width:528px;max-height:100%;overflow-y:auto;background:var(--panel-solid);border:1px solid var(--line);border-radius:22px;padding:18px 16px;display:flex;flex-direction:column;gap:14px;animation:rise .25s both}
@@ -339,6 +431,7 @@ form{display:flex;gap:8px;margin-top:14px}
       <p class="fine" id="diff-note" style="margin-top:10px"></p>
     </div>
     <button class="btn primary" id="btn-daily">Daily Dive<small id="daily-sub"></small></button>
+    <button class="btn raidbtn" id="btn-raid">Max Raid<small id="raid-sub"></small></button>
     <div class="panel sect">
       <h2>Regions</h2>
       <div class="rchips" id="region-chips"></div>
@@ -448,13 +541,77 @@ form{display:flex;gap:8px;margin-top:14px}
     <div class="log" id="race-log"></div>
   </section>
 
+  <!-- MAX RAID -->
+  <section class="screen" id="s-raid" hidden>
+    <div class="bar"><button class="sq" data-home aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5l-7 7 7 7"/></svg></button><h2>MAX RAID</h2></div>
+    <div class="den" id="den">
+      <svg class="den-bg" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <radialGradient id="dg1" cx="68%" cy="38%" r="62%"><stop offset="0" stop-color="#5e1034"/><stop offset=".5" stop-color="#2a0a1e"/><stop offset="1" stop-color="#0d0510"/></radialGradient>
+          <radialGradient id="dg2"><stop offset="0" stop-color="#ff3b6b" stop-opacity=".8"/><stop offset="1" stop-color="#ff3b6b" stop-opacity="0"/></radialGradient>
+        </defs>
+        <rect width="320" height="200" fill="url(#dg1)"/>
+        <g class="swirl" fill="none" stroke-linecap="round">
+          <ellipse cx="218" cy="80" rx="96" ry="36" stroke="#ff4f8b" stroke-width="3" stroke-dasharray="60 40" opacity=".55"/>
+          <ellipse cx="218" cy="80" rx="72" ry="24" stroke="#ff2e5a" stroke-width="3" stroke-dasharray="30 20" opacity=".6"/>
+          <ellipse cx="218" cy="80" rx="116" ry="50" stroke="#ffa3c6" stroke-width="2" stroke-dasharray="12 38" opacity=".5"/>
+        </g>
+        <path d="M0 0H74L54 22 62 48 40 70 48 100 28 128 36 160 0 200Z" fill="#160a14"/>
+        <path d="M0 0H42L32 30 38 60 20 90 24 130 0 160Z" fill="#23111f"/>
+        <path d="M320 0H262L276 26 268 54 290 80 282 112 300 140 292 170 320 200Z" fill="#160a14"/>
+        <path d="M320 0H292L300 40 294 70 308 100 306 150 320 170Z" fill="#23111f"/>
+        <path d="M60 0 74 26 86 0ZM110 0 120 38 132 0ZM150 0 158 20 168 0ZM196 0 206 30 216 0ZM238 0 246 18 256 0Z" fill="#160a14"/>
+        <path d="M0 200V168L40 158 90 164 150 156 210 162 270 154 320 166V200Z" fill="#1b0c17"/>
+        <ellipse cx="216" cy="170" rx="98" ry="17" fill="url(#dg2)"/>
+        <path d="M20 178 34 162 50 178ZM120 184 134 172 146 184ZM286 182 298 168 310 182Z" fill="#2e1a29"/>
+      </svg>
+      <div id="den-motes"></div>
+      <div class="pips" id="raid-pips" aria-label="Shields left"></div>
+      <div class="boss" id="raid-boss"><div class="boss-s" id="raid-boss-s"><img id="raid-boss-img" alt="Hidden Dynamax Pokémon"></div></div>
+      <div class="partner" id="raid-partner"><img id="raid-partner-img" alt=""></div>
+      <div class="ball" id="raid-ball" hidden></div>
+      <div class="den-flash" id="den-flash"></div>
+      <div class="den-msg" id="raid-msg" hidden></div>
+    </div>
+    <div id="raid-entry" class="panel sect">
+      <form class="raidform" id="raid-form" autocomplete="off">
+        <input class="field" id="raid-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go" placeholder="Guess a Pokémon" aria-label="Guess a Pokémon">
+        <button id="raid-go" type="submit" class="switch" style="border-radius:14px;padding:0 16px">GUESS</button>
+        <div class="ac" id="raid-ac" hidden></div>
+      </form>
+      <div class="sug" id="raid-sug" hidden></div>
+      <div class="note" id="raid-note"></div>
+      <button class="btn ghost" id="raid-swap" style="margin-top:8px;padding:12px">Change raid partner</button>
+    </div>
+    <div class="panel sect" id="raid-end" hidden></div>
+    <textarea id="raidShareBox" rows="8" readonly hidden aria-label="Result to copy" style="width:100%;padding:10px;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:#fff;font:14px/1.4 var(--body);resize:none"></textarea>
+    <div class="rt-wrap"><div class="rt" id="raid-table"></div></div>
+    <div class="panel sect">
+      <h2>How to read it</h2>
+      <div class="legend">
+        <span><i style="background:#43D63C"></i>Match</span>
+        <span><i style="background:#F5C518"></i>Partly right: the type is in the other slot, or one habitat overlaps</span>
+        <span><i style="background:#EE3D2F"></i>No match</span>
+        <span><b>▲ ▼</b> The answer's stage or generation is higher or lower</span>
+      </div>
+      <div class="habkey" id="raid-habkey"></div>
+      <p class="fine" style="margin-top:12px">Raids currently draw from Kanto, Johto and Hoenn (Pokédex 1 to 386). Six guesses, one raid a day.</p>
+    </div>
+    <div class="panel sect">
+      <h2>Raid stats</h2>
+      <div class="stats two" id="raid-stats"></div>
+      <h2 style="margin-top:14px">Guess distribution</h2>
+      <div class="bars" id="raid-dist"></div>
+    </div>
+  </section>
+
   <!-- DEX -->
   <section class="screen" id="s-dex" hidden>
     <div class="bar"><button class="sq" data-home aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5l-7 7 7 7"/></svg></button><h2>POKÉDEX</h2></div>
     <div class="panel sect">
       <div class="count"><b id="dex-n">0</b> / 1025 caught</div>
       <div class="meter"><i id="dex-bar" style="width:0"></i></div>
-      <p class="fine" style="margin-top:10px">Every valid Pokémon answer you give is logged here, in any mode.</p>
+      <p class="fine" style="margin-top:10px">Every valid Pokémon answer you give is logged here, in any mode. Max Raid catches are tagged RAID.</p>
     </div>
     <div class="dex" id="dex-grid"></div>
   </section>
@@ -1117,6 +1274,10 @@ var BADGES=[
  {id:'dex25',n:'Field Researcher',d:'25 Pokédex entries',s:'diamond',c:'#0f9bb0',g:gt('25',11),ok:function(){return count(store.dex)>=25;}},
  {id:'dex100',n:'Collector',d:'100 Pokédex entries',s:'circle',c:'#c2374a',g:gt('100',9),ok:function(){return count(store.dex)>=100;}},
  {id:'lv10',n:'Seasoned Diver',d:'Reach Trainer Lv 10',s:'shield',c:'#0e7c86',g:gt('10',11),ok:function(){return trainerLv()>=10;}},
+ {id:'raid1',n:'First Raid Catch',d:'Win a Max Raid',s:'circle',c:'#d6336c',g:gl('M12 24h8M28 24h8M24 20a4 4 0 1 0 .01 0zM11 24a13 13 0 0 1 26 0'),ok:function(){return store.raidStats.wins>=1;}},
+ {id:'raidperfect',n:'Perfect Raid',d:'Win a raid in 1 or 2 guesses',s:'burst',c:'#e03a5f',g:gt('2',16),ok:function(){return !!store.raidStats.perfect;}},
+ {id:'raid7',n:'7-Day Raid Streak',d:'Win 7 raids in a row',s:'shield',c:'#b0306a',g:gt('R7',11),ok:function(){return store.raidStats.best>=7;}},
+ {id:'raid25',n:'Den Master',d:'25 Raid catches',s:'hex',c:'#a02a8a',g:gt('25',11),ok:function(){return count(store.raidCaught)>=25;}},
  {id:'explorer',n:'Explorer',d:'Dive in Water, Fire and Grass',s:'diamond',c:'#5b6ad9',g:gl('M24 11l5 13-5 13-5-13z',1),ok:function(){return ['ocean','lava','forest'].every(function(t){return store.themesUsed[t];});}}
 ];
 function badgeSVG(b){
@@ -1126,12 +1287,19 @@ function badgeSVG(b){
 /* ================= STORAGE ================= */
 var KEY='pokedive.v1';
 var store={avatar:'ocean:7',avatarBy:{},shinyOn:{},theme:'ocean',played:0,best:0,streak:0,longest:0,lastDaily:'',dailies:{},mode:'normal',regions:null,
-  bestBy:{},regionsDived:{},exp:0,title:'rookie',trail:'none',badges:{},unlocked:{},dex:{},shinyCount:{},tc:{},cat:{},rarest:null,mpPlayed:0,themesUsed:{},party:null};
+  bestBy:{},regionsDived:{},exp:0,title:'rookie',trail:'none',badges:{},unlocked:{},dex:{},shinyCount:{},tc:{},cat:{},rarest:null,mpPlayed:0,themesUsed:{},party:null,
+  raid:null,raidCaught:{},raidStats:{played:0,wins:0,streak:0,best:0,last:'',perfect:0,dist:[0,0,0,0,0,0]}};
 try{var saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&typeof saved==='object'){for(var k0 in store){if(saved[k0]!==undefined&&saved[k0]!==null)store[k0]=saved[k0];}}}catch(e){}
 if(!DIFFS[store.mode])store.mode='normal';
 if(typeof store.exp!=='number'||!(store.exp>=0))store.exp=0;
 if(!Array.isArray(store.regions)||store.regions.length!==REGIONS.length||!store.regions.some(Boolean))store.regions=ALLF.slice();
 ['shinyOn','dailies','bestBy','regionsDived','badges','unlocked','dex','shinyCount','tc','cat','themesUsed'].forEach(function(k){if(!store[k]||typeof store[k]!=='object')store[k]={};});
+if(!store.raidCaught||typeof store.raidCaught!=='object')store.raidCaught={};
+(function(){var s=store.raidStats,d={played:0,wins:0,streak:0,best:0,last:'',perfect:0};
+  if(!s||typeof s!=='object')s=store.raidStats={};
+  for(var k in d){if(typeof s[k]!==typeof d[k])s[k]=d[k];}
+  if(!Array.isArray(s.dist)||s.dist.length!==6)s.dist=[0,0,0,0,0,0];
+})();
 if(!SKINS[store.theme])store.theme='ocean';
 /* migrate saves from before sceneries had lineups (numeric diver ids, Space theme) */
 if(store.theme==='space')store.theme='ocean';
@@ -1744,7 +1912,7 @@ function evolveCheck(mine){
 
 /* ================= GAME ================= */
 var run=null,mp=null,state='idle',deadline=0,nextT=0,LIMIT=25000,C=138.23;
-var SCREENS=['start','party','pass','play','results','race','dex','stats'];
+var SCREENS=['start','raid','party','pass','play','results','race','dex','stats'];
 function show(name){
   SCREENS.forEach(function(s){$('s-'+s).hidden=(s!==name);});
   $('lane').hidden=(name!=='play');
@@ -1771,6 +1939,7 @@ function renderStart(){
   $('dex-sub').textContent=count(store.dex)+' / 1025 caught';
   $('free-sub').textContent=DIFFS[diff]+', '+regionLabel(store.regions);
   $('stats-sub').textContent=count(store.badges)+' of '+BADGES.length+' badges';
+  $('raid-sub').textContent=raidSub();
   renderTrainer();
   disp=target=0;lastZone=zoneAt(0)[1];
   show('start');paintDepth();
@@ -2170,6 +2339,7 @@ function renderDex(){
     if(dexIO)dexIO.observe(img);else img.src=SPR+id+'.png';
     c.appendChild(img);
     c.appendChild(el('b','',got?DEX[id-1]:'???'));
+    if(store.raidCaught[id])c.appendChild(el('i','rtag','RAID'));
     if(got)c.style.setProperty('--tc',TYPECOL[DTYPE.charCodeAt((id-1)*2)-97]);
     frag.appendChild(c);
   }
@@ -2269,6 +2439,687 @@ function frame(now){
   requestAnimationFrame(frame);
 }
 
+/* ================= MAX RAID ================= */
+/* Max Raid pool. One block per generation; each row is
+   [id, name, type1, type2, evolutionStage, fullyEvolved, color, habitats]. Add later generations as new blocks. */
+var RAID_GENS={
+1:[
+[1,"Bulbasaur","grass","poison",1,0,"green",["grassland","forest"]],
+[2,"Ivysaur","grass","poison",2,0,"green",["grassland","forest"]],
+[3,"Venusaur","grass","poison",3,1,"green",["grassland","forest"]],
+[4,"Charmander","fire",null,1,0,"red",["mountain","volcano"]],
+[5,"Charmeleon","fire",null,2,0,"red",["mountain","volcano"]],
+[6,"Charizard","fire","flying",3,1,"red",["mountain","volcano"]],
+[7,"Squirtle","water",null,1,0,"blue",["waters-edge"]],
+[8,"Wartortle","water",null,2,0,"blue",["waters-edge"]],
+[9,"Blastoise","water",null,3,1,"blue",["waters-edge"]],
+[10,"Caterpie","bug",null,1,0,"green",["forest"]],
+[11,"Metapod","bug",null,2,0,"green",["forest"]],
+[12,"Butterfree","bug","flying",3,1,"white",["forest"]],
+[13,"Weedle","bug","poison",1,0,"brown",["forest"]],
+[14,"Kakuna","bug","poison",2,0,"yellow",["forest"]],
+[15,"Beedrill","bug","poison",3,1,"yellow",["forest"]],
+[16,"Pidgey","normal","flying",1,0,"brown",["forest"]],
+[17,"Pidgeotto","normal","flying",2,0,"brown",["forest"]],
+[18,"Pidgeot","normal","flying",3,1,"brown",["forest"]],
+[19,"Rattata","normal",null,1,0,"purple",["grassland"]],
+[20,"Raticate","normal",null,2,1,"brown",["grassland"]],
+[21,"Spearow","normal","flying",1,0,"brown",["rough-terrain"]],
+[22,"Fearow","normal","flying",2,1,"brown",["rough-terrain"]],
+[23,"Ekans","poison",null,1,0,"purple",["grassland"]],
+[24,"Arbok","poison",null,2,1,"purple",["grassland"]],
+[25,"Pikachu","electric",null,2,0,"yellow",["forest","urban"]],
+[26,"Raichu","electric",null,3,1,"yellow",["forest","urban"]],
+[27,"Sandshrew","ground",null,1,0,"yellow",["rough-terrain"]],
+[28,"Sandslash","ground",null,2,1,"yellow",["rough-terrain"]],
+[29,"Nidoran♀","poison",null,1,0,"blue",["grassland"]],
+[30,"Nidorina","poison",null,2,0,"blue",["grassland"]],
+[31,"Nidoqueen","poison","ground",3,1,"blue",["grassland"]],
+[32,"Nidoran♂","poison",null,1,0,"purple",["grassland"]],
+[33,"Nidorino","poison",null,2,0,"purple",["grassland"]],
+[34,"Nidoking","poison","ground",3,1,"purple",["grassland"]],
+[35,"Clefairy","fairy",null,2,0,"pink",["mountain"]],
+[36,"Clefable","fairy",null,3,1,"pink",["mountain"]],
+[37,"Vulpix","fire",null,1,0,"brown",["grassland"]],
+[38,"Ninetales","fire",null,2,1,"yellow",["grassland"]],
+[39,"Jigglypuff","normal","fairy",2,0,"pink",["grassland"]],
+[40,"Wigglytuff","normal","fairy",3,1,"pink",["grassland"]],
+[41,"Zubat","poison","flying",1,0,"purple",["cave","forest"]],
+[42,"Golbat","poison","flying",2,0,"purple",["cave","forest"]],
+[43,"Oddish","grass","poison",1,0,"blue",["grassland","forest"]],
+[44,"Gloom","grass","poison",2,0,"blue",["grassland","forest"]],
+[45,"Vileplume","grass","poison",3,1,"red",["grassland","forest"]],
+[46,"Paras","bug","grass",1,0,"red",["forest"]],
+[47,"Parasect","bug","grass",2,1,"red",["forest"]],
+[48,"Venonat","bug","poison",1,0,"purple",["forest"]],
+[49,"Venomoth","bug","poison",2,1,"purple",["forest"]],
+[50,"Diglett","ground",null,1,0,"brown",["cave","mountain"]],
+[51,"Dugtrio","ground",null,2,1,"brown",["cave","mountain"]],
+[52,"Meowth","normal",null,1,0,"yellow",["urban","grassland"]],
+[53,"Persian","normal",null,2,1,"yellow",["urban","grassland"]],
+[54,"Psyduck","water",null,1,0,"yellow",["waters-edge"]],
+[55,"Golduck","water",null,2,1,"blue",["waters-edge"]],
+[56,"Mankey","fighting",null,1,0,"brown",["mountain"]],
+[57,"Primeape","fighting",null,2,0,"brown",["mountain"]],
+[58,"Growlithe","fire",null,1,0,"brown",["grassland"]],
+[59,"Arcanine","fire",null,2,1,"brown",["grassland"]],
+[60,"Poliwag","water",null,1,0,"blue",["waters-edge"]],
+[61,"Poliwhirl","water",null,2,0,"blue",["waters-edge"]],
+[62,"Poliwrath","water","fighting",3,1,"blue",["waters-edge"]],
+[63,"Abra","psychic",null,1,0,"brown",["urban"]],
+[64,"Kadabra","psychic",null,2,0,"brown",["urban"]],
+[65,"Alakazam","psychic",null,3,1,"brown",["urban"]],
+[66,"Machop","fighting",null,1,0,"gray",["mountain"]],
+[67,"Machoke","fighting",null,2,0,"gray",["mountain"]],
+[68,"Machamp","fighting",null,3,1,"gray",["mountain"]],
+[69,"Bellsprout","grass","poison",1,0,"green",["forest"]],
+[70,"Weepinbell","grass","poison",2,0,"green",["forest"]],
+[71,"Victreebel","grass","poison",3,1,"green",["forest"]],
+[72,"Tentacool","water","poison",1,0,"blue",["sea"]],
+[73,"Tentacruel","water","poison",2,1,"blue",["sea"]],
+[74,"Geodude","rock","ground",1,0,"brown",["mountain","cave"]],
+[75,"Graveler","rock","ground",2,0,"brown",["mountain","cave"]],
+[76,"Golem","rock","ground",3,1,"brown",["mountain","cave"]],
+[77,"Ponyta","fire",null,1,0,"yellow",["grassland"]],
+[78,"Rapidash","fire",null,2,1,"yellow",["grassland"]],
+[79,"Slowpoke","water","psychic",1,0,"pink",["waters-edge"]],
+[80,"Slowbro","water","psychic",2,1,"pink",["waters-edge"]],
+[81,"Magnemite","electric","steel",1,0,"gray",["rough-terrain","urban"]],
+[82,"Magneton","electric","steel",2,0,"gray",["rough-terrain","urban"]],
+[83,"Farfetch'd","normal","flying",1,0,"brown",["grassland"]],
+[84,"Doduo","normal","flying",1,0,"brown",["grassland"]],
+[85,"Dodrio","normal","flying",2,1,"brown",["grassland"]],
+[86,"Seel","water",null,1,0,"white",["sea"]],
+[87,"Dewgong","water","ice",2,1,"white",["sea"]],
+[88,"Grimer","poison",null,1,0,"purple",["urban"]],
+[89,"Muk","poison",null,2,1,"purple",["urban"]],
+[90,"Shellder","water",null,1,0,"purple",["sea"]],
+[91,"Cloyster","water","ice",2,1,"purple",["sea"]],
+[92,"Gastly","ghost","poison",1,0,"purple",["cave","urban"]],
+[93,"Haunter","ghost","poison",2,0,"purple",["cave","urban"]],
+[94,"Gengar","ghost","poison",3,1,"purple",["cave","urban"]],
+[95,"Onix","rock","ground",1,0,"gray",["cave","mountain"]],
+[96,"Drowzee","psychic",null,1,0,"yellow",["grassland"]],
+[97,"Hypno","psychic",null,2,1,"yellow",["grassland"]],
+[98,"Krabby","water",null,1,0,"red",["waters-edge"]],
+[99,"Kingler","water",null,2,1,"red",["waters-edge"]],
+[100,"Voltorb","electric",null,1,0,"red",["urban"]],
+[101,"Electrode","electric",null,2,1,"red",["urban"]],
+[102,"Exeggcute","grass","psychic",1,0,"pink",["forest"]],
+[103,"Exeggutor","grass","psychic",2,1,"yellow",["forest"]],
+[104,"Cubone","ground",null,1,0,"brown",["mountain","cave"]],
+[105,"Marowak","ground",null,2,1,"brown",["mountain","cave"]],
+[106,"Hitmonlee","fighting",null,2,1,"brown",["urban"]],
+[107,"Hitmonchan","fighting",null,2,1,"brown",["urban"]],
+[108,"Lickitung","normal",null,1,0,"pink",["grassland"]],
+[109,"Koffing","poison",null,1,0,"purple",["urban"]],
+[110,"Weezing","poison",null,2,1,"purple",["urban"]],
+[111,"Rhyhorn","ground","rock",1,0,"gray",["rough-terrain"]],
+[112,"Rhydon","ground","rock",2,0,"gray",["rough-terrain"]],
+[113,"Chansey","normal",null,2,0,"pink",["urban"]],
+[114,"Tangela","grass",null,1,0,"blue",["grassland","forest"]],
+[115,"Kangaskhan","normal",null,1,1,"brown",["grassland"]],
+[116,"Horsea","water",null,1,0,"blue",["sea"]],
+[117,"Seadra","water",null,2,0,"blue",["sea"]],
+[118,"Goldeen","water",null,1,0,"red",["waters-edge"]],
+[119,"Seaking","water",null,2,1,"red",["waters-edge"]],
+[120,"Staryu","water",null,1,0,"brown",["sea"]],
+[121,"Starmie","water","psychic",2,1,"purple",["sea"]],
+[122,"Mr. Mime","psychic","fairy",2,0,"pink",["urban"]],
+[123,"Scyther","bug","flying",1,0,"green",["grassland"]],
+[124,"Jynx","ice","psychic",2,1,"red",["urban"]],
+[125,"Electabuzz","electric",null,2,0,"yellow",["grassland","urban"]],
+[126,"Magmar","fire",null,2,0,"red",["mountain","volcano"]],
+[127,"Pinsir","bug",null,1,1,"brown",["forest"]],
+[128,"Tauros","normal",null,1,1,"brown",["grassland"]],
+[129,"Magikarp","water",null,1,0,"red",["waters-edge"]],
+[130,"Gyarados","water","flying",2,1,"blue",["waters-edge","sea"]],
+[131,"Lapras","water","ice",1,1,"blue",["sea"]],
+[132,"Ditto","normal",null,1,1,"purple",["urban","grassland"]],
+[133,"Eevee","normal",null,1,0,"brown",["urban","forest"]],
+[134,"Vaporeon","water",null,2,1,"blue",["urban","waters-edge"]],
+[135,"Jolteon","electric",null,2,1,"yellow",["urban"]],
+[136,"Flareon","fire",null,2,1,"red",["urban"]],
+[137,"Porygon","normal",null,1,0,"pink",["urban"]],
+[138,"Omanyte","rock","water",1,0,"blue",["sea","cave"]],
+[139,"Omastar","rock","water",2,1,"blue",["sea","cave"]],
+[140,"Kabuto","rock","water",1,0,"brown",["sea","cave"]],
+[141,"Kabutops","rock","water",2,1,"brown",["sea","cave"]],
+[142,"Aerodactyl","rock","flying",1,1,"purple",["mountain","cave"]],
+[143,"Snorlax","normal",null,2,1,"black",["mountain","forest"]],
+[144,"Articuno","ice","flying",1,1,"blue",["rare","mountain"]],
+[145,"Zapdos","electric","flying",1,1,"yellow",["rare","mountain"]],
+[146,"Moltres","fire","flying",1,1,"yellow",["rare","volcano"]],
+[147,"Dratini","dragon",null,1,0,"blue",["waters-edge","sea"]],
+[148,"Dragonair","dragon",null,2,0,"blue",["waters-edge","sea"]],
+[149,"Dragonite","dragon","flying",3,1,"brown",["waters-edge","sea"]],
+[150,"Mewtwo","psychic",null,1,1,"purple",["rare","cave"]],
+[151,"Mew","psychic",null,1,1,"pink",["rare","forest"]]
+],
+2:[
+[152,"Chikorita","grass",null,1,0,"green",["grassland","forest"]],
+[153,"Bayleef","grass",null,2,0,"green",["grassland","forest"]],
+[154,"Meganium","grass",null,3,1,"green",["grassland","forest"]],
+[155,"Cyndaquil","fire",null,1,0,"yellow",["grassland"]],
+[156,"Quilava","fire",null,2,0,"yellow",["grassland"]],
+[157,"Typhlosion","fire",null,3,1,"yellow",["grassland"]],
+[158,"Totodile","water",null,1,0,"blue",["waters-edge"]],
+[159,"Croconaw","water",null,2,0,"blue",["waters-edge"]],
+[160,"Feraligatr","water",null,3,1,"blue",["waters-edge"]],
+[161,"Sentret","normal",null,1,0,"brown",["grassland"]],
+[162,"Furret","normal",null,2,1,"brown",["grassland"]],
+[163,"Hoothoot","normal","flying",1,0,"brown",["forest"]],
+[164,"Noctowl","normal","flying",2,1,"brown",["forest"]],
+[165,"Ledyba","bug","flying",1,0,"red",["forest"]],
+[166,"Ledian","bug","flying",2,1,"red",["forest"]],
+[167,"Spinarak","bug","poison",1,0,"green",["forest"]],
+[168,"Ariados","bug","poison",2,1,"red",["forest"]],
+[169,"Crobat","poison","flying",3,1,"purple",["cave","forest"]],
+[170,"Chinchou","water","electric",1,0,"blue",["sea"]],
+[171,"Lanturn","water","electric",2,1,"blue",["sea"]],
+[172,"Pichu","electric",null,1,0,"yellow",["forest"]],
+[173,"Cleffa","fairy",null,1,0,"pink",["mountain"]],
+[174,"Igglybuff","normal","fairy",1,0,"pink",["grassland"]],
+[175,"Togepi","fairy",null,1,0,"white",["forest"]],
+[176,"Togetic","fairy","flying",2,0,"white",["forest"]],
+[177,"Natu","psychic","flying",1,0,"green",["forest"]],
+[178,"Xatu","psychic","flying",2,1,"green",["forest"]],
+[179,"Mareep","electric",null,1,0,"white",["grassland"]],
+[180,"Flaaffy","electric",null,2,0,"pink",["grassland"]],
+[181,"Ampharos","electric",null,3,1,"yellow",["grassland"]],
+[182,"Bellossom","grass",null,3,1,"green",["grassland","forest"]],
+[183,"Marill","water","fairy",2,0,"blue",["waters-edge"]],
+[184,"Azumarill","water","fairy",3,1,"blue",["waters-edge"]],
+[185,"Sudowoodo","rock",null,2,1,"brown",["forest"]],
+[186,"Politoed","water",null,3,1,"green",["waters-edge"]],
+[187,"Hoppip","grass","flying",1,0,"pink",["grassland","forest"]],
+[188,"Skiploom","grass","flying",2,0,"green",["grassland","forest"]],
+[189,"Jumpluff","grass","flying",3,1,"blue",["grassland","forest"]],
+[190,"Aipom","normal",null,1,0,"purple",["forest"]],
+[191,"Sunkern","grass",null,1,0,"yellow",["grassland","forest"]],
+[192,"Sunflora","grass",null,2,1,"yellow",["grassland","forest"]],
+[193,"Yanma","bug","flying",1,0,"red",["forest"]],
+[194,"Wooper","water","ground",1,0,"blue",["waters-edge"]],
+[195,"Quagsire","water","ground",2,1,"blue",["waters-edge"]],
+[196,"Espeon","psychic",null,2,1,"purple",["urban"]],
+[197,"Umbreon","dark",null,2,1,"black",["urban"]],
+[198,"Murkrow","dark","flying",1,0,"black",["forest"]],
+[199,"Slowking","water","psychic",2,1,"pink",["waters-edge"]],
+[200,"Misdreavus","ghost",null,1,0,"gray",["cave","forest"]],
+[201,"Unown","psychic",null,1,1,"black",["rare","cave"]],
+[202,"Wobbuffet","psychic",null,2,1,"blue",["cave"]],
+[203,"Girafarig","normal","psychic",1,0,"yellow",["grassland"]],
+[204,"Pineco","bug",null,1,0,"gray",["forest"]],
+[205,"Forretress","bug","steel",2,1,"purple",["forest"]],
+[206,"Dunsparce","normal",null,1,0,"yellow",["cave"]],
+[207,"Gligar","ground","flying",1,0,"purple",["mountain","cave"]],
+[208,"Steelix","steel","ground",2,1,"gray",["cave","mountain"]],
+[209,"Snubbull","fairy",null,1,0,"pink",["urban"]],
+[210,"Granbull","fairy",null,2,1,"purple",["urban"]],
+[211,"Qwilfish","water","poison",1,0,"gray",["sea"]],
+[212,"Scizor","bug","steel",2,1,"red",["grassland"]],
+[213,"Shuckle","bug","rock",1,1,"yellow",["mountain","cave"]],
+[214,"Heracross","bug","fighting",1,1,"blue",["forest"]],
+[215,"Sneasel","dark","ice",1,0,"black",["forest"]],
+[216,"Teddiursa","normal",null,1,0,"brown",["mountain"]],
+[217,"Ursaring","normal",null,2,0,"brown",["mountain"]],
+[218,"Slugma","fire",null,1,0,"red",["mountain","volcano"]],
+[219,"Magcargo","fire","rock",2,1,"red",["mountain","volcano"]],
+[220,"Swinub","ice","ground",1,0,"brown",["cave","mountain"]],
+[221,"Piloswine","ice","ground",2,0,"brown",["cave","mountain"]],
+[222,"Corsola","water","rock",1,0,"pink",["sea"]],
+[223,"Remoraid","water",null,1,0,"gray",["sea"]],
+[224,"Octillery","water",null,2,1,"red",["sea"]],
+[225,"Delibird","ice","flying",1,1,"red",["mountain"]],
+[226,"Mantine","water","flying",2,1,"purple",["sea"]],
+[227,"Skarmory","steel","flying",1,1,"gray",["rough-terrain"]],
+[228,"Houndour","dark","fire",1,0,"black",["rough-terrain","volcano"]],
+[229,"Houndoom","dark","fire",2,1,"black",["rough-terrain","volcano"]],
+[230,"Kingdra","water","dragon",3,1,"blue",["sea"]],
+[231,"Phanpy","ground",null,1,0,"blue",["rough-terrain"]],
+[232,"Donphan","ground",null,2,1,"gray",["rough-terrain"]],
+[233,"Porygon2","normal",null,2,0,"red",["urban"]],
+[234,"Stantler","normal",null,1,0,"brown",["forest"]],
+[235,"Smeargle","normal",null,1,1,"white",["urban"]],
+[236,"Tyrogue","fighting",null,1,0,"purple",["urban"]],
+[237,"Hitmontop","fighting",null,2,1,"brown",["urban"]],
+[238,"Smoochum","ice","psychic",1,0,"pink",["urban"]],
+[239,"Elekid","electric",null,1,0,"yellow",["grassland","urban"]],
+[240,"Magby","fire",null,1,0,"red",["mountain","volcano"]],
+[241,"Miltank","normal",null,1,1,"pink",["grassland"]],
+[242,"Blissey","normal",null,3,1,"pink",["urban"]],
+[243,"Raikou","electric",null,1,1,"yellow",["grassland","mountain"]],
+[244,"Entei","fire",null,1,1,"brown",["grassland","volcano"]],
+[245,"Suicune","water",null,1,1,"blue",["grassland","waters-edge"]],
+[246,"Larvitar","rock","ground",1,0,"green",["mountain","cave"]],
+[247,"Pupitar","rock","ground",2,0,"gray",["mountain","cave"]],
+[248,"Tyranitar","rock","dark",3,1,"green",["mountain","cave"]],
+[249,"Lugia","psychic","flying",1,1,"white",["rare","sea"]],
+[250,"Ho-Oh","fire","flying",1,1,"red",["rare","mountain"]],
+[251,"Celebi","psychic","grass",1,1,"green",["forest"]]
+],
+3:[
+[252,"Treecko","grass",null,1,0,"green",["forest"]],
+[253,"Grovyle","grass",null,2,0,"green",["forest"]],
+[254,"Sceptile","grass",null,3,1,"green",["forest"]],
+[255,"Torchic","fire",null,1,0,"red",["grassland"]],
+[256,"Combusken","fire","fighting",2,0,"red",["grassland"]],
+[257,"Blaziken","fire","fighting",3,1,"red",["grassland"]],
+[258,"Mudkip","water",null,1,0,"blue",["waters-edge"]],
+[259,"Marshtomp","water","ground",2,0,"blue",["waters-edge"]],
+[260,"Swampert","water","ground",3,1,"blue",["waters-edge"]],
+[261,"Poochyena","dark",null,1,0,"gray",["grassland"]],
+[262,"Mightyena","dark",null,2,1,"gray",["grassland"]],
+[263,"Zigzagoon","normal",null,1,0,"brown",["grassland"]],
+[264,"Linoone","normal",null,2,0,"white",["grassland"]],
+[265,"Wurmple","bug",null,1,0,"red",["forest"]],
+[266,"Silcoon","bug",null,2,0,"white",["forest"]],
+[267,"Beautifly","bug","flying",3,1,"yellow",["forest"]],
+[268,"Cascoon","bug",null,2,0,"purple",["forest"]],
+[269,"Dustox","bug","poison",3,1,"green",["forest"]],
+[270,"Lotad","water","grass",1,0,"green",["waters-edge"]],
+[271,"Lombre","water","grass",2,0,"green",["waters-edge"]],
+[272,"Ludicolo","water","grass",3,1,"green",["waters-edge"]],
+[273,"Seedot","grass",null,1,0,"brown",["forest"]],
+[274,"Nuzleaf","grass","dark",2,0,"brown",["forest"]],
+[275,"Shiftry","grass","dark",3,1,"brown",["forest"]],
+[276,"Taillow","normal","flying",1,0,"blue",["grassland"]],
+[277,"Swellow","normal","flying",2,1,"blue",["grassland"]],
+[278,"Wingull","water","flying",1,0,"white",["sea"]],
+[279,"Pelipper","water","flying",2,1,"yellow",["sea"]],
+[280,"Ralts","psychic","fairy",1,0,"white",["urban"]],
+[281,"Kirlia","psychic","fairy",2,0,"white",["urban"]],
+[282,"Gardevoir","psychic","fairy",3,1,"white",["urban"]],
+[283,"Surskit","bug","water",1,0,"blue",["waters-edge"]],
+[284,"Masquerain","bug","flying",2,1,"blue",["waters-edge"]],
+[285,"Shroomish","grass",null,1,0,"brown",["forest"]],
+[286,"Breloom","grass","fighting",2,1,"green",["forest"]],
+[287,"Slakoth","normal",null,1,0,"brown",["forest"]],
+[288,"Vigoroth","normal",null,2,0,"white",["forest"]],
+[289,"Slaking","normal",null,3,1,"brown",["forest"]],
+[290,"Nincada","bug","ground",1,0,"gray",["forest"]],
+[291,"Ninjask","bug","flying",2,1,"yellow",["forest"]],
+[292,"Shedinja","bug","ghost",2,1,"brown",["forest"]],
+[293,"Whismur","normal",null,1,0,"pink",["cave"]],
+[294,"Loudred","normal",null,2,0,"blue",["cave"]],
+[295,"Exploud","normal",null,3,1,"blue",["cave"]],
+[296,"Makuhita","fighting",null,1,0,"yellow",["mountain"]],
+[297,"Hariyama","fighting",null,2,1,"brown",["mountain"]],
+[298,"Azurill","normal","fairy",1,0,"blue",["waters-edge"]],
+[299,"Nosepass","rock",null,1,0,"gray",["cave","mountain"]],
+[300,"Skitty","normal",null,1,0,"pink",["forest"]],
+[301,"Delcatty","normal",null,2,1,"purple",["forest"]],
+[302,"Sableye","dark","ghost",1,1,"purple",["cave","mountain"]],
+[303,"Mawile","steel","fairy",1,1,"black",["cave"]],
+[304,"Aron","steel","rock",1,0,"gray",["mountain","cave"]],
+[305,"Lairon","steel","rock",2,0,"gray",["mountain","cave"]],
+[306,"Aggron","steel","rock",3,1,"gray",["mountain","cave"]],
+[307,"Meditite","fighting","psychic",1,0,"blue",["mountain"]],
+[308,"Medicham","fighting","psychic",2,1,"red",["mountain"]],
+[309,"Electrike","electric",null,1,0,"green",["grassland"]],
+[310,"Manectric","electric",null,2,1,"yellow",["grassland"]],
+[311,"Plusle","electric",null,1,1,"yellow",["grassland"]],
+[312,"Minun","electric",null,1,1,"yellow",["grassland"]],
+[313,"Volbeat","bug",null,1,1,"gray",["forest"]],
+[314,"Illumise","bug",null,1,1,"purple",["forest"]],
+[315,"Roselia","grass","poison",2,0,"green",["grassland","forest"]],
+[316,"Gulpin","poison",null,1,0,"green",["grassland"]],
+[317,"Swalot","poison",null,2,1,"purple",["grassland"]],
+[318,"Carvanha","water","dark",1,0,"red",["sea"]],
+[319,"Sharpedo","water","dark",2,1,"blue",["sea"]],
+[320,"Wailmer","water",null,1,0,"blue",["sea"]],
+[321,"Wailord","water",null,2,1,"blue",["sea"]],
+[322,"Numel","fire","ground",1,0,"yellow",["mountain","volcano"]],
+[323,"Camerupt","fire","ground",2,1,"red",["mountain","volcano"]],
+[324,"Torkoal","fire",null,1,1,"brown",["mountain","volcano"]],
+[325,"Spoink","psychic",null,1,0,"black",["mountain"]],
+[326,"Grumpig","psychic",null,2,1,"purple",["mountain"]],
+[327,"Spinda","normal",null,1,1,"brown",["mountain"]],
+[328,"Trapinch","ground",null,1,0,"brown",["rough-terrain"]],
+[329,"Vibrava","ground","dragon",2,0,"green",["rough-terrain"]],
+[330,"Flygon","ground","dragon",3,1,"green",["rough-terrain"]],
+[331,"Cacnea","grass",null,1,0,"green",["rough-terrain"]],
+[332,"Cacturne","grass","dark",2,1,"green",["rough-terrain"]],
+[333,"Swablu","normal","flying",1,0,"blue",["forest"]],
+[334,"Altaria","dragon","flying",2,1,"blue",["forest"]],
+[335,"Zangoose","normal",null,1,1,"white",["grassland"]],
+[336,"Seviper","poison",null,1,1,"black",["grassland"]],
+[337,"Lunatone","rock","psychic",1,1,"yellow",["cave","mountain"]],
+[338,"Solrock","rock","psychic",1,1,"red",["cave","mountain"]],
+[339,"Barboach","water","ground",1,0,"gray",["waters-edge"]],
+[340,"Whiscash","water","ground",2,1,"blue",["waters-edge"]],
+[341,"Corphish","water",null,1,0,"red",["waters-edge"]],
+[342,"Crawdaunt","water","dark",2,1,"red",["waters-edge"]],
+[343,"Baltoy","ground","psychic",1,0,"brown",["rough-terrain"]],
+[344,"Claydol","ground","psychic",2,1,"black",["rough-terrain"]],
+[345,"Lileep","rock","grass",1,0,"purple",["sea"]],
+[346,"Cradily","rock","grass",2,1,"green",["sea"]],
+[347,"Anorith","rock","bug",1,0,"gray",["waters-edge"]],
+[348,"Armaldo","rock","bug",2,1,"gray",["waters-edge"]],
+[349,"Feebas","water",null,1,0,"brown",["waters-edge"]],
+[350,"Milotic","water",null,2,1,"pink",["waters-edge"]],
+[351,"Castform","normal",null,1,1,"gray",["grassland","urban"]],
+[352,"Kecleon","normal",null,1,1,"green",["forest"]],
+[353,"Shuppet","ghost",null,1,0,"black",["urban","forest"]],
+[354,"Banette","ghost",null,2,1,"black",["urban","forest"]],
+[355,"Duskull","ghost",null,1,0,"black",["forest"]],
+[356,"Dusclops","ghost",null,2,0,"black",["forest"]],
+[357,"Tropius","grass","flying",1,1,"green",["forest","grassland"]],
+[358,"Chimecho","psychic",null,2,1,"blue",["grassland"]],
+[359,"Absol","dark",null,1,1,"white",["mountain","rough-terrain"]],
+[360,"Wynaut","psychic",null,1,0,"blue",["cave"]],
+[361,"Snorunt","ice",null,1,0,"gray",["cave","mountain"]],
+[362,"Glalie","ice",null,2,1,"gray",["cave","mountain"]],
+[363,"Spheal","ice","water",1,0,"blue",["sea"]],
+[364,"Sealeo","ice","water",2,0,"blue",["sea"]],
+[365,"Walrein","ice","water",3,1,"blue",["sea"]],
+[366,"Clamperl","water",null,1,0,"blue",["sea"]],
+[367,"Huntail","water",null,2,1,"blue",["sea"]],
+[368,"Gorebyss","water",null,2,1,"pink",["sea"]],
+[369,"Relicanth","water","rock",1,1,"gray",["sea","cave"]],
+[370,"Luvdisc","water",null,1,1,"pink",["sea"]],
+[371,"Bagon","dragon",null,1,0,"blue",["rough-terrain"]],
+[372,"Shelgon","dragon",null,2,0,"white",["rough-terrain"]],
+[373,"Salamence","dragon","flying",3,1,"blue",["rough-terrain"]],
+[374,"Beldum","steel","psychic",1,0,"blue",["rough-terrain"]],
+[375,"Metang","steel","psychic",2,0,"blue",["rough-terrain"]],
+[376,"Metagross","steel","psychic",3,1,"blue",["rough-terrain"]],
+[377,"Regirock","rock",null,1,1,"brown",["cave","mountain"]],
+[378,"Regice","ice",null,1,1,"blue",["cave","mountain"]],
+[379,"Registeel","steel",null,1,1,"gray",["cave","mountain"]],
+[380,"Latias","dragon","psychic",1,1,"red",["waters-edge","sea"]],
+[381,"Latios","dragon","psychic",1,1,"blue",["waters-edge","sea"]],
+[382,"Kyogre","water",null,1,1,"blue",["sea"]],
+[383,"Groudon","ground",null,1,1,"red",["rough-terrain","volcano"]],
+[384,"Rayquaza","dragon","flying",1,1,"green",["rare","mountain"]],
+[385,"Jirachi","steel","psychic",1,1,"yellow",["mountain"]],
+[386,"Deoxys","psychic",null,1,1,"red",["rare"]]
+]
+};
+
+var HABS={cave:'Cave',forest:'Forest',grassland:'Grassland',mountain:'Mountain',rare:'Rare','rough-terrain':'Rough terrain',sea:'Sea',urban:'Urban','waters-edge':"Water's edge",volcano:'Volcano'};
+/* Original pixel scene tiles, 16x12: [background, [x,y,w,h,color]...] */
+var HAB_ART={
+  cave:['#2a2233',[0,9,16,3,'#4a3d52'],[5,3,6,6,'#0d0a12'],[6,2,4,1,'#0d0a12'],[2,0,1,3,'#5a4c63'],[12,0,1,2,'#5a4c63'],[14,0,1,4,'#5a4c63'],[1,8,2,1,'#6a5a73'],[12,8,3,1,'#6a5a73']],
+  forest:['#8fd0f0',[0,9,16,3,'#3f8a2c'],[3,6,1,3,'#6a4628'],[1,2,5,4,'#2f7a28'],[2,2,2,1,'#4caa3e'],[11,5,1,4,'#6a4628'],[9,1,5,4,'#256b22'],[10,1,2,1,'#3f9e34'],[7,7,1,2,'#6a4628'],[6,5,3,2,'#2f7a28']],
+  grassland:['#9bd8f5',[12,1,2,2,'#ffe066'],[0,7,16,5,'#7ac74c'],[0,10,16,2,'#5aa83a'],[2,6,1,1,'#3f8a2c'],[6,6,1,1,'#3f8a2c'],[10,6,1,1,'#3f8a2c'],[13,6,1,1,'#3f8a2c'],[4,8,1,1,'#ff7ad0'],[9,9,1,1,'#ffffff'],[12,8,1,1,'#ffe066']],
+  mountain:['#a8d8f5',[7,2,2,1,'#ffffff'],[6,3,4,1,'#ffffff'],[5,4,6,1,'#8a8f9c'],[4,5,8,1,'#7a7f8c'],[3,6,10,1,'#7a7f8c'],[2,7,12,1,'#6a6f7c'],[1,8,14,1,'#6a6f7c'],[0,9,16,3,'#5a6a4a']],
+  rare:['#1a1440',[2,2,1,1,'#ffffff'],[6,1,1,1,'#ffffff'],[13,2,1,1,'#ffffff'],[14,8,1,1,'#ffffff'],[3,9,1,1,'#ffffff'],[11,10,1,1,'#ffffff'],[8,2,1,7,'#ffe066'],[5,5,7,1,'#ffe066'],[7,4,3,3,'#fff3b0'],[8,5,1,1,'#ffffff']],
+  'rough-terrain':['#e8c890',[0,8,16,4,'#b08a50'],[3,9,3,1,'#7a5a30'],[9,10,4,1,'#7a5a30'],[2,6,3,2,'#8a6a40'],[11,5,3,3,'#7a5a38'],[12,5,1,1,'#a88a58'],[7,4,1,4,'#5a8a3a'],[6,5,1,1,'#5a8a3a'],[8,6,1,1,'#5a8a3a']],
+  sea:['#9bd8f5',[0,4,16,8,'#2a6fd0'],[0,8,16,4,'#1c4fa0'],[1,4,3,1,'#ffffff'],[7,4,2,1,'#ffffff'],[12,4,3,1,'#ffffff'],[4,6,2,1,'#6aa8f0'],[10,7,3,1,'#6aa8f0'],[2,9,3,1,'#2a6fd0']],
+  urban:['#c8d8e8',[1,3,4,9,'#5a6478'],[6,1,4,11,'#48506a'],[11,5,4,7,'#6a748a'],[2,4,1,1,'#ffe066'],[3,6,1,1,'#ffe066'],[7,2,1,1,'#ffe066'],[8,4,1,1,'#ffe066'],[7,6,1,1,'#ffe066'],[12,6,1,1,'#ffe066'],[13,8,1,1,'#ffe066'],[0,11,16,1,'#333a48']],
+  'waters-edge':['#9bd8f5',[0,6,8,6,'#7ac74c'],[6,7,3,5,'#e8d8a0'],[9,7,7,5,'#3a8ae0'],[11,8,2,1,'#9fd0ff'],[13,10,2,1,'#9fd0ff'],[2,4,1,2,'#3f8a2c'],[4,3,1,3,'#3f8a2c'],[4,3,1,1,'#7a5a30']],
+  volcano:['#3a1a2a',[6,4,4,1,'#5a3228'],[5,5,6,1,'#5a3228'],[4,6,8,1,'#4a2a22'],[3,7,10,1,'#4a2a22'],[2,8,12,1,'#3e221c'],[1,9,14,1,'#3e221c'],[7,3,2,1,'#ff8c2a'],[7,4,1,4,'#ff7a1e'],[8,4,1,2,'#ffb030'],[7,1,1,1,'#7a6a70'],[9,0,2,1,'#7a6a70'],[0,10,16,2,'#2a1410'],[12,3,1,1,'#ffb030']]
+};
+function habSVG(k){
+  var a=HAB_ART[k],s='<rect width="16" height="12" fill="'+a[0]+'"/>';
+  for(var i=1;i<a.length;i++)s+='<rect x="'+a[i][0]+'" y="'+a[i][1]+'" width="'+a[i][2]+'" height="'+a[i][3]+'" fill="'+a[i][4]+'"/>';
+  return '<svg viewBox="0 0 16 12" preserveAspectRatio="xMidYMid slice" shape-rendering="crispEdges" role="img" aria-label="'+HABS[k]+'"><title>'+HABS[k]+'</title>'+s+'</svg>';
+}
+var RAID=[],RAIDBY={},RAIDNORM={};
+Object.keys(RAID_GENS).forEach(function(g){
+  RAID_GENS[g].forEach(function(r){
+    var m={id:r[0],name:r[1],t1:r[2],t2:r[3]||null,stage:r[4],full:!!r[5],color:r[6],habs:r[7],gen:+g};
+    RAID.push(m);RAIDBY[m.id]=m;RAIDNORM[norm(m.name)]=m;
+  });
+});
+/* Same answer for everyone: a seeded shuffle of the pool, one entry per day, no repeats within a cycle */
+function raidAnswer(date){
+  var p=date.split('-'),day=Math.floor(Date.UTC(+p[0],+p[1]-1,+p[2])/864e5),n=RAID.length;
+  var idx=RAID.map(function(_,i){return i;});
+  shuffle(idx,rng('pokedive|raid|'+Math.floor(day/n)));
+  return RAID[idx[day%n]];
+}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+/* 7 hint cells: type1, type2, stage, fully evolved, color, habitats, gen */
+function raidCells(g,a){
+  function arrow(x,y){return x===y?'':y>x?'▲':'▼';}
+  var both=g.habs.length===a.habs.length&&g.habs.every(function(h){return a.habs.indexOf(h)>=0;});
+  var some=g.habs.some(function(h){return a.habs.indexOf(h)>=0;});
+  return [
+    {s:g.t1===a.t1?'g':g.t1===a.t2?'y':'r',txt:cap(g.t1)},
+    {s:g.t2===a.t2?'g':g.t2&&g.t2===a.t1?'y':'r',txt:g.t2?cap(g.t2):'None'},
+    {s:g.stage===a.stage?'g':'r',txt:String(g.stage),big:1,ar:arrow(g.stage,a.stage)},
+    {s:g.full===a.full?'g':'r',txt:g.full?'Yes':'No'},
+    {s:g.color===a.color?'g':'r',txt:cap(g.color),dot:g.color},
+    {s:both?'g':some?'y':'r',habs:g.habs},
+    {s:g.gen===a.gen?'g':'r',txt:String(g.gen),big:1,ar:arrow(g.gen,a.gen)}
+  ];
+}
+var RAIDCOLS=['Pokémon','Type 1','Type 2','Evolution Stage','Fully Evolved','Color','Habitats','Gen'];
+var DOTCOL={red:'#e8433a',blue:'#3f7fe8',yellow:'#f2cf3a',green:'#4caa3e',black:'#22242a',brown:'#8a5a32',purple:'#9a5ad8',gray:'#9aa0a8',white:'#ffffff',pink:'#ff8ac0'};
+var raidTok=0,raidBusy=false,raidTimer=0,raidSugRaw=null;
+function raidState(){
+  var t=today(),r=store.raid;
+  if(!r||r.date!==t||!Array.isArray(r.g))r=store.raid={date:t,g:[],done:false,won:false};
+  return r;
+}
+function raidStreak(){var s=store.raidStats;return (s.last===today()||s.last===yesterday())?s.streak:0;}
+function monImg(m,size){
+  var img=el('img');img.alt=m.name;img.width=size;img.height=size;
+  img.onerror=function(){var b=el('span','blob');b.style.setProperty('--tc',TYPECOL[TYPEKEYS.indexOf(m.t1)]);this.onerror=null;if(this.parentNode)this.parentNode.replaceChild(b,this);};
+  img.src=SPR+m.id+'.png';return img;
+}
+function raidRow(g,a,animate){
+  var row=el('div','rt-row'+(animate?' flip':'')),tile=el('div','rt-mon');
+  tile.title=g.name;tile.appendChild(monImg(g,52));row.appendChild(tile);
+  raidCells(g,a).forEach(function(c,i){
+    var d=el('div','rc '+c.s);
+    if(c.habs){var h=el('div','habs');h.innerHTML=c.habs.map(habSVG).join('');d.appendChild(h);d.style.padding='0';}
+    else{
+      if(c.dot){var dot=el('span','dot');dot.style.background=DOTCOL[c.dot];d.appendChild(dot);}
+      d.appendChild(el('span',c.big?'big':'',c.txt));
+      if(c.ar)d.appendChild(el('span','ar',c.ar));
+    }
+    if(animate)d.style.animationDelay=((i+1)*200)+'ms';
+    row.appendChild(d);
+  });
+  return row;
+}
+function raidPartner(){
+  var img=$('raid-partner-img'),line=EVO[store.avatar],id=line[0],av=avatar(store.avatar),sh=myShiny();
+  var chain=[];if(sh)chain.push(SPR+'back/shiny/'+id+'.png');
+  chain.push(SPR+'back/'+id+'.png',SPR+id+'.png',helmet(av[2],0,sh));
+  var i=0;img.onerror=function(){i++;if(i<chain.length)img.src=chain[i];else img.onerror=null;};
+  img.alt=av[1];img.src=chain[0];
+}
+function raidPips(left,breaking){
+  var host=$('raid-pips');host.textContent='';
+  for(var i=0;i<6;i++){var p=el('span','pip'+(i>=left?' gone':''));if(breaking&&i===left)p.className+=' breaking';host.appendChild(p);}
+}
+function raidSub(){
+  var r=store.raid,t=today();
+  if(!r||r.date!==t||!r.g.length)return 'Guess today\'s Dynamax Pokémon in 6 tries';
+  var a=raidAnswer(t);
+  if(!r.done)return 'In progress: '+r.g.length+' of 6 guesses used';
+  return r.won?'Caught '+a.name+' in '+r.g.length+'. Next raid at midnight.':a.name+' fled. Next raid at midnight.';
+}
+function renderRaid(){
+  raidTok++;raidBusy=false;clearInterval(raidTimer);
+  var r=raidState(),a=raidAnswer(r.date);
+  show('raid');
+  /* den */
+  var motes=$('den-motes');
+  if(!motes.firstChild&&!calm){for(var i=0;i<14;i++){var m=el('span','mote');m.style.left=(8+Math.random()*84)+'%';m.style.top=(45+Math.random()*50)+'%';m.style.animationDelay=(Math.random()*4)+'s';m.style.animationDuration=(3+Math.random()*3)+'s';motes.appendChild(m);}}
+  $('den').className='den';$('raid-boss').className='boss';$('raid-boss-s').className='boss-s';$('raid-partner').className='partner';
+  $('den-flash').className='den-flash';
+  var bi=$('raid-boss-img');bi.className='';
+  bi.onerror=function(){this.onerror=null;this.src='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5 0 9 4 9 9 0 3-1 5-3 7l1 4-5-2-2 1-2-1-5 2 1-4c-2-2-3-4-3-7 0-5 4-9 9-9z" fill="'+TYPECOL[TYPEKEYS.indexOf(a.t1)]+'"/></svg>');};
+  bi.src=SPR+a.id+'.png';
+  raidPartner();raidPips(6-(r.won?r.g.length-1:r.g.length));
+  var ball=$('raid-ball');ball.hidden=true;ball.className='ball';
+  var msg=$('raid-msg');msg.hidden=true;
+  /* table */
+  var tb=$('raid-table');tb.textContent='';
+  var head=el('div','rt-row rt-head');RAIDCOLS.forEach(function(c){head.appendChild(el('div','',c));});tb.appendChild(head);
+  r.g.forEach(function(id){tb.insertBefore(raidRow(RAIDBY[id],a,false),head.nextSibling);});
+  var hk=$('raid-habkey');
+  if(!hk.firstChild)Object.keys(HABS).forEach(function(k){var d=el('div');d.innerHTML=habSVG(k);d.appendChild(document.createTextNode(HABS[k]));hk.appendChild(d);});
+  raidHideSug();$('raid-ac').hidden=true;$('raid-input').value='';$('raidShareBox').hidden=true;
+  if(r.done)raidFinal(r,a);else{
+    $('raid-entry').hidden=false;$('raid-end').hidden=true;
+    $('raid-swap').hidden=r.g.length>0;
+    $('raid-note').className='note';$('raid-note').textContent=r.g.length?(6-r.g.length)+' guesses left.':'A Dynamax Pokémon is hiding in the den. Each guess reveals clues.';
+  }
+  raidStatsRender();
+  $('s-raid').scrollTop=0;
+}
+function raidStatsRender(){
+  var s=store.raidStats,host=$('raid-stats');host.textContent='';
+  [[String(s.played),'Raids played'],[(s.played?Math.round(s.wins/s.played*100):0)+'%','Win rate'],[String(raidStreak()),'Current streak'],[String(s.best),'Best streak']].forEach(function(x){
+    var d=el('div','stat');d.appendChild(el('b','',x[0]));d.appendChild(el('span','',x[1]));host.appendChild(d);
+  });
+  var dh=$('raid-dist'),max=1;dh.textContent='';
+  s.dist.forEach(function(v){if(v>max)max=v;});
+  s.dist.forEach(function(v,i){dh.appendChild(barRow((i+1)+(i?' guesses':' guess'),v/max,String(v),'#ff4f8b'));});
+}
+function raidShare(r,a){
+  var E={g:'🟩',y:'🟨',r:'🟥'};
+  return 'PokéDive Max Raid '+r.date+'\n'+(r.won?r.g.length:'X')+'/6\n'+r.g.map(function(id){return raidCells(RAIDBY[id],a).map(function(c){return E[c.s];}).join('');}).join('\n');
+}
+/* finished state: also what you see if you come back later the same day */
+function raidFinal(r,a){
+  $('raid-entry').hidden=true;
+  $('raid-boss-s').className='boss-s captured';
+  var ball=$('raid-ball');ball.hidden=!r.won;ball.className='ball rest';
+  var msg=$('raid-msg');msg.hidden=false;msg.textContent=r.won?'Gotcha! '+a.name+' was caught!':a.name+' fled the den...';
+  var end=$('raid-end');end.textContent='';end.hidden=false;
+  end.appendChild(el('div','rhead '+(r.won?'win':'lose'),r.won?'RAID WON IN '+r.g.length+(r.g.length===1?' GUESS':' GUESSES'):'RAID FAILED AFTER 6 GUESSES'));
+  var card=el('div','ans'),tile=el('div','tile');tile.appendChild(monImg(a,76));card.appendChild(tile);
+  var info=el('div');info.appendChild(el('b','','#'+('000'+a.id).slice(-4)+' '+a.name));
+  info.appendChild(el('small','',cap(a.t1)+(a.t2?' / '+cap(a.t2):'')+' type. Stage '+a.stage+', '+(a.full?'fully evolved':'not fully evolved')+'. '+cap(a.color)+'. '+a.habs.map(function(h){return HABS[h];}).join(' and ')+'. Gen '+a.gen+'.'));
+  info.appendChild(el('small','',r.won?'Added to your Pokédex as a Raid catch.':'Not added to your Pokédex.'));
+  card.appendChild(info);end.appendChild(card);
+  var cd=el('p','fine');cd.style.marginTop='12px';end.appendChild(cd);
+  function tick(){
+    if($('s-raid').hidden){clearInterval(raidTimer);return;}
+    if(today()!==r.date){clearInterval(raidTimer);renderRaid();return;}
+    var n=new Date(),mid=new Date(n.getFullYear(),n.getMonth(),n.getDate()+1),s=Math.max(0,Math.floor((mid-n)/1000));
+    cd.textContent='Next raid in '+('0'+Math.floor(s/3600)).slice(-2)+':'+('0'+Math.floor(s%3600/60)).slice(-2)+':'+('0'+s%60).slice(-2);
+  }
+  tick();clearInterval(raidTimer);raidTimer=setInterval(tick,1000);
+  var btn=el('button','btn primary','Copy result');btn.type='button';btn.style.marginTop='12px';
+  btn.addEventListener('click',function(){
+    var text=raidShare(r,a);
+    function fb(){var b=$('raidShareBox');b.value=text;b.hidden=false;b.focus();b.select();btn.textContent='Select and copy';}
+    try{if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(function(){btn.textContent='Copied';},fb);else fb();}catch(e){fb();}
+  });
+  end.appendChild(btn);
+}
+function raidLater(tok,ms,fn){setTimeout(function(){if(tok===raidTok&&!$('s-raid').hidden)fn();},calm?0:ms);}
+function raidGuess(m){
+  var r=raidState(),a=raidAnswer(r.date);
+  if(r.done||raidBusy)return;
+  if(r.g.indexOf(m.id)>=0){raidReject('You already guessed '+m.name+'.');return;}
+  raidBusy=true;raidHideSug();$('raid-ac').hidden=true;$('raid-input').value='';$('raid-swap').hidden=true;
+  r.g.push(m.id);
+  var won=m.id===a.id,over=won||r.g.length>=6,st=store.raidStats;
+  if(over){
+    r.done=true;r.won=won;st.played++;
+    if(won){
+      st.wins++;st.dist[r.g.length-1]++;
+      st.streak=(st.last===yesterday()||st.last===today())?st.streak+1:1;st.last=today();
+      if(st.streak>st.best)st.best=st.streak;
+      if(r.g.length<=2)st.perfect=1;
+      store.dex[a.id]=1;store.raidCaught[a.id]=1;
+    }else st.streak=0;
+  }
+  save();
+  var tok=raidTok,head=$('raid-table').firstChild;
+  $('raid-table').insertBefore(raidRow(m,a,!calm),head.nextSibling);
+  $('raid-note').className='note';$('raid-note').textContent='';
+  /* a spark on the boss for every green cell as it flips */
+  raidCells(m,a).forEach(function(c,i){
+    if(c.s==='g')raidLater(tok,(i+1)*200+250,function(){
+      var s=el('span','hit','✦');s.style.left=(25+Math.random()*50)+'%';s.style.top=(20+Math.random()*50)+'%';$('raid-boss').appendChild(s);
+      setTimeout(function(){if(s.parentNode)s.parentNode.removeChild(s);},600);
+    });
+  });
+  raidLater(tok,1950,function(){
+    if(won){raidWin(tok,r,a);return;}
+    /* wrong: the boss lunges, the den shakes, a shield breaks */
+    var boss=$('raid-boss'),den=$('den');
+    boss.className='boss';den.className='den';void boss.offsetWidth;boss.className='boss lunge';den.className='den shake';
+    raidPips(6-r.g.length,true);
+    if(over){raidLater(tok,700,function(){raidLose(tok,r,a);});return;}
+    raidLater(tok,550,function(){
+      raidBusy=false;$('raid-note').textContent=(6-r.g.length)+(6-r.g.length===1?' guess left.':' guesses left.');
+      try{$('raid-input').focus();}catch(e){}
+    });
+  });
+}
+function raidWin(tok,r,a){
+  $('raid-entry').hidden=true;
+  $('raid-partner').className='partner attack';
+  raidLater(tok,350,function(){$('den').className='den shake';});
+  raidLater(tok,700,function(){$('raid-boss-s').className='boss-s small';$('raid-boss-img').className='revealed';});
+  raidLater(tok,1900,function(){var b=$('raid-ball');b.hidden=false;b.className='ball throw';});
+  raidLater(tok,2600,function(){$('raid-boss-s').className='boss-s captured';$('raid-ball').className='ball drop';});
+  raidLater(tok,3150,function(){$('raid-ball').className='ball rest wobble';});
+  raidLater(tok,5350,function(){$('raid-ball').className='ball rest shut';});
+  raidLater(tok,5800,function(){raidBusy=false;raidFinal(r,a);raidStatsRender();checkProgress(null);});
+}
+function raidLose(tok,r,a){
+  $('raid-entry').hidden=true;
+  $('raid-boss').className='boss roar';$('den-flash').className='den-flash on';$('den').className='den shake';
+  raidLater(tok,900,function(){$('raid-boss-img').className='revealed';});
+  raidLater(tok,2400,function(){$('raid-boss').className='boss flee';});
+  raidLater(tok,3500,function(){raidBusy=false;raidFinal(r,a);$('raid-boss').className='boss';raidStatsRender();checkProgress(null);});
+}
+function raidReject(msg){
+  var n=$('raid-note'),inp=$('raid-input');n.className='note bad';n.textContent=msg;
+  inp.classList.remove('shake');void inp.offsetWidth;inp.classList.add('shake');
+  try{inp.focus();inp.select();}catch(e){}
+}
+function raidHideSug(){$('raid-sug').hidden=true;$('raid-sug').textContent='';raidSugRaw=null;}
+/* spelling help, same closeness rule as the dives, drawn from the raid pool */
+function raidNear(n){
+  var best=99,found=[];
+  for(var k in RAIDNORM){var thr=k.length<=5?1:k.length<=9?2:3,d=lev(n,k,thr);if(d<=thr){if(d<best){best=d;found=[];}if(d===best)found.push(RAIDNORM[k]);}}
+  return found.slice(0,3);
+}
+function raidSubmit(){
+  var inp=$('raid-input'),raw=inp.value.trim();if(!raw||raidBusy)return;
+  var n=norm(raw);n=ALIAS[n]||n;if(n==='nidoran')n='nidoranf';
+  raidHideSug();$('raid-ac').hidden=true;
+  if(RAIDNORM[n]){raidGuess(RAIDNORM[n]);return;}
+  if(DEXMAP[n]){raidReject(DEX[DEXMAP[n]-1]+' isn\'t in the raid pool yet. Raids cover Kanto, Johto and Hoenn.');return;}
+  var near=n.length>=3?raidNear(n):[];
+  if(!near.length){raidReject(raw+' isn\'t a Pokémon name we know.');return;}
+  var host=$('raid-sug');host.textContent='';raidSugRaw=raw;
+  var q=el('span','','Did you mean ');
+  function no(){inp.value=raw;raidHideSug();try{inp.focus();}catch(e){}}
+  if(near.length===1){
+    q.appendChild(el('b','',near[0].name));q.appendChild(document.createTextNode('?'));host.appendChild(q);
+    inp.value=near[0].name;try{inp.focus();inp.select();}catch(e){}
+    host.appendChild(sugBtn('Yes','yes',function(){raidSubmit();}));
+  }else{
+    q.appendChild(document.createTextNode('one of these?'));host.appendChild(q);
+    near.forEach(function(m){host.appendChild(sugBtn(m.name,'yes',function(){raidGuess(m);}));});
+  }
+  host.appendChild(sugBtn('No','',no));
+  $('raid-note').className='note';$('raid-note').textContent='Not counted as a guess yet.';
+  host.hidden=false;
+}
+function raidAuto(){
+  var inp=$('raid-input'),n=norm(inp.value),host=$('raid-ac'),r=raidState();
+  if(raidSugRaw!==null)raidHideSug();
+  host.textContent='';
+  if(n.length<1||raidBusy){host.hidden=true;return;}
+  var pre=[],mid=[];
+  for(var i=0;i<RAID.length&&pre.length<6;i++){
+    var m=RAID[i],k=norm(m.name);if(r.g.indexOf(m.id)>=0)continue;
+    var at=k.indexOf(n);if(at===0)pre.push(m);else if(at>0&&mid.length<6&&n.length>=2)mid.push(m);
+  }
+  var list=pre.concat(mid).slice(0,6);
+  if(!list.length){host.hidden=true;return;}
+  list.forEach(function(m){
+    var b=el('button');b.type='button';b.appendChild(monImg(m,32));b.appendChild(document.createTextNode(m.name));
+    b.addEventListener('click',function(){raidGuess(m);});host.appendChild(b);
+  });
+  host.hidden=false;
+}
+
 /* ================= MODAL ================= */
 var pickCb=null;
 function openSettings(){
@@ -2287,7 +3138,7 @@ function openPicker(title,selected,cb){
   buildGrid($('grid-modal'),selected,function(id){var f=pickCb;closeModal();if(f)f(id);});
   $('modal').hidden=false;
 }
-function closeModal(){$('modal').hidden=true;pickCb=null;if(!$('s-play').hidden){try{$('answer').focus();}catch(e){}}}
+function closeModal(){$('modal').hidden=true;pickCb=null;if(!$('s-raid').hidden)raidPartner();if(!$('s-play').hidden){try{$('answer').focus();}catch(e){}}}
 
 /* ================= WIRING ================= */
 $('form').addEventListener('submit',onSubmit);
@@ -2297,6 +3148,10 @@ $('btn-free').addEventListener('click',startFree);
 $('btn-party').addEventListener('click',renderParty);
 $('btn-dex').addEventListener('click',renderDex);
 $('btn-stats').addEventListener('click',renderStats);
+$('btn-raid').addEventListener('click',renderRaid);
+$('raid-form').addEventListener('submit',function(e){e.preventDefault();raidSubmit();});
+$('raid-input').addEventListener('input',raidAuto);
+$('raid-swap').addEventListener('click',openSettings);
 $('btn-trainer').addEventListener('click',renderStats);
 $('btn-party-go').addEventListener('click',startParty);
 $('btn-pass-go').addEventListener('click',function(){var pl=mp.players[mp.turn];beginRun({mode:'mp',diff:mp.diff,F:mp.F,name:pl.name,av:pl.av,shiny:false,prompts:mp.prompts,res:[]});});
