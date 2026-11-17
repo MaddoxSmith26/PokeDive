@@ -336,6 +336,12 @@ form{display:flex;gap:8px;margin-top:14px}
 .partner{position:absolute;left:5%;bottom:1%;height:36%;aspect-ratio:1}
 .partner img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 4px 5px rgba(0,0,0,.6))}
 .partner.attack{animation:pattack .6s ease-in-out}
+.partner.cast{animation:pcast .5s ease-out}
+.den-fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;image-rendering:pixelated;z-index:2}
+.den-move{position:absolute;left:50%;top:8px;transform:translateX(-50%);padding:6px 10px;border-radius:10px;background:rgba(10,4,10,.85);border:1px solid #ff4f8b;
+  font-family:var(--display);font-size:8px;line-height:1.5;color:#fff;white-space:nowrap;opacity:0;pointer-events:none;z-index:3}
+.den-move.on{animation:movelab 1.8s ease-out}
+.boss.struck .cloud,.boss.struck img.revealed{animation:struck .35s steps(2,end)}
 .ball{position:absolute;left:18%;top:62%;width:9%;aspect-ratio:1;min-width:22px;border-radius:50%;border:2px solid #14080e;overflow:hidden;
   background:linear-gradient(180deg,#ee3d2f 0 44%,#14080e 44% 56%,#fff 56%)}
 .ball::after{content:"";position:absolute;left:50%;top:50%;width:34%;height:34%;transform:translate(-50%,-50%);border-radius:50%;background:#fff;border:2px solid #14080e}
@@ -394,6 +400,9 @@ form{display:flex;gap:8px;margin-top:14px}
 @keyframes denshake{0%,100%{transform:none}20%{transform:translate(-6px,3px)}40%{transform:translate(6px,-3px)}60%{transform:translate(-4px,-2px)}80%{transform:translate(4px,2px)}}
 @keyframes denflash{0%{opacity:0}20%{opacity:.6}100%{opacity:0}}
 @keyframes pipbreak{0%{transform:scale(1.5) rotate(0);background:#fff}100%{transform:scale(1) rotate(20deg)}}
+@keyframes pcast{0%,100%{transform:none}30%{transform:translate(8%,-6%) scale(1.06)}}
+@keyframes movelab{0%{opacity:0;transform:translate(-50%,-4px)}12%,75%{opacity:1;transform:translate(-50%,0)}100%{opacity:0}}
+@keyframes struck{0%{filter:brightness(2.2)}100%{filter:none}}
 @keyframes pattack{0%,100%{transform:none}45%{transform:translate(70%,-55%) scale(1.1)}}
 @keyframes hitspark{0%{transform:scale(.3) rotate(0);opacity:1}100%{transform:scale(1.6) rotate(120deg);opacity:0}}
 @keyframes bthrow{0%{left:18%;top:62%;transform:rotate(0)}50%{left:46%;top:6%}100%{left:70%;top:30%;transform:rotate(720deg)}}
@@ -594,6 +603,8 @@ form{display:flex;gap:8px;margin-top:14px}
       <div class="boss" id="raid-boss"><div class="boss-s" id="raid-boss-s"><img id="raid-boss-img" alt=""></div><div class="cloud" id="raid-cloud" aria-label="A Dynamax Pokémon hidden in a storm cloud"></div></div>
       <div class="partner" id="raid-partner"><img id="raid-partner-img" alt=""></div>
       <div class="ball" id="raid-ball" hidden></div>
+      <canvas class="den-fx" id="den-fx" aria-hidden="true"></canvas>
+      <div class="den-move" id="den-move" aria-live="polite"></div>
       <div class="den-flash" id="den-flash"></div>
       <div class="den-msg" id="raid-msg" hidden></div>
     </div>
@@ -3768,8 +3779,12 @@ function raidGuess(m){
       setTimeout(function(){if(s.parentNode)s.parentNode.removeChild(s);},600);
     });
   });
-  raidLater(tok,1950,function(){
+  var greens=raidCells(m,a).filter(function(c){return c.s==='g';}).length;
+  raidLater(tok,1750,function(){
     if(won){raidWin(tok,r,a);return;}
+    raidMove(greens/7,function(){});
+  });
+  raidLater(tok,1750+(calm?400:1500),function(){
     /* wrong: the boss lunges, the den shakes, a shield breaks */
     var boss=$('raid-boss'),den=$('den');
     boss.className='boss';den.className='den';void boss.offsetWidth;boss.className='boss lunge';den.className='den shake';
@@ -3781,17 +3796,98 @@ function raidGuess(m){
     });
   });
 }
+/* ---------- raid moves: the partner attacks with its scenery's type ---------- */
+/* Drawn as chunky pixels on a low-res canvas over the den, from the partner to the storm cloud. */
+var MOVES={
+  ocean:{w:'Water Gun',s:'Hydro Pump',x:'Max Geyser'},
+  lava:{w:'Ember',s:'Flamethrower',x:'Max Flare'},
+  forest:{w:'Razor Leaf',s:'Leaf Storm',x:'Max Overgrowth'}
+};
+var MV={c:null,ctx:null,parts:[],t0:0,kind:'',pw:0,P:null,B:null,raf:0,hit:false,onHit:null,S:3};
+function moveKind(){return avatar(store.avatar)[3];}
+function movePoint(elm,fx,fy){
+  var d=$('den').getBoundingClientRect(),r=elm.getBoundingClientRect();
+  return {x:(r.left-d.left+r.width*fx)/MV.S,y:(r.top-d.top+r.height*fy)/MV.S};
+}
+/* power: 0 to 1 for a normal guess, 1.6 for the finishing move */
+function raidMove(power,onHit){
+  var kind=moveKind(),M=MOVES[kind],name=power>1.2?M.x:power>=0.4?M.s:M.w;
+  var who=DEX[EVO[store.avatar][myForm(store.avatar)]-1];
+  var lab=$('den-move');lab.textContent=who+' used '+name+'!';lab.className='den-move';void lab.offsetWidth;lab.className='den-move on';
+  var pt=$('raid-partner');pt.className='partner';void pt.offsetWidth;pt.className='partner cast';
+  if(calm){setTimeout(onHit,300);return;}
+  var c=$('den-fx'),den=$('den');
+  MV.S=Math.max(2,Math.round(den.clientWidth/150));
+  c.width=Math.ceil(den.clientWidth/MV.S);c.height=Math.ceil(den.clientHeight/MV.S);
+  MV.ctx=c.getContext('2d');MV.c=c;MV.parts=[];MV.hitT=0;MV.kind=kind;MV.pw=power;MV.hit=false;MV.onHit=onHit;
+  MV.P=movePoint($('raid-partner'),0.7,0.35);MV.B=movePoint($('raid-boss'),0.5,0.52);
+  MV.t0=performance.now();cancelAnimationFrame(MV.raf);MV.raf=requestAnimationFrame(moveFrame);
+}
+function px(ctx,x,y,s,col){ctx.fillStyle=col;ctx.fillRect(Math.round(x-s/2),Math.round(y-s/2),Math.max(1,Math.round(s)),Math.max(1,Math.round(s)));}
+function moveFrame(now){
+  var t=(now-MV.t0)/1000,ctx=MV.ctx,P=MV.P,B=MV.B,pw=MV.pw,big=pw>1.2;
+  var dx=B.x-P.x,dy=B.y-P.y,len=Math.sqrt(dx*dx+dy*dy),ux=dx/len,uy=dy/len,nx=-uy,ny=ux;
+  var dur=big?1.5:1.15,travel=big?0.5:0.42,R=Math.random;
+  ctx.clearRect(0,0,MV.c.width,MV.c.height);
+  if(MV.kind==='ocean'){
+    /* water beam: wobbling core with a white center, then a splash */
+    var head=Math.min(1,t/travel),tail=t>dur-0.35?Math.min(1,(t-(dur-0.35))/0.3):0,th=(2+3*Math.min(pw,1))*(big?1.8:1);
+    for(var u=tail;u<head;u+=1/len){
+      var w=Math.sin(u*14-t*30)*th*0.35,x=P.x+dx*u+nx*w,y=P.y+dy*u+ny*w;
+      px(ctx,x,y,th*2.1,'#1f5fc8');px(ctx,x,y,th*1.4,'#4aa8ff');px(ctx,x,y,th*0.6,'#e8fbff');
+    }
+    if(head<1||t<dur-0.3)for(var k=0;k<2;k++)MV.parts.push({x:P.x+dx*head*R(),y:P.y+dy*head*R(),vx:(R()-.5)*20,vy:-10-R()*20,l:.5,a:0,s:1+R()*2,c:'#bfe8ff'});
+    if(head>=1&&!MV.hitT){MV.hitT=t;for(var i=0;i<(big?40:18);i++){var an=R()*6.28,sp=20+R()*60*(big?1.6:1);MV.parts.push({x:B.x,y:B.y,vx:Math.cos(an)*sp,vy:Math.sin(an)*sp-20,l:.6,a:0,s:1+R()*2.5,c:R()<.5?'#4aa8ff':'#e8fbff',g:80});}}
+  }else if(MV.kind==='lava'){
+    /* flamethrower: a stream of flame particles that age from yellow to red to smoke */
+    if(t<dur-0.45)for(var j=0;j<(big?7:4);j++){
+      var sp2=len/0.42*(0.9+R()*0.3),spr=(R()-.5)*0.35;
+      MV.parts.push({x:P.x,y:P.y,vx:(ux+nx*spr)*sp2,vy:(uy+ny*spr)*sp2,l:.42+R()*.1,a:0,s:(2+R()*2)*(big?1.5:1),fire:1,stop:1});
+    }
+    if(t>travel&&!MV.hitT){MV.hitT=t;}
+    if(MV.hitT&&t<dur-0.3&&R()<.6)for(var q=0;q<(big?5:2);q++){var an2=R()*6.28;MV.parts.push({x:B.x+(R()-.5)*8,y:B.y+(R()-.5)*8,vx:Math.cos(an2)*30,vy:Math.sin(an2)*30-25,l:.5,a:0,s:1+R()*2,c:'#ffd27a'});}
+  }else{
+    /* leaf storm: leaves spiral toward the boss, then scatter */
+    if(t<dur-0.55&&R()<(big?0.95:0.7))for(var z=0;z<(big?3:2);z++)MV.parts.push({leaf:1,u:0,sp:1/(0.45+R()*0.15),ph:R()*6.28,amp:(4+R()*8)*(big?1.6:1),rot:R()*6.28,a:0,l:2,c:R()<.5?'#5cc83e':'#2f9a34'});
+  }
+  for(var n=MV.parts.length-1;n>=0;n--){
+    var p=MV.parts[n],dt=1/60;p.a+=dt;
+    if(p.leaf){
+      if(!p.free){
+        p.u+=p.sp*dt;var sw=Math.sin(p.u*Math.PI*3+p.ph)*p.amp*(1-p.u*0.6);
+        p.x=P.x+dx*p.u+nx*sw;p.y=P.y+dy*p.u+ny*sw;p.rot+=0.35;
+        if(p.u>=1){p.free=1;p.a=0;p.l=0.45;var an3=R()*6.28;p.vx=Math.cos(an3)*40;p.vy=Math.sin(an3)*40;if(!MV.hitT)MV.hitT=t;}
+      }else{p.x+=p.vx*dt;p.y+=p.vy*dt;p.rot+=0.5;if(p.a>p.l){MV.parts.splice(n,1);continue;}}
+      var cs=Math.cos(p.rot),sn=Math.sin(p.rot);
+      var lw=big?1.4:1;for(var e=-2;e<=2;e++){px(ctx,p.x+cs*e*lw,p.y+sn*e*lw,(e===0?2:1.4)*lw,p.c);}
+      px(ctx,p.x-sn*0.8,p.y+cs*0.8,1,'#b8f07a');
+      continue;
+    }
+    if(p.a>p.l){MV.parts.splice(n,1);continue;}
+    p.x+=p.vx*dt;p.y+=p.vy*dt;if(p.g)p.vy+=p.g*dt;
+    if(p.fire){
+      var k2=p.a/p.l,col=k2<.25?'#fff3b0':k2<.5?'#ffb030':k2<.75?'#ff6a1e':'#5a2626',sz=Math.min(p.s*(k2<.4?1+k2*1.5:1.6-(k2-.4)*2),big?6:4.5);
+      ctx.globalAlpha=k2<.75?1:Math.max(0,1-(k2-.75)*3);
+      if(p.stop&&Math.abs(p.x-B.x)<6&&Math.abs(p.y-B.y)<6){p.vx*=.3;p.vy=p.vy*.3-15;p.stop=0;}
+      px(ctx,p.x,p.y,sz,col);ctx.globalAlpha=1;
+    }else px(ctx,p.x,p.y,p.s,p.c);
+  }
+  if(MV.hitT&&!MV.hit){MV.hit=true;var bs=$('raid-boss');bs.classList.remove('struck');void bs.offsetWidth;bs.classList.add('struck');if(MV.onHit)MV.onHit();}
+  if(t<dur+0.6||MV.parts.length)MV.raf=requestAnimationFrame(moveFrame);
+  else{ctx.clearRect(0,0,MV.c.width,MV.c.height);MV.hitT=0;}
+}
+
 function raidWin(tok,r,a){
   $('raid-entry').hidden=true;
-  $('raid-partner').className='partner attack';
-  raidLater(tok,350,function(){$('den').className='den shake';});
-  raidLater(tok,700,raidReveal);
-  raidLater(tok,1400,function(){$('raid-boss-s').className='boss-s small';});
-  raidLater(tok,2300,function(){var b=$('raid-ball');b.hidden=false;b.className='ball throw';});
-  raidLater(tok,3000,function(){$('raid-boss-s').className='boss-s captured';$('raid-ball').className='ball drop';});
-  raidLater(tok,3550,function(){$('raid-ball').className='ball rest wobble';});
-  raidLater(tok,5750,function(){$('raid-ball').className='ball rest shut';});
-  raidLater(tok,6200,function(){raidBusy=false;raidFinal(r,a);raidStatsRender();checkProgress(null);});
+  var o=calm?0:1000;
+  raidMove(1.6,function(){$('den').className='den shake';});
+  raidLater(tok,o+300,raidReveal);
+  raidLater(tok,o+1000,function(){$('raid-boss-s').className='boss-s small';});
+  raidLater(tok,o+1900,function(){var b=$('raid-ball');b.hidden=false;b.className='ball throw';});
+  raidLater(tok,o+2600,function(){$('raid-boss-s').className='boss-s captured';$('raid-ball').className='ball drop';});
+  raidLater(tok,o+3150,function(){$('raid-ball').className='ball rest wobble';});
+  raidLater(tok,o+5350,function(){$('raid-ball').className='ball rest shut';});
+  raidLater(tok,o+5800,function(){raidBusy=false;raidFinal(r,a);raidStatsRender();checkProgress(null);});
 }
 function raidLose(tok,r,a){
   $('raid-entry').hidden=true;
