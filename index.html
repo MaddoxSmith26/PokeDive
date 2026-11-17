@@ -309,9 +309,21 @@ form{display:flex;gap:8px;margin-top:14px}
 .boss-s{width:100%;height:100%;transition:transform .8s,opacity .3s;transform-origin:50% 78%}
 .boss-s.small{transform:scale(.42)}
 .boss-s.captured{transform:scale(0);opacity:0}
-.boss img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;filter:brightness(0) drop-shadow(0 0 5px #ff2e63) drop-shadow(0 0 12px #ff5fa2);
-  animation:breath 3.2s ease-in-out infinite,raidaura 1.8s ease-in-out infinite;transition:filter .9s}
-.boss img.revealed{filter:drop-shadow(0 4px 6px rgba(0,0,0,.5));animation:breath 3.2s ease-in-out infinite}
+.boss img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;opacity:0;transform:scale(.6);transition:opacity .7s,transform .7s}
+.boss img.revealed{opacity:1;transform:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.5));animation:breath 3.2s ease-in-out .7s infinite}
+/* Dynamax storm cloud that hides the boss until the raid ends */
+.cloud{position:absolute;inset:-10% -12% -4%;pointer-events:none;animation:breath 3.2s ease-in-out infinite;transition:transform 1s ease-out,opacity 1s ease-out}
+.cloud.part{transform:scale(1.9);opacity:0;animation:none}
+.cloud .core{position:absolute;left:22%;top:24%;width:56%;height:52%;border-radius:50%;background:radial-gradient(circle,#ff2e63 0,#ff5fa2 30%,rgba(255,46,99,0) 70%);filter:blur(6px);animation:corepulse 1.6s ease-in-out infinite}
+.puff{position:absolute;border-radius:50%;transform:translate(-50%,-50%);animation:puffdrift var(--d) ease-in-out var(--dl) infinite alternate}
+.puff.dk{background:radial-gradient(circle at 45% 40%,#6a4a5e 0,#3e2638 45%,#24121f 68%,rgba(36,18,31,0) 71%)}
+.puff.md{background:radial-gradient(circle at 40% 35%,#c9a3b8 0,#8e6480 40%,#5a3a52 66%,rgba(90,58,82,0) 70%)}
+.puff.lt{background:radial-gradient(circle at 38% 32%,#fff 0,#f2d6e4 32%,#c08aa8 62%,rgba(192,138,168,0) 69%)}
+.cloud .bolt{position:absolute;width:16%;height:44%;background:#fff3fa;clip-path:polygon(45% 0,70% 0,52% 40%,78% 40%,30% 100%,44% 54%,20% 54%);
+  filter:drop-shadow(0 0 6px #ff5fa2) drop-shadow(0 0 12px #ff2e63);opacity:0;animation:bolt 4.6s linear infinite}
+.cloud .bolt.b2{left:58%;top:40%;transform:scaleX(-1) rotate(10deg);animation-delay:2.3s;animation-duration:5.8s}
+.cloud .q{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:var(--display);font-size:clamp(18px,7vw,30px);color:#fff;
+  text-shadow:0 0 8px #ff2e63,0 0 16px #ff2e63,3px 3px 0 #5a1030;animation:qpulse 2s ease-in-out infinite}
 .hit{position:absolute;color:#fff;font-size:18px;text-shadow:0 0 8px #43D63C,0 0 3px #fff;pointer-events:none;animation:hitspark .5s ease-out both}
 .partner{position:absolute;left:5%;bottom:1%;height:36%;aspect-ratio:1}
 .partner img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 4px 5px rgba(0,0,0,.6))}
@@ -362,10 +374,13 @@ form{display:flex;gap:8px;margin-top:14px}
 .rhead{font-family:var(--display);font-size:13px;line-height:1.5;margin-bottom:6px}
 .rhead.win{color:#43D63C}.rhead.lose{color:#ff8a80}
 .dx .rtag{display:inline-block;margin-top:2px;padding:1px 4px;border-radius:4px;background:#ff4f8b;color:#fff;font-family:var(--display);font-size:5px;font-style:normal;line-height:1.6}
+@keyframes puffdrift{0%{transform:translate(-50%,-50%) scale(1)}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(var(--s))}}
+@keyframes corepulse{0%,100%{opacity:.55;transform:scale(.9)}50%{opacity:1;transform:scale(1.15)}}
+@keyframes bolt{0%,88%,100%{opacity:0}89%{opacity:1}91%{opacity:.2}93%{opacity:1}96%{opacity:0}}
+@keyframes qpulse{0%,100%{opacity:.75;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}}
 @keyframes swirl{to{stroke-dashoffset:-200}}
 @keyframes mote{0%{transform:translateY(0);opacity:0}15%{opacity:.9}100%{transform:translateY(-90px);opacity:0}}
 @keyframes breath{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
-@keyframes raidaura{0%,100%{filter:brightness(0) drop-shadow(0 0 4px #ff2e63) drop-shadow(0 0 10px #ff5fa2)}50%{filter:brightness(0) drop-shadow(0 0 9px #ff2e63) drop-shadow(0 0 22px #ff5fa2)}}
 @keyframes lunge{0%,100%{transform:none}40%{transform:translate(-22%,16%) scale(1.14)}}
 @keyframes roar{0%,100%{transform:none}20%{transform:scale(1.2) rotate(-3deg)}40%{transform:scale(1.25) rotate(3deg)}60%{transform:scale(1.22) rotate(-3deg)}80%{transform:scale(1.15) rotate(2deg)}}
 @keyframes denshake{0%,100%{transform:none}20%{transform:translate(-6px,3px)}40%{transform:translate(6px,-3px)}60%{transform:translate(-4px,-2px)}80%{transform:translate(4px,2px)}}
@@ -567,7 +582,7 @@ form{display:flex;gap:8px;margin-top:14px}
       </svg>
       <div id="den-motes"></div>
       <div class="pips" id="raid-pips" aria-label="Shields left"></div>
-      <div class="boss" id="raid-boss"><div class="boss-s" id="raid-boss-s"><img id="raid-boss-img" alt="Hidden Dynamax Pokémon"></div></div>
+      <div class="boss" id="raid-boss"><div class="boss-s" id="raid-boss-s"><img id="raid-boss-img" alt=""></div><div class="cloud" id="raid-cloud" aria-label="A Dynamax Pokémon hidden in a storm cloud"></div></div>
       <div class="partner" id="raid-partner"><img id="raid-partner-img" alt=""></div>
       <div class="ball" id="raid-ball" hidden></div>
       <div class="den-flash" id="den-flash"></div>
@@ -595,7 +610,7 @@ form{display:flex;gap:8px;margin-top:14px}
         <span><b>▲ ▼</b> The answer's stage or generation is higher or lower</span>
       </div>
       <div class="habkey" id="raid-habkey"></div>
-      <p class="fine" style="margin-top:12px">Raids currently draw from Kanto, Johto and Hoenn (Pokédex 1 to 386). Six guesses, one raid a day.</p>
+      <p class="fine" style="margin-top:12px">Raids can be any Pokémon from #0001 to #1025. Six guesses, one raid a day. Gen 4 and later have no official habitat data, so their habitats follow their evolution line and types.</p>
     </div>
     <div class="panel sect">
       <h2>Raid stats</h2>
@@ -2441,7 +2456,9 @@ function frame(now){
 
 /* ================= MAX RAID ================= */
 /* Max Raid pool. One block per generation; each row is
-   [id, name, type1, type2, evolutionStage, fullyEvolved, color, habitats]. Add later generations as new blocks. */
+   [id, name, type1, type2, evolutionStage, fullyEvolved, color, habitats].
+   Gen 1-3 habitats come from PokeAPI (plus a second where it fits); Gen 4-9 have none in PokeAPI,
+   so they follow their evolution line, an older line member, or their types and egg groups. */
 var RAID_GENS={
 1:[
 [1,"Bulbasaur","grass","poison",1,0,"green",["grassland","forest"]],
@@ -2834,6 +2851,657 @@ var RAID_GENS={
 [384,"Rayquaza","dragon","flying",1,1,"green",["rare","mountain"]],
 [385,"Jirachi","steel","psychic",1,1,"yellow",["mountain"]],
 [386,"Deoxys","psychic",null,1,1,"red",["rare"]]
+],
+4:[
+[387,"Turtwig","grass",null,1,0,"green",["forest","grassland"]],
+[388,"Grotle","grass",null,2,0,"green",["forest","grassland"]],
+[389,"Torterra","grass","ground",3,1,"green",["forest","grassland"]],
+[390,"Chimchar","fire",null,1,0,"brown",["mountain","volcano"]],
+[391,"Monferno","fire","fighting",2,0,"brown",["mountain","volcano"]],
+[392,"Infernape","fire","fighting",3,1,"brown",["mountain","volcano"]],
+[393,"Piplup","water",null,1,0,"blue",["waters-edge","sea"]],
+[394,"Prinplup","water",null,2,0,"blue",["waters-edge","sea"]],
+[395,"Empoleon","water","steel",3,1,"blue",["waters-edge","sea"]],
+[396,"Starly","normal","flying",1,0,"brown",["grassland","forest"]],
+[397,"Staravia","normal","flying",2,0,"brown",["grassland","forest"]],
+[398,"Staraptor","normal","flying",3,1,"brown",["grassland","forest"]],
+[399,"Bidoof","normal",null,1,0,"brown",["waters-edge","grassland"]],
+[400,"Bibarel","normal","water",2,1,"brown",["waters-edge","grassland"]],
+[401,"Kricketot","bug",null,1,0,"red",["grassland"]],
+[402,"Kricketune","bug",null,2,1,"red",["grassland"]],
+[403,"Shinx","electric",null,1,0,"blue",["grassland"]],
+[404,"Luxio","electric",null,2,0,"blue",["grassland"]],
+[405,"Luxray","electric",null,3,1,"blue",["grassland"]],
+[406,"Budew","grass","poison",1,0,"green",["grassland","forest"]],
+[407,"Roserade","grass","poison",3,1,"green",["grassland","forest"]],
+[408,"Cranidos","rock",null,1,0,"blue",["cave","mountain"]],
+[409,"Rampardos","rock",null,2,1,"blue",["cave","mountain"]],
+[410,"Shieldon","rock","steel",1,0,"gray",["cave","mountain"]],
+[411,"Bastiodon","rock","steel",2,1,"gray",["cave","mountain"]],
+[412,"Burmy","bug",null,1,0,"green",["forest"]],
+[413,"Wormadam","bug","grass",2,1,"green",["forest"]],
+[414,"Mothim","bug","flying",2,1,"yellow",["forest"]],
+[415,"Combee","bug","flying",1,0,"yellow",["forest"]],
+[416,"Vespiquen","bug","flying",2,1,"yellow",["forest"]],
+[417,"Pachirisu","electric",null,1,1,"white",["forest"]],
+[418,"Buizel","water",null,1,0,"brown",["waters-edge"]],
+[419,"Floatzel","water",null,2,1,"brown",["waters-edge"]],
+[420,"Cherubi","grass",null,1,0,"pink",["forest"]],
+[421,"Cherrim","grass",null,2,1,"purple",["forest"]],
+[422,"Shellos","water",null,1,0,"purple",["waters-edge","sea"]],
+[423,"Gastrodon","water","ground",2,1,"purple",["waters-edge","sea"]],
+[424,"Ambipom","normal",null,2,1,"purple",["forest"]],
+[425,"Drifloon","ghost","flying",1,0,"purple",["urban","grassland"]],
+[426,"Drifblim","ghost","flying",2,1,"purple",["urban","grassland"]],
+[427,"Buneary","normal",null,1,0,"brown",["forest","urban"]],
+[428,"Lopunny","normal",null,2,1,"brown",["forest","urban"]],
+[429,"Mismagius","ghost",null,2,1,"purple",["cave","forest"]],
+[430,"Honchkrow","dark","flying",2,1,"black",["forest"]],
+[431,"Glameow","normal",null,1,0,"gray",["urban"]],
+[432,"Purugly","normal",null,2,1,"gray",["urban"]],
+[433,"Chingling","psychic",null,1,0,"yellow",["grassland"]],
+[434,"Stunky","poison","dark",1,0,"purple",["urban"]],
+[435,"Skuntank","poison","dark",2,1,"purple",["urban"]],
+[436,"Bronzor","steel","psychic",1,0,"green",["cave","urban"]],
+[437,"Bronzong","steel","psychic",2,1,"green",["cave","urban"]],
+[438,"Bonsly","rock",null,1,0,"brown",["forest"]],
+[439,"Mime Jr.","psychic","fairy",1,0,"pink",["urban"]],
+[440,"Happiny","normal",null,1,0,"pink",["urban"]],
+[441,"Chatot","normal","flying",1,1,"black",["forest","grassland"]],
+[442,"Spiritomb","ghost","dark",1,1,"purple",["urban","cave"]],
+[443,"Gible","dragon","ground",1,0,"blue",["cave","rough-terrain"]],
+[444,"Gabite","dragon","ground",2,0,"blue",["cave","rough-terrain"]],
+[445,"Garchomp","dragon","ground",3,1,"blue",["cave","rough-terrain"]],
+[446,"Munchlax","normal",null,1,0,"black",["mountain","forest"]],
+[447,"Riolu","fighting",null,1,0,"blue",["mountain","forest"]],
+[448,"Lucario","fighting","steel",2,1,"blue",["mountain","forest"]],
+[449,"Hippopotas","ground",null,1,0,"brown",["rough-terrain"]],
+[450,"Hippowdon","ground",null,2,1,"brown",["rough-terrain"]],
+[451,"Skorupi","poison","bug",1,0,"purple",["rough-terrain"]],
+[452,"Drapion","poison","dark",2,1,"purple",["rough-terrain"]],
+[453,"Croagunk","poison","fighting",1,0,"blue",["waters-edge"]],
+[454,"Toxicroak","poison","fighting",2,1,"blue",["waters-edge"]],
+[455,"Carnivine","grass",null,1,1,"green",["waters-edge","forest"]],
+[456,"Finneon","water",null,1,0,"blue",["sea"]],
+[457,"Lumineon","water",null,2,1,"blue",["sea"]],
+[458,"Mantyke","water","flying",1,0,"blue",["sea"]],
+[459,"Snover","grass","ice",1,0,"white",["mountain","forest"]],
+[460,"Abomasnow","grass","ice",2,1,"white",["mountain","forest"]],
+[461,"Weavile","dark","ice",2,1,"black",["forest"]],
+[462,"Magnezone","electric","steel",3,1,"gray",["urban","cave"]],
+[463,"Lickilicky","normal",null,2,1,"pink",["grassland"]],
+[464,"Rhyperior","ground","rock",3,1,"gray",["mountain","rough-terrain"]],
+[465,"Tangrowth","grass",null,2,1,"blue",["grassland","forest"]],
+[466,"Electivire","electric",null,3,1,"yellow",["grassland","urban"]],
+[467,"Magmortar","fire",null,3,1,"red",["mountain","volcano"]],
+[468,"Togekiss","fairy","flying",3,1,"white",["forest"]],
+[469,"Yanmega","bug","flying",2,1,"green",["forest"]],
+[470,"Leafeon","grass",null,2,1,"green",["forest","grassland"]],
+[471,"Glaceon","ice",null,2,1,"blue",["mountain","cave"]],
+[472,"Gliscor","ground","flying",2,1,"purple",["mountain","cave"]],
+[473,"Mamoswine","ice","ground",3,1,"brown",["mountain","cave"]],
+[474,"Porygon-Z","normal",null,3,1,"red",["urban"]],
+[475,"Gallade","psychic","fighting",3,1,"white",["urban","forest"]],
+[476,"Probopass","rock","steel",2,1,"gray",["cave","mountain"]],
+[477,"Dusknoir","ghost",null,3,1,"black",["urban"]],
+[478,"Froslass","ice","ghost",2,1,"white",["mountain","cave"]],
+[479,"Rotom","electric","ghost",1,1,"red",["urban"]],
+[480,"Uxie","psychic",null,1,1,"yellow",["rare","waters-edge"]],
+[481,"Mesprit","psychic",null,1,1,"pink",["rare","waters-edge"]],
+[482,"Azelf","psychic",null,1,1,"blue",["rare","waters-edge"]],
+[483,"Dialga","steel","dragon",1,1,"white",["rare","mountain"]],
+[484,"Palkia","water","dragon",1,1,"purple",["rare","mountain"]],
+[485,"Heatran","fire","steel",1,1,"brown",["rare","volcano"]],
+[486,"Regigigas","normal",null,1,1,"white",["rare","cave"]],
+[487,"Giratina","ghost","dragon",1,1,"black",["rare","cave"]],
+[488,"Cresselia","psychic",null,1,1,"yellow",["rare","sea"]],
+[489,"Phione","water",null,1,1,"blue",["rare","waters-edge"]],
+[490,"Manaphy","water",null,1,1,"blue",["rare","waters-edge"]],
+[491,"Darkrai","dark",null,1,1,"black",["rare","urban"]],
+[492,"Shaymin","grass",null,1,1,"green",["rare","forest"]],
+[493,"Arceus","normal",null,1,1,"white",["rare","forest"]]
+],
+5:[
+[494,"Victini","psychic","fire",1,1,"yellow",["rare","urban"]],
+[495,"Snivy","grass",null,1,0,"green",["forest","grassland"]],
+[496,"Servine","grass",null,2,0,"green",["forest","grassland"]],
+[497,"Serperior","grass",null,3,1,"green",["forest","grassland"]],
+[498,"Tepig","fire",null,1,0,"red",["grassland","volcano"]],
+[499,"Pignite","fire","fighting",2,0,"red",["grassland","volcano"]],
+[500,"Emboar","fire","fighting",3,1,"red",["grassland","volcano"]],
+[501,"Oshawott","water",null,1,0,"blue",["waters-edge","sea"]],
+[502,"Dewott","water",null,2,0,"blue",["waters-edge","sea"]],
+[503,"Samurott","water",null,3,1,"blue",["waters-edge","sea"]],
+[504,"Patrat","normal",null,1,0,"brown",["grassland"]],
+[505,"Watchog","normal",null,2,1,"brown",["grassland"]],
+[506,"Lillipup","normal",null,1,0,"brown",["urban","grassland"]],
+[507,"Herdier","normal",null,2,0,"gray",["urban","grassland"]],
+[508,"Stoutland","normal",null,3,1,"gray",["urban","grassland"]],
+[509,"Purrloin","dark",null,1,0,"purple",["urban"]],
+[510,"Liepard","dark",null,2,1,"purple",["urban"]],
+[511,"Pansage","grass",null,1,0,"green",["grassland"]],
+[512,"Simisage","grass",null,2,1,"green",["grassland"]],
+[513,"Pansear","fire",null,1,0,"red",["volcano"]],
+[514,"Simisear","fire",null,2,1,"red",["volcano"]],
+[515,"Panpour","water",null,1,0,"blue",["waters-edge"]],
+[516,"Simipour","water",null,2,1,"blue",["waters-edge"]],
+[517,"Munna","psychic",null,1,0,"pink",["forest","urban"]],
+[518,"Musharna","psychic",null,2,1,"pink",["forest","urban"]],
+[519,"Pidove","normal","flying",1,0,"gray",["urban","grassland"]],
+[520,"Tranquill","normal","flying",2,0,"gray",["urban","grassland"]],
+[521,"Unfezant","normal","flying",3,1,"gray",["urban","grassland"]],
+[522,"Blitzle","electric",null,1,0,"black",["grassland"]],
+[523,"Zebstrika","electric",null,2,1,"black",["grassland"]],
+[524,"Roggenrola","rock",null,1,0,"blue",["cave"]],
+[525,"Boldore","rock",null,2,0,"blue",["cave"]],
+[526,"Gigalith","rock",null,3,1,"blue",["cave"]],
+[527,"Woobat","psychic","flying",1,0,"blue",["cave"]],
+[528,"Swoobat","psychic","flying",2,1,"blue",["cave"]],
+[529,"Drilbur","ground",null,1,0,"gray",["cave"]],
+[530,"Excadrill","ground","steel",2,1,"gray",["cave"]],
+[531,"Audino","normal",null,1,1,"pink",["grassland","urban"]],
+[532,"Timburr","fighting",null,1,0,"gray",["urban"]],
+[533,"Gurdurr","fighting",null,2,0,"gray",["urban"]],
+[534,"Conkeldurr","fighting",null,3,1,"brown",["urban"]],
+[535,"Tympole","water",null,1,0,"blue",["waters-edge"]],
+[536,"Palpitoad","water","ground",2,0,"blue",["waters-edge"]],
+[537,"Seismitoad","water","ground",3,1,"blue",["waters-edge"]],
+[538,"Throh","fighting",null,1,1,"red",["mountain"]],
+[539,"Sawk","fighting",null,1,1,"blue",["mountain"]],
+[540,"Sewaddle","bug","grass",1,0,"yellow",["forest"]],
+[541,"Swadloon","bug","grass",2,0,"green",["forest"]],
+[542,"Leavanny","bug","grass",3,1,"yellow",["forest"]],
+[543,"Venipede","bug","poison",1,0,"red",["forest"]],
+[544,"Whirlipede","bug","poison",2,0,"gray",["forest"]],
+[545,"Scolipede","bug","poison",3,1,"red",["forest"]],
+[546,"Cottonee","grass","fairy",1,0,"green",["grassland"]],
+[547,"Whimsicott","grass","fairy",2,1,"green",["grassland"]],
+[548,"Petilil","grass",null,1,0,"green",["forest"]],
+[549,"Lilligant","grass",null,2,1,"green",["forest"]],
+[550,"Basculin","water",null,1,0,"green",["waters-edge"]],
+[551,"Sandile","ground","dark",1,0,"brown",["rough-terrain"]],
+[552,"Krokorok","ground","dark",2,0,"brown",["rough-terrain"]],
+[553,"Krookodile","ground","dark",3,1,"red",["rough-terrain"]],
+[554,"Darumaka","fire",null,1,0,"red",["rough-terrain","volcano"]],
+[555,"Darmanitan","fire",null,2,1,"red",["rough-terrain","volcano"]],
+[556,"Maractus","grass",null,1,1,"green",["rough-terrain"]],
+[557,"Dwebble","bug","rock",1,0,"red",["rough-terrain","cave"]],
+[558,"Crustle","bug","rock",2,1,"red",["rough-terrain","cave"]],
+[559,"Scraggy","dark","fighting",1,0,"yellow",["urban"]],
+[560,"Scrafty","dark","fighting",2,1,"red",["urban"]],
+[561,"Sigilyph","psychic","flying",1,1,"black",["rough-terrain"]],
+[562,"Yamask","ghost",null,1,0,"black",["rough-terrain","urban"]],
+[563,"Cofagrigus","ghost",null,2,1,"yellow",["rough-terrain","urban"]],
+[564,"Tirtouga","water","rock",1,0,"blue",["sea","mountain"]],
+[565,"Carracosta","water","rock",2,1,"blue",["sea","mountain"]],
+[566,"Archen","rock","flying",1,0,"yellow",["mountain"]],
+[567,"Archeops","rock","flying",2,1,"yellow",["mountain"]],
+[568,"Trubbish","poison",null,1,0,"green",["urban"]],
+[569,"Garbodor","poison",null,2,1,"green",["urban"]],
+[570,"Zorua","dark",null,1,0,"gray",["forest","urban"]],
+[571,"Zoroark","dark",null,2,1,"gray",["forest","urban"]],
+[572,"Minccino","normal",null,1,0,"gray",["urban"]],
+[573,"Cinccino","normal",null,2,1,"gray",["urban"]],
+[574,"Gothita","psychic",null,1,0,"purple",["urban"]],
+[575,"Gothorita","psychic",null,2,0,"purple",["urban"]],
+[576,"Gothitelle","psychic",null,3,1,"purple",["urban"]],
+[577,"Solosis","psychic",null,1,0,"green",["urban"]],
+[578,"Duosion","psychic",null,2,0,"green",["urban"]],
+[579,"Reuniclus","psychic",null,3,1,"green",["urban"]],
+[580,"Ducklett","water","flying",1,0,"blue",["waters-edge"]],
+[581,"Swanna","water","flying",2,1,"white",["waters-edge"]],
+[582,"Vanillite","ice",null,1,0,"white",["mountain","urban"]],
+[583,"Vanillish","ice",null,2,0,"white",["mountain","urban"]],
+[584,"Vanilluxe","ice",null,3,1,"white",["mountain","urban"]],
+[585,"Deerling","normal","grass",1,0,"pink",["forest","grassland"]],
+[586,"Sawsbuck","normal","grass",2,1,"brown",["forest","grassland"]],
+[587,"Emolga","electric","flying",1,1,"white",["forest"]],
+[588,"Karrablast","bug",null,1,0,"blue",["forest"]],
+[589,"Escavalier","bug","steel",2,1,"gray",["forest"]],
+[590,"Foongus","grass","poison",1,0,"white",["forest"]],
+[591,"Amoonguss","grass","poison",2,1,"white",["forest"]],
+[592,"Frillish","water","ghost",1,0,"white",["sea"]],
+[593,"Jellicent","water","ghost",2,1,"white",["sea"]],
+[594,"Alomomola","water",null,1,1,"pink",["sea"]],
+[595,"Joltik","bug","electric",1,0,"yellow",["cave"]],
+[596,"Galvantula","bug","electric",2,1,"yellow",["cave"]],
+[597,"Ferroseed","grass","steel",1,0,"gray",["cave"]],
+[598,"Ferrothorn","grass","steel",2,1,"gray",["cave"]],
+[599,"Klink","steel",null,1,0,"gray",["urban"]],
+[600,"Klang","steel",null,2,0,"gray",["urban"]],
+[601,"Klinklang","steel",null,3,1,"gray",["urban"]],
+[602,"Tynamo","electric",null,1,0,"white",["sea","cave"]],
+[603,"Eelektrik","electric",null,2,0,"blue",["sea","cave"]],
+[604,"Eelektross","electric",null,3,1,"blue",["sea","cave"]],
+[605,"Elgyem","psychic",null,1,0,"blue",["urban"]],
+[606,"Beheeyem","psychic",null,2,1,"brown",["urban"]],
+[607,"Litwick","ghost","fire",1,0,"white",["urban"]],
+[608,"Lampent","ghost","fire",2,0,"black",["urban"]],
+[609,"Chandelure","ghost","fire",3,1,"black",["urban"]],
+[610,"Axew","dragon",null,1,0,"green",["cave"]],
+[611,"Fraxure","dragon",null,2,0,"green",["cave"]],
+[612,"Haxorus","dragon",null,3,1,"yellow",["cave"]],
+[613,"Cubchoo","ice",null,1,0,"white",["mountain"]],
+[614,"Beartic","ice",null,2,1,"white",["mountain"]],
+[615,"Cryogonal","ice",null,1,1,"blue",["mountain","cave"]],
+[616,"Shelmet","bug",null,1,0,"red",["forest"]],
+[617,"Accelgor","bug",null,2,1,"red",["forest"]],
+[618,"Stunfisk","ground","electric",1,1,"brown",["waters-edge"]],
+[619,"Mienfoo","fighting",null,1,0,"yellow",["mountain"]],
+[620,"Mienshao","fighting",null,2,1,"purple",["mountain"]],
+[621,"Druddigon","dragon",null,1,1,"red",["cave"]],
+[622,"Golett","ground","ghost",1,0,"green",["cave"]],
+[623,"Golurk","ground","ghost",2,1,"green",["cave"]],
+[624,"Pawniard","dark","steel",1,0,"red",["mountain","urban"]],
+[625,"Bisharp","dark","steel",2,0,"red",["mountain","urban"]],
+[626,"Bouffalant","normal",null,1,1,"brown",["grassland"]],
+[627,"Rufflet","normal","flying",1,0,"white",["mountain"]],
+[628,"Braviary","normal","flying",2,1,"red",["mountain"]],
+[629,"Vullaby","dark","flying",1,0,"brown",["rough-terrain"]],
+[630,"Mandibuzz","dark","flying",2,1,"brown",["rough-terrain"]],
+[631,"Heatmor","fire",null,1,1,"red",["rough-terrain","volcano"]],
+[632,"Durant","bug","steel",1,1,"gray",["cave"]],
+[633,"Deino","dark","dragon",1,0,"blue",["cave"]],
+[634,"Zweilous","dark","dragon",2,0,"blue",["cave"]],
+[635,"Hydreigon","dark","dragon",3,1,"blue",["cave"]],
+[636,"Larvesta","bug","fire",1,0,"white",["rough-terrain","volcano"]],
+[637,"Volcarona","bug","fire",2,1,"white",["rough-terrain","volcano"]],
+[638,"Cobalion","steel","fighting",1,1,"blue",["rare","mountain"]],
+[639,"Terrakion","rock","fighting",1,1,"gray",["rare","cave"]],
+[640,"Virizion","grass","fighting",1,1,"green",["rare","forest"]],
+[641,"Tornadus","flying",null,1,1,"green",["rare","mountain"]],
+[642,"Thundurus","electric","flying",1,1,"blue",["rare","mountain"]],
+[643,"Reshiram","dragon","fire",1,1,"white",["rare","mountain"]],
+[644,"Zekrom","dragon","electric",1,1,"black",["rare","mountain"]],
+[645,"Landorus","ground","flying",1,1,"brown",["rare","mountain"]],
+[646,"Kyurem","dragon","ice",1,1,"gray",["rare","cave"]],
+[647,"Keldeo","water","fighting",1,1,"yellow",["rare","waters-edge"]],
+[648,"Meloetta","normal","psychic",1,1,"white",["rare","forest"]],
+[649,"Genesect","bug","steel",1,1,"purple",["rare","forest"]]
+],
+6:[
+[650,"Chespin","grass",null,1,0,"green",["forest"]],
+[651,"Quilladin","grass",null,2,0,"green",["forest"]],
+[652,"Chesnaught","grass","fighting",3,1,"green",["forest"]],
+[653,"Fennekin","fire",null,1,0,"red",["forest","volcano"]],
+[654,"Braixen","fire",null,2,0,"red",["forest","volcano"]],
+[655,"Delphox","fire","psychic",3,1,"red",["forest","volcano"]],
+[656,"Froakie","water",null,1,0,"blue",["waters-edge"]],
+[657,"Frogadier","water",null,2,0,"blue",["waters-edge"]],
+[658,"Greninja","water","dark",3,1,"blue",["waters-edge"]],
+[659,"Bunnelby","normal",null,1,0,"brown",["grassland"]],
+[660,"Diggersby","normal","ground",2,1,"brown",["grassland"]],
+[661,"Fletchling","normal","flying",1,0,"red",["forest","volcano"]],
+[662,"Fletchinder","fire","flying",2,0,"red",["forest","volcano"]],
+[663,"Talonflame","fire","flying",3,1,"red",["forest","volcano"]],
+[664,"Scatterbug","bug",null,1,0,"black",["forest"]],
+[665,"Spewpa","bug",null,2,0,"black",["forest"]],
+[666,"Vivillon","bug","flying",3,1,"white",["forest"]],
+[667,"Litleo","fire","normal",1,0,"brown",["grassland","volcano"]],
+[668,"Pyroar","fire","normal",2,1,"brown",["grassland","volcano"]],
+[669,"Flabébé","fairy",null,1,0,"white",["grassland"]],
+[670,"Floette","fairy",null,2,0,"white",["grassland"]],
+[671,"Florges","fairy",null,3,1,"white",["grassland"]],
+[672,"Skiddo","grass",null,1,0,"brown",["mountain","grassland"]],
+[673,"Gogoat","grass",null,2,1,"brown",["mountain","grassland"]],
+[674,"Pancham","fighting",null,1,0,"white",["urban","mountain"]],
+[675,"Pangoro","fighting","dark",2,1,"white",["urban","mountain"]],
+[676,"Furfrou","normal",null,1,1,"white",["urban"]],
+[677,"Espurr","psychic",null,1,0,"gray",["urban"]],
+[678,"Meowstic","psychic",null,2,1,"blue",["urban"]],
+[679,"Honedge","steel","ghost",1,0,"brown",["urban"]],
+[680,"Doublade","steel","ghost",2,0,"brown",["urban"]],
+[681,"Aegislash","steel","ghost",3,1,"brown",["urban"]],
+[682,"Spritzee","fairy",null,1,0,"pink",["urban"]],
+[683,"Aromatisse","fairy",null,2,1,"pink",["urban"]],
+[684,"Swirlix","fairy",null,1,0,"white",["urban"]],
+[685,"Slurpuff","fairy",null,2,1,"white",["urban"]],
+[686,"Inkay","dark","psychic",1,0,"blue",["sea"]],
+[687,"Malamar","dark","psychic",2,1,"blue",["sea"]],
+[688,"Binacle","rock","water",1,0,"brown",["sea"]],
+[689,"Barbaracle","rock","water",2,1,"brown",["sea"]],
+[690,"Skrelp","poison","water",1,0,"brown",["sea"]],
+[691,"Dragalge","poison","dragon",2,1,"brown",["sea"]],
+[692,"Clauncher","water",null,1,0,"blue",["sea"]],
+[693,"Clawitzer","water",null,2,1,"blue",["sea"]],
+[694,"Helioptile","electric","normal",1,0,"yellow",["rough-terrain"]],
+[695,"Heliolisk","electric","normal",2,1,"yellow",["rough-terrain"]],
+[696,"Tyrunt","rock","dragon",1,0,"brown",["cave"]],
+[697,"Tyrantrum","rock","dragon",2,1,"red",["cave"]],
+[698,"Amaura","rock","ice",1,0,"blue",["cave","mountain"]],
+[699,"Aurorus","rock","ice",2,1,"blue",["cave","mountain"]],
+[700,"Sylveon","fairy",null,2,1,"pink",["urban","forest"]],
+[701,"Hawlucha","fighting","flying",1,1,"green",["mountain","forest"]],
+[702,"Dedenne","electric","fairy",1,1,"yellow",["forest"]],
+[703,"Carbink","rock","fairy",1,1,"gray",["cave"]],
+[704,"Goomy","dragon",null,1,0,"purple",["waters-edge"]],
+[705,"Sliggoo","dragon",null,2,0,"purple",["waters-edge"]],
+[706,"Goodra","dragon",null,3,1,"purple",["waters-edge"]],
+[707,"Klefki","steel","fairy",1,1,"gray",["urban"]],
+[708,"Phantump","ghost","grass",1,0,"brown",["forest"]],
+[709,"Trevenant","ghost","grass",2,1,"brown",["forest"]],
+[710,"Pumpkaboo","ghost","grass",1,0,"brown",["forest","urban"]],
+[711,"Gourgeist","ghost","grass",2,1,"brown",["forest","urban"]],
+[712,"Bergmite","ice",null,1,0,"blue",["mountain"]],
+[713,"Avalugg","ice",null,2,1,"blue",["mountain"]],
+[714,"Noibat","flying","dragon",1,0,"purple",["cave"]],
+[715,"Noivern","flying","dragon",2,1,"purple",["cave"]],
+[716,"Xerneas","fairy",null,1,1,"blue",["rare","forest"]],
+[717,"Yveltal","dark","flying",1,1,"red",["rare","mountain"]],
+[718,"Zygarde","dragon","ground",1,1,"green",["rare","cave"]],
+[719,"Diancie","rock","fairy",1,1,"pink",["rare","mountain"]],
+[720,"Hoopa","psychic","ghost",1,1,"purple",["rare","urban"]],
+[721,"Volcanion","fire","water",1,1,"brown",["rare","volcano"]]
+],
+7:[
+[722,"Rowlet","grass","flying",1,0,"brown",["forest"]],
+[723,"Dartrix","grass","flying",2,0,"brown",["forest"]],
+[724,"Decidueye","grass","ghost",3,1,"brown",["forest"]],
+[725,"Litten","fire",null,1,0,"red",["urban","volcano"]],
+[726,"Torracat","fire",null,2,0,"red",["urban","volcano"]],
+[727,"Incineroar","fire","dark",3,1,"red",["urban","volcano"]],
+[728,"Popplio","water",null,1,0,"blue",["sea","waters-edge"]],
+[729,"Brionne","water",null,2,0,"blue",["sea","waters-edge"]],
+[730,"Primarina","water","fairy",3,1,"blue",["sea","waters-edge"]],
+[731,"Pikipek","normal","flying",1,0,"black",["forest"]],
+[732,"Trumbeak","normal","flying",2,0,"black",["forest"]],
+[733,"Toucannon","normal","flying",3,1,"black",["forest"]],
+[734,"Yungoos","normal",null,1,0,"brown",["urban","grassland"]],
+[735,"Gumshoos","normal",null,2,1,"brown",["urban","grassland"]],
+[736,"Grubbin","bug",null,1,0,"gray",["forest"]],
+[737,"Charjabug","bug","electric",2,0,"green",["forest"]],
+[738,"Vikavolt","bug","electric",3,1,"blue",["forest"]],
+[739,"Crabrawler","fighting",null,1,0,"purple",["waters-edge"]],
+[740,"Crabominable","fighting","ice",2,1,"white",["waters-edge"]],
+[741,"Oricorio","fire","flying",1,1,"red",["grassland"]],
+[742,"Cutiefly","bug","fairy",1,0,"yellow",["grassland"]],
+[743,"Ribombee","bug","fairy",2,1,"yellow",["grassland"]],
+[744,"Rockruff","rock",null,1,0,"brown",["mountain","grassland"]],
+[745,"Lycanroc","rock",null,2,1,"brown",["mountain","grassland"]],
+[746,"Wishiwashi","water",null,1,1,"blue",["sea"]],
+[747,"Mareanie","poison","water",1,0,"blue",["sea"]],
+[748,"Toxapex","poison","water",2,1,"blue",["sea"]],
+[749,"Mudbray","ground",null,1,0,"brown",["grassland"]],
+[750,"Mudsdale","ground",null,2,1,"brown",["grassland"]],
+[751,"Dewpider","water","bug",1,0,"green",["waters-edge"]],
+[752,"Araquanid","water","bug",2,1,"green",["waters-edge"]],
+[753,"Fomantis","grass",null,1,0,"pink",["grassland"]],
+[754,"Lurantis","grass",null,2,1,"pink",["grassland"]],
+[755,"Morelull","grass","fairy",1,0,"purple",["forest"]],
+[756,"Shiinotic","grass","fairy",2,1,"purple",["forest"]],
+[757,"Salandit","poison","fire",1,0,"black",["volcano"]],
+[758,"Salazzle","poison","fire",2,1,"black",["volcano"]],
+[759,"Stufful","normal","fighting",1,0,"pink",["grassland"]],
+[760,"Bewear","normal","fighting",2,1,"pink",["grassland"]],
+[761,"Bounsweet","grass",null,1,0,"purple",["grassland"]],
+[762,"Steenee","grass",null,2,0,"purple",["grassland"]],
+[763,"Tsareena","grass",null,3,1,"purple",["grassland"]],
+[764,"Comfey","fairy",null,1,1,"green",["grassland"]],
+[765,"Oranguru","normal","psychic",1,1,"white",["forest"]],
+[766,"Passimian","fighting",null,1,1,"white",["forest"]],
+[767,"Wimpod","bug","water",1,0,"gray",["waters-edge","cave"]],
+[768,"Golisopod","bug","water",2,1,"gray",["waters-edge","cave"]],
+[769,"Sandygast","ghost","ground",1,0,"brown",["waters-edge"]],
+[770,"Palossand","ghost","ground",2,1,"brown",["waters-edge"]],
+[771,"Pyukumuku","water",null,1,1,"black",["sea"]],
+[772,"Type: Null","normal",null,1,0,"gray",["rare","forest"]],
+[773,"Silvally","normal",null,2,1,"gray",["rare","forest"]],
+[774,"Minior","rock","flying",1,1,"brown",["mountain","rare"]],
+[775,"Komala","normal",null,1,1,"blue",["forest"]],
+[776,"Turtonator","fire","dragon",1,1,"red",["volcano"]],
+[777,"Togedemaru","electric","steel",1,1,"gray",["urban"]],
+[778,"Mimikyu","ghost","fairy",1,1,"yellow",["urban","forest"]],
+[779,"Bruxish","water","psychic",1,1,"pink",["sea"]],
+[780,"Drampa","normal","dragon",1,1,"white",["mountain"]],
+[781,"Dhelmise","ghost","grass",1,1,"green",["sea"]],
+[782,"Jangmo-o","dragon",null,1,0,"gray",["mountain"]],
+[783,"Hakamo-o","dragon","fighting",2,0,"gray",["mountain"]],
+[784,"Kommo-o","dragon","fighting",3,1,"gray",["mountain"]],
+[785,"Tapu Koko","electric","fairy",1,1,"yellow",["rare","forest"]],
+[786,"Tapu Lele","psychic","fairy",1,1,"pink",["rare","forest"]],
+[787,"Tapu Bulu","grass","fairy",1,1,"red",["rare","forest"]],
+[788,"Tapu Fini","water","fairy",1,1,"purple",["rare","sea"]],
+[789,"Cosmog","psychic",null,1,0,"blue",["rare","urban"]],
+[790,"Cosmoem","psychic",null,2,0,"blue",["rare","urban"]],
+[791,"Solgaleo","psychic","steel",3,1,"white",["rare","mountain"]],
+[792,"Lunala","psychic","ghost",3,1,"purple",["rare","mountain"]],
+[793,"Nihilego","rock","poison",1,1,"white",["rare","mountain"]],
+[794,"Buzzwole","bug","fighting",1,1,"red",["rare","forest"]],
+[795,"Pheromosa","bug","fighting",1,1,"white",["rare","forest"]],
+[796,"Xurkitree","electric",null,1,1,"black",["rare","grassland"]],
+[797,"Celesteela","steel","flying",1,1,"green",["rare","cave"]],
+[798,"Kartana","grass","steel",1,1,"white",["rare","forest"]],
+[799,"Guzzlord","dark","dragon",1,1,"black",["rare","forest"]],
+[800,"Necrozma","psychic",null,1,1,"black",["rare","cave"]],
+[801,"Magearna","steel","fairy",1,1,"gray",["rare","urban"]],
+[802,"Marshadow","fighting","ghost",1,1,"gray",["rare","mountain"]],
+[803,"Poipole","poison",null,1,0,"purple",["rare","forest"]],
+[804,"Naganadel","poison","dragon",2,1,"purple",["rare","forest"]],
+[805,"Stakataka","rock","steel",1,1,"gray",["rare","mountain"]],
+[806,"Blacephalon","fire","ghost",1,1,"white",["rare","volcano"]],
+[807,"Zeraora","electric",null,1,1,"yellow",["rare","grassland"]],
+[808,"Meltan","steel",null,1,0,"gray",["rare","cave"]],
+[809,"Melmetal","steel",null,2,1,"gray",["rare","cave"]]
+],
+8:[
+[810,"Grookey","grass",null,1,0,"green",["forest"]],
+[811,"Thwackey","grass",null,2,0,"green",["forest"]],
+[812,"Rillaboom","grass",null,3,1,"green",["forest"]],
+[813,"Scorbunny","fire",null,1,0,"white",["grassland","urban"]],
+[814,"Raboot","fire",null,2,0,"gray",["grassland","urban"]],
+[815,"Cinderace","fire",null,3,1,"white",["grassland","urban"]],
+[816,"Sobble","water",null,1,0,"blue",["waters-edge"]],
+[817,"Drizzile","water",null,2,0,"blue",["waters-edge"]],
+[818,"Inteleon","water",null,3,1,"blue",["waters-edge"]],
+[819,"Skwovet","normal",null,1,0,"brown",["forest"]],
+[820,"Greedent","normal",null,2,1,"brown",["forest"]],
+[821,"Rookidee","flying",null,1,0,"blue",["urban","grassland"]],
+[822,"Corvisquire","flying",null,2,0,"blue",["urban","grassland"]],
+[823,"Corviknight","flying","steel",3,1,"purple",["urban","grassland"]],
+[824,"Blipbug","bug",null,1,0,"blue",["forest"]],
+[825,"Dottler","bug","psychic",2,0,"yellow",["forest"]],
+[826,"Orbeetle","bug","psychic",3,1,"red",["forest"]],
+[827,"Nickit","dark",null,1,0,"brown",["forest"]],
+[828,"Thievul","dark",null,2,1,"brown",["forest"]],
+[829,"Gossifleur","grass",null,1,0,"green",["grassland"]],
+[830,"Eldegoss","grass",null,2,1,"green",["grassland"]],
+[831,"Wooloo","normal",null,1,0,"white",["grassland"]],
+[832,"Dubwool","normal",null,2,1,"white",["grassland"]],
+[833,"Chewtle","water",null,1,0,"green",["waters-edge"]],
+[834,"Drednaw","water","rock",2,1,"green",["waters-edge"]],
+[835,"Yamper","electric",null,1,0,"yellow",["urban","grassland"]],
+[836,"Boltund","electric",null,2,1,"yellow",["urban","grassland"]],
+[837,"Rolycoly","rock",null,1,0,"black",["cave"]],
+[838,"Carkol","rock","fire",2,0,"black",["cave"]],
+[839,"Coalossal","rock","fire",3,1,"black",["cave"]],
+[840,"Applin","grass","dragon",1,0,"green",["forest"]],
+[841,"Flapple","grass","dragon",2,1,"green",["forest"]],
+[842,"Appletun","grass","dragon",2,1,"green",["forest"]],
+[843,"Silicobra","ground",null,1,0,"green",["rough-terrain"]],
+[844,"Sandaconda","ground",null,2,1,"green",["rough-terrain"]],
+[845,"Cramorant","flying","water",1,1,"blue",["sea"]],
+[846,"Arrokuda","water",null,1,0,"brown",["sea"]],
+[847,"Barraskewda","water",null,2,1,"brown",["sea"]],
+[848,"Toxel","electric","poison",1,0,"purple",["urban"]],
+[849,"Toxtricity","electric","poison",2,1,"purple",["urban"]],
+[850,"Sizzlipede","fire","bug",1,0,"red",["volcano","cave"]],
+[851,"Centiskorch","fire","bug",2,1,"red",["volcano","cave"]],
+[852,"Clobbopus","fighting",null,1,0,"brown",["sea"]],
+[853,"Grapploct","fighting",null,2,1,"blue",["sea"]],
+[854,"Sinistea","ghost",null,1,0,"purple",["urban"]],
+[855,"Polteageist","ghost",null,2,1,"purple",["urban"]],
+[856,"Hatenna","psychic",null,1,0,"pink",["forest"]],
+[857,"Hattrem","psychic",null,2,0,"pink",["forest"]],
+[858,"Hatterene","psychic","fairy",3,1,"pink",["forest"]],
+[859,"Impidimp","dark","fairy",1,0,"pink",["forest"]],
+[860,"Morgrem","dark","fairy",2,0,"pink",["forest"]],
+[861,"Grimmsnarl","dark","fairy",3,1,"purple",["forest"]],
+[862,"Obstagoon","dark","normal",3,1,"gray",["grassland"]],
+[863,"Perrserker","steel",null,2,1,"brown",["urban","grassland"]],
+[864,"Cursola","ghost",null,2,1,"white",["sea"]],
+[865,"Sirfetch'd","fighting",null,2,1,"white",["grassland"]],
+[866,"Mr. Rime","ice","psychic",3,1,"purple",["urban"]],
+[867,"Runerigus","ground","ghost",2,1,"gray",["rough-terrain","urban"]],
+[868,"Milcery","fairy",null,1,0,"white",["urban"]],
+[869,"Alcremie","fairy",null,2,1,"white",["urban"]],
+[870,"Falinks","fighting",null,1,1,"yellow",["grassland"]],
+[871,"Pincurchin","electric",null,1,1,"purple",["sea"]],
+[872,"Snom","ice","bug",1,0,"white",["mountain"]],
+[873,"Frosmoth","ice","bug",2,1,"white",["mountain"]],
+[874,"Stonjourner","rock",null,1,1,"gray",["grassland"]],
+[875,"Eiscue","ice",null,1,1,"blue",["mountain","sea"]],
+[876,"Indeedee","psychic","normal",1,1,"purple",["urban"]],
+[877,"Morpeko","electric","dark",1,1,"yellow",["urban"]],
+[878,"Cufant","steel",null,1,0,"yellow",["cave"]],
+[879,"Copperajah","steel",null,2,1,"green",["cave"]],
+[880,"Dracozolt","electric","dragon",1,1,"green",["cave"]],
+[881,"Arctozolt","electric","ice",1,1,"blue",["cave"]],
+[882,"Dracovish","water","dragon",1,1,"green",["cave"]],
+[883,"Arctovish","water","ice",1,1,"blue",["cave"]],
+[884,"Duraludon","steel","dragon",1,0,"white",["mountain","urban"]],
+[885,"Dreepy","dragon","ghost",1,0,"green",["forest"]],
+[886,"Drakloak","dragon","ghost",2,0,"green",["forest"]],
+[887,"Dragapult","dragon","ghost",3,1,"green",["forest"]],
+[888,"Zacian","fairy",null,1,1,"blue",["rare","forest"]],
+[889,"Zamazenta","fighting",null,1,1,"red",["rare","forest"]],
+[890,"Eternatus","poison","dragon",1,1,"purple",["rare","cave"]],
+[891,"Kubfu","fighting",null,1,0,"gray",["rare","mountain"]],
+[892,"Urshifu","fighting","dark",2,1,"gray",["rare","mountain"]],
+[893,"Zarude","dark","grass",1,1,"green",["rare","forest"]],
+[894,"Regieleki","electric",null,1,1,"yellow",["rare","cave"]],
+[895,"Regidrago","dragon",null,1,1,"green",["rare","cave"]],
+[896,"Glastrier","ice",null,1,1,"white",["rare","mountain"]],
+[897,"Spectrier","ghost",null,1,1,"black",["rare","mountain"]],
+[898,"Calyrex","psychic","grass",1,1,"green",["rare","forest"]],
+[899,"Wyrdeer","normal","psychic",2,1,"gray",["forest"]],
+[900,"Kleavor","bug","rock",2,1,"brown",["grassland"]],
+[901,"Ursaluna","ground","normal",3,1,"brown",["mountain"]],
+[902,"Basculegion","water","ghost",2,1,"green",["waters-edge"]],
+[903,"Sneasler","fighting","poison",2,1,"gray",["forest"]],
+[904,"Overqwil","dark","poison",2,1,"black",["sea"]],
+[905,"Enamorus","fairy","flying",1,1,"pink",["rare","mountain"]]
+],
+9:[
+[906,"Sprigatito","grass",null,1,0,"green",["grassland","forest"]],
+[907,"Floragato","grass",null,2,0,"green",["grassland","forest"]],
+[908,"Meowscarada","grass","dark",3,1,"green",["grassland","forest"]],
+[909,"Fuecoco","fire",null,1,0,"red",["volcano"]],
+[910,"Crocalor","fire",null,2,0,"red",["volcano"]],
+[911,"Skeledirge","fire","ghost",3,1,"red",["volcano"]],
+[912,"Quaxly","water",null,1,0,"white",["waters-edge","urban"]],
+[913,"Quaxwell","water",null,2,0,"blue",["waters-edge","urban"]],
+[914,"Quaquaval","water","fighting",3,1,"blue",["waters-edge","urban"]],
+[915,"Lechonk","normal",null,1,0,"gray",["grassland"]],
+[916,"Oinkologne","normal",null,2,1,"gray",["grassland"]],
+[917,"Tarountula","bug",null,1,0,"white",["forest"]],
+[918,"Spidops","bug",null,2,1,"green",["forest"]],
+[919,"Nymble","bug",null,1,0,"gray",["grassland"]],
+[920,"Lokix","bug","dark",2,1,"gray",["grassland"]],
+[921,"Pawmi","electric",null,1,0,"yellow",["grassland"]],
+[922,"Pawmo","electric","fighting",2,0,"yellow",["grassland"]],
+[923,"Pawmot","electric","fighting",3,1,"yellow",["grassland"]],
+[924,"Tandemaus","normal",null,1,0,"white",["urban"]],
+[925,"Maushold","normal",null,2,1,"white",["urban"]],
+[926,"Fidough","fairy",null,1,0,"yellow",["urban"]],
+[927,"Dachsbun","fairy",null,2,1,"brown",["urban"]],
+[928,"Smoliv","grass","normal",1,0,"green",["grassland"]],
+[929,"Dolliv","grass","normal",2,0,"green",["grassland"]],
+[930,"Arboliva","grass","normal",3,1,"green",["grassland"]],
+[931,"Squawkabilly","normal","flying",1,1,"green",["urban"]],
+[932,"Nacli","rock",null,1,0,"brown",["cave","mountain"]],
+[933,"Naclstack","rock",null,2,0,"brown",["cave","mountain"]],
+[934,"Garganacl","rock",null,3,1,"brown",["cave","mountain"]],
+[935,"Charcadet","fire",null,1,0,"red",["volcano","urban"]],
+[936,"Armarouge","fire","psychic",2,1,"red",["volcano","urban"]],
+[937,"Ceruledge","fire","ghost",2,1,"blue",["volcano","urban"]],
+[938,"Tadbulb","electric",null,1,0,"yellow",["waters-edge"]],
+[939,"Bellibolt","electric",null,2,1,"green",["waters-edge"]],
+[940,"Wattrel","electric","flying",1,0,"black",["sea"]],
+[941,"Kilowattrel","electric","flying",2,1,"yellow",["sea"]],
+[942,"Maschiff","dark",null,1,0,"brown",["urban"]],
+[943,"Mabosstiff","dark",null,2,1,"gray",["urban"]],
+[944,"Shroodle","poison","normal",1,0,"gray",["urban","forest"]],
+[945,"Grafaiai","poison","normal",2,1,"gray",["urban","forest"]],
+[946,"Bramblin","grass","ghost",1,0,"brown",["rough-terrain"]],
+[947,"Brambleghast","grass","ghost",2,1,"brown",["rough-terrain"]],
+[948,"Toedscool","ground","grass",1,0,"yellow",["forest"]],
+[949,"Toedscruel","ground","grass",2,1,"black",["forest"]],
+[950,"Klawf","rock",null,1,1,"red",["rough-terrain"]],
+[951,"Capsakid","grass",null,1,0,"green",["rough-terrain"]],
+[952,"Scovillain","grass","fire",2,1,"green",["rough-terrain"]],
+[953,"Rellor","bug",null,1,0,"brown",["rough-terrain"]],
+[954,"Rabsca","bug","psychic",2,1,"green",["rough-terrain"]],
+[955,"Flittle","psychic",null,1,0,"yellow",["rough-terrain"]],
+[956,"Espathra","psychic",null,2,1,"yellow",["rough-terrain"]],
+[957,"Tinkatink","fairy","steel",1,0,"pink",["forest"]],
+[958,"Tinkatuff","fairy","steel",2,0,"pink",["forest"]],
+[959,"Tinkaton","fairy","steel",3,1,"pink",["forest"]],
+[960,"Wiglett","water",null,1,0,"white",["waters-edge"]],
+[961,"Wugtrio","water",null,2,1,"red",["waters-edge"]],
+[962,"Bombirdier","flying","dark",1,1,"white",["mountain"]],
+[963,"Finizen","water",null,1,0,"blue",["sea"]],
+[964,"Palafin","water",null,2,1,"blue",["sea"]],
+[965,"Varoom","steel","poison",1,0,"gray",["rough-terrain"]],
+[966,"Revavroom","steel","poison",2,1,"gray",["rough-terrain"]],
+[967,"Cyclizar","dragon","normal",1,1,"green",["grassland"]],
+[968,"Orthworm","steel",null,1,1,"pink",["rough-terrain"]],
+[969,"Glimmet","rock","poison",1,0,"blue",["cave"]],
+[970,"Glimmora","rock","poison",2,1,"blue",["cave"]],
+[971,"Greavard","ghost",null,1,0,"white",["urban"]],
+[972,"Houndstone","ghost",null,2,1,"white",["urban"]],
+[973,"Flamigo","flying","fighting",1,1,"pink",["waters-edge"]],
+[974,"Cetoddle","ice",null,1,0,"white",["mountain"]],
+[975,"Cetitan","ice",null,2,1,"white",["mountain"]],
+[976,"Veluza","water","psychic",1,1,"gray",["sea"]],
+[977,"Dondozo","water",null,1,1,"blue",["sea"]],
+[978,"Tatsugiri","dragon","water",1,1,"pink",["sea"]],
+[979,"Annihilape","fighting","ghost",3,1,"gray",["mountain"]],
+[980,"Clodsire","poison","ground",2,1,"brown",["waters-edge"]],
+[981,"Farigiraf","normal","psychic",2,1,"brown",["grassland"]],
+[982,"Dudunsparce","normal",null,2,1,"yellow",["cave"]],
+[983,"Kingambit","dark","steel",3,1,"black",["mountain","urban"]],
+[984,"Great Tusk","ground","fighting",1,1,"purple",["rare","rough-terrain"]],
+[985,"Scream Tail","fairy","psychic",1,1,"pink",["rare","urban"]],
+[986,"Brute Bonnet","grass","dark",1,1,"gray",["rare","forest"]],
+[987,"Flutter Mane","ghost","fairy",1,1,"gray",["rare","urban"]],
+[988,"Slither Wing","bug","fighting",1,1,"red",["rare","forest"]],
+[989,"Sandy Shocks","electric","ground",1,1,"gray",["rare","grassland"]],
+[990,"Iron Treads","ground","steel",1,1,"gray",["rare","rough-terrain"]],
+[991,"Iron Bundle","ice","water",1,1,"red",["rare","mountain"]],
+[992,"Iron Hands","fighting","electric",1,1,"gray",["rare","mountain"]],
+[993,"Iron Jugulis","dark","flying",1,1,"blue",["rare","forest"]],
+[994,"Iron Moth","fire","poison",1,1,"yellow",["rare","volcano"]],
+[995,"Iron Thorns","rock","electric",1,1,"green",["rare","mountain"]],
+[996,"Frigibax","dragon","ice",1,0,"gray",["mountain"]],
+[997,"Arctibax","dragon","ice",2,0,"gray",["mountain"]],
+[998,"Baxcalibur","dragon","ice",3,1,"gray",["mountain"]],
+[999,"Gimmighoul","ghost",null,1,0,"brown",["urban"]],
+[1000,"Gholdengo","steel","ghost",2,1,"yellow",["urban"]],
+[1001,"Wo-Chien","dark","grass",1,1,"brown",["rare","forest"]],
+[1002,"Chien-Pao","dark","ice",1,1,"white",["rare","mountain"]],
+[1003,"Ting-Lu","dark","ground",1,1,"brown",["rare","mountain"]],
+[1004,"Chi-Yu","dark","fire",1,1,"red",["rare","volcano"]],
+[1005,"Roaring Moon","dragon","dark",1,1,"green",["rare","mountain"]],
+[1006,"Iron Valiant","fairy","fighting",1,1,"white",["rare","urban"]],
+[1007,"Koraidon","fighting","dragon",1,1,"red",["rare","rough-terrain"]],
+[1008,"Miraidon","electric","dragon",1,1,"blue",["rare","urban"]],
+[1009,"Walking Wake","water","dragon",1,1,"blue",["rare","waters-edge"]],
+[1010,"Iron Leaves","grass","psychic",1,1,"green",["rare","forest"]],
+[1011,"Dipplin","grass","dragon",2,0,"green",["forest"]],
+[1012,"Poltchageist","grass","ghost",1,0,"green",["urban","forest"]],
+[1013,"Sinistcha","grass","ghost",2,1,"green",["urban","forest"]],
+[1014,"Okidogi","poison","fighting",1,1,"black",["rare","mountain"]],
+[1015,"Munkidori","poison","psychic",1,1,"black",["rare","mountain"]],
+[1016,"Fezandipiti","poison","fairy",1,1,"black",["rare","mountain"]],
+[1017,"Ogerpon","grass",null,1,1,"green",["rare","mountain"]],
+[1018,"Archaludon","steel","dragon",2,1,"white",["mountain","urban"]],
+[1019,"Hydrapple","grass","dragon",3,1,"green",["forest"]],
+[1020,"Gouging Fire","fire","dragon",1,1,"brown",["rare","volcano"]],
+[1021,"Raging Bolt","electric","dragon",1,1,"yellow",["rare","grassland"]],
+[1022,"Iron Boulder","rock","psychic",1,1,"gray",["rare","mountain"]],
+[1023,"Iron Crown","steel","psychic",1,1,"blue",["rare","urban"]],
+[1024,"Terapagos","normal",null,1,1,"blue",["rare","cave"]],
+[1025,"Pecharunt","poison","ghost",1,1,"purple",["rare","mountain"]]
 ]
 };
 
@@ -2864,11 +3532,13 @@ Object.keys(RAID_GENS).forEach(function(g){
   });
 });
 /* Same answer for everyone: a seeded shuffle of the pool, one entry per day, no repeats within a cycle */
+var RAID_OLD=RAID.filter(function(m){return m.id<=386;});
 function raidAnswer(date){
-  var p=date.split('-'),day=Math.floor(Date.UTC(+p[0],+p[1]-1,+p[2])/864e5),n=RAID.length;
-  var idx=RAID.map(function(_,i){return i;});
-  shuffle(idx,rng('pokedive|raid|'+Math.floor(day/n)));
-  return RAID[idx[day%n]];
+  var pool=date<'2026-11-18'?RAID_OLD:RAID;
+  var p=date.split('-'),day=Math.floor(Date.UTC(+p[0],+p[1]-1,+p[2])/864e5),n=pool.length;
+  var idx=pool.map(function(_,i){return i;});
+  shuffle(idx,rng('pokedive|raid|'+(n===386?'':'all|')+Math.floor(day/n)));
+  return pool[idx[day%n]];
 }
 function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 /* 7 hint cells: type1, type2, stage, fully evolved, color, habitats, gen */
@@ -2943,9 +3613,10 @@ function renderRaid(){
   if(!motes.firstChild&&!calm){for(var i=0;i<14;i++){var m=el('span','mote');m.style.left=(8+Math.random()*84)+'%';m.style.top=(45+Math.random()*50)+'%';m.style.animationDelay=(Math.random()*4)+'s';m.style.animationDuration=(3+Math.random()*3)+'s';motes.appendChild(m);}}
   $('den').className='den';$('raid-boss').className='boss';$('raid-boss-s').className='boss-s';$('raid-partner').className='partner';
   $('den-flash').className='den-flash';
-  var bi=$('raid-boss-img');bi.className='';
+  var bi=$('raid-boss-img');bi.className='';bi.removeAttribute('src');bi.alt='';
+  raidCloud();
   bi.onerror=function(){this.onerror=null;this.src='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5 0 9 4 9 9 0 3-1 5-3 7l1 4-5-2-2 1-2-1-5 2 1-4c-2-2-3-4-3-7 0-5 4-9 9-9z" fill="'+TYPECOL[TYPEKEYS.indexOf(a.t1)]+'"/></svg>');};
-  bi.src=SPR+a.id+'.png';
+  bi.dataset.src=SPR+a.id+'.png';bi.dataset.name=a.name;
   raidPartner();raidPips(6-(r.won?r.g.length-1:r.g.length));
   var ball=$('raid-ball');ball.hidden=true;ball.className='ball';
   var msg=$('raid-msg');msg.hidden=true;
@@ -2964,6 +3635,32 @@ function renderRaid(){
   raidStatsRender();
   $('s-raid').scrollTop=0;
 }
+function raidCloud(){
+  var c=$('raid-cloud');c.className='cloud';c.textContent='';
+  c.appendChild(el('span','core'));
+  /* back layer dark storm puffs, then mid, then light puffs in front: dense enough to hide the whole sprite */
+  var layers=[['dk',9,[44,66]],['md',8,[36,54]],['lt',7,[26,42]]],R=Math.random;
+  layers.forEach(function(L){
+    for(var i=0;i<L[1];i++){
+      var p=el('span','puff '+L[0]),ang=i/L[1]*6.283+R(),rad=(L[0]==='dk'?24:L[0]==='md'?16:10)*R();
+      var sz=L[2][0]+R()*(L[2][1]-L[2][0]);
+      p.style.left=(50+Math.cos(ang)*rad*1.15)+'%';p.style.top=(52+Math.sin(ang)*rad*0.9)+'%';
+      p.style.width=sz+'%';p.style.height=(sz*0.82)+'%';
+      p.style.setProperty('--d',(3+R()*3)+'s');p.style.setProperty('--dl',(-R()*4)+'s');
+      p.style.setProperty('--dx',(R()*14-7)+'%');p.style.setProperty('--dy',(R()*10-5)+'%');p.style.setProperty('--s',(0.92+R()*0.2).toFixed(2));
+      c.appendChild(p);
+    }
+  });
+  c.appendChild(el('span','bolt'));var b2=el('span','bolt b2');c.appendChild(b2);
+  c.appendChild(el('span','q','?'));
+}
+/* clear the cloud and show the real sprite (only loaded now, so it can't be peeked early) */
+function raidReveal(){
+  var bi=$('raid-boss-img');
+  if(!bi.getAttribute('src')&&bi.dataset.src){bi.src=bi.dataset.src;bi.alt=bi.dataset.name||'';}
+  $('raid-cloud').className='cloud part';
+  bi.className='revealed';
+}
 function raidStatsRender(){
   var s=store.raidStats,host=$('raid-stats');host.textContent='';
   [[String(s.played),'Raids played'],[(s.played?Math.round(s.wins/s.played*100):0)+'%','Win rate'],[String(raidStreak()),'Current streak'],[String(s.best),'Best streak']].forEach(function(x){
@@ -2980,6 +3677,7 @@ function raidShare(r,a){
 /* finished state: also what you see if you come back later the same day */
 function raidFinal(r,a){
   $('raid-entry').hidden=true;
+  raidReveal();
   $('raid-boss-s').className='boss-s captured';
   var ball=$('raid-ball');ball.hidden=!r.won;ball.className='ball rest';
   var msg=$('raid-msg');msg.hidden=false;msg.textContent=r.won?'Gotcha! '+a.name+' was caught!':a.name+' fled the den...';
@@ -3052,17 +3750,18 @@ function raidWin(tok,r,a){
   $('raid-entry').hidden=true;
   $('raid-partner').className='partner attack';
   raidLater(tok,350,function(){$('den').className='den shake';});
-  raidLater(tok,700,function(){$('raid-boss-s').className='boss-s small';$('raid-boss-img').className='revealed';});
-  raidLater(tok,1900,function(){var b=$('raid-ball');b.hidden=false;b.className='ball throw';});
-  raidLater(tok,2600,function(){$('raid-boss-s').className='boss-s captured';$('raid-ball').className='ball drop';});
-  raidLater(tok,3150,function(){$('raid-ball').className='ball rest wobble';});
-  raidLater(tok,5350,function(){$('raid-ball').className='ball rest shut';});
-  raidLater(tok,5800,function(){raidBusy=false;raidFinal(r,a);raidStatsRender();checkProgress(null);});
+  raidLater(tok,700,raidReveal);
+  raidLater(tok,1400,function(){$('raid-boss-s').className='boss-s small';});
+  raidLater(tok,2300,function(){var b=$('raid-ball');b.hidden=false;b.className='ball throw';});
+  raidLater(tok,3000,function(){$('raid-boss-s').className='boss-s captured';$('raid-ball').className='ball drop';});
+  raidLater(tok,3550,function(){$('raid-ball').className='ball rest wobble';});
+  raidLater(tok,5750,function(){$('raid-ball').className='ball rest shut';});
+  raidLater(tok,6200,function(){raidBusy=false;raidFinal(r,a);raidStatsRender();checkProgress(null);});
 }
 function raidLose(tok,r,a){
   $('raid-entry').hidden=true;
   $('raid-boss').className='boss roar';$('den-flash').className='den-flash on';$('den').className='den shake';
-  raidLater(tok,900,function(){$('raid-boss-img').className='revealed';});
+  raidLater(tok,900,raidReveal);
   raidLater(tok,2400,function(){$('raid-boss').className='boss flee';});
   raidLater(tok,3500,function(){raidBusy=false;raidFinal(r,a);$('raid-boss').className='boss';raidStatsRender();checkProgress(null);});
 }
@@ -3083,7 +3782,6 @@ function raidSubmit(){
   var n=norm(raw);n=ALIAS[n]||n;if(n==='nidoran')n='nidoranf';
   raidHideSug();$('raid-ac').hidden=true;
   if(RAIDNORM[n]){raidGuess(RAIDNORM[n]);return;}
-  if(DEXMAP[n]){raidReject(DEX[DEXMAP[n]-1]+' isn\'t in the raid pool yet. Raids cover Kanto, Johto and Hoenn.');return;}
   var near=n.length>=3?raidNear(n):[];
   if(!near.length){raidReject(raw+' isn\'t a Pokémon name we know.');return;}
   var host=$('raid-sug');host.textContent='';raidSugRaw=raw;
