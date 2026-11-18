@@ -353,6 +353,8 @@ form{display:flex;gap:8px;margin-top:14px}
 .den-msg{position:absolute;left:8px;right:8px;bottom:8px;padding:10px 12px;border-radius:12px;background:rgba(10,4,10,.88);border:1px solid #ff4f8b;
   font-family:var(--display);font-size:10px;line-height:1.6;color:#fff;text-align:center;animation:rise .3s both;z-index:3}
 .raidform{display:flex;gap:8px;margin-top:0;position:relative}
+/* the guess box sits above the results table so its suggestion list isn't covered */
+#raid-entry{position:relative;z-index:5}
 .ac{position:absolute;left:0;right:0;top:100%;margin-top:6px;z-index:4;background:var(--panel-solid);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 10px 24px rgba(0,0,0,.5)}
 .ac button{display:flex;align-items:center;gap:10px;width:100%;padding:6px 12px;text-align:left;font-size:15px;font-weight:500;border-top:1px solid var(--line)}
 .ac button:first-child{border-top:0}
