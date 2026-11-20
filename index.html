@@ -413,6 +413,70 @@ form{display:flex;gap:8px;margin-top:14px}
 @keyframes bshut{0%{filter:brightness(2.4);transform:scale(1.25)}100%{filter:none;transform:none}}
 @keyframes cellflip{0%{transform:rotateX(90deg);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
 
+/* ---------- professor's groups ---------- */
+body.lab{background:#e9eef2!important}
+body.lab #scene,body.lab #fx{display:none}
+.labbtn{background:#f4f7fa;color:#1d3a5c;border:2px solid #9fb6cc;box-shadow:0 5px 0 #7c93a8}
+.labbtn small{color:#3d5878}
+.labbtn:active{transform:translateY(3px);box-shadow:0 2px 0 #7c93a8}
+#s-groups{--lab-ink:#1b2a3a;--lab-dim:#5a6b7d;--lab-line:#c9d4de;color:var(--lab-ink);
+  background:linear-gradient(180deg,#f7fafc 0,#e9eef2 62%,#d9c3a2 62%,#c9ae86 100%)}
+#s-groups .bar h2{color:var(--lab-ink);text-shadow:none}
+#s-groups .sq{background:#fff;border-color:var(--lab-line);color:var(--lab-ink)}
+.lpanel{background:#fff;border:1px solid var(--lab-line);border-radius:20px;box-shadow:0 2px 0 rgba(27,42,58,.06),0 8px 22px rgba(27,42,58,.08)}
+.host{display:flex;align-items:flex-end;gap:12px;padding:12px 14px}
+.host .prof{width:76px;height:76px;flex:none;display:grid;place-items:end center;background:radial-gradient(circle at 50% 70%,#eef3f7 0,#dfe7ee 70%);border-radius:16px;border:1px solid var(--lab-line);overflow:hidden}
+.host .prof img{width:76px;height:76px;object-fit:contain;image-rendering:pixelated}
+.host .say{flex:1;min-width:0;position:relative;background:#f4f7fa;border:1px solid var(--lab-line);border-radius:14px;padding:10px 12px;align-self:center}
+.host .say::before{content:"";position:absolute;left:-7px;bottom:16px;width:12px;height:12px;background:#f4f7fa;border-left:1px solid var(--lab-line);border-bottom:1px solid var(--lab-line);transform:rotate(45deg)}
+.host .say b{display:block;font-family:var(--display);font-size:9px;line-height:1.6;font-weight:400;color:#1d4f8a}
+.host .say span{display:block;margin-top:4px;font-size:13px;line-height:1.4;color:var(--lab-dim)}
+.gstatus{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 4px;min-height:28px}
+.gstatus .lbl{font-size:13px;color:var(--lab-dim);font-weight:500}
+.balls{display:flex;gap:6px}
+.pball{width:20px;height:20px;border-radius:50%;border:2px solid #1b2a3a;position:relative;overflow:hidden;background:linear-gradient(180deg,#ee3d2f 0 44%,#1b2a3a 44% 56%,#fff 56%)}
+.pball::after{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:#fff;border:1.5px solid #1b2a3a}
+.pball.cracked{background:linear-gradient(180deg,#b9c2cb 0 44%,#6a7785 44% 56%,#e6ebef 56%);border-color:#6a7785;opacity:.7}
+.pball.cracked::before{content:"";position:absolute;left:4px;top:1px;width:9px;height:15px;border-left:2px solid #1b2a3a;border-bottom:2px solid #1b2a3a;transform:skewX(-25deg);z-index:1}
+.pball.cracking{animation:crack .5s ease-out}
+.solved{display:flex;flex-direction:column;gap:8px}
+.gbar{border-radius:14px;padding:10px 12px;text-align:center;animation:barup .45s cubic-bezier(.2,.9,.3,1.1) both}
+.gbar b{display:block;font-family:var(--display);font-size:9px;line-height:1.6;font-weight:400}
+.gbar span{display:block;margin-top:3px;font-size:13px;font-weight:600;line-height:1.35}
+.gbar.P{background:#ee3d2f;color:#fff}
+.gbar.G{background:#3b7fe0;color:#fff}
+.gbar.U{background:repeating-linear-gradient(135deg,#f5c518 0 14px,#e8b800 14px 28px);color:#1b1b1b;border:3px solid #1b1b1b}
+.gbar.M{background:#8a4fd8;color:#fff}
+.gbar .tier{display:inline-block;margin-bottom:4px;padding:1px 6px;border-radius:999px;background:rgba(0,0,0,.18);font-family:var(--display);font-size:6px;line-height:1.8}
+.gbar.U .tier{background:#1b1b1b;color:#f5c518}
+.ggrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.gtile{aspect-ratio:1/1.08;min-width:0;border-radius:14px;background:#fff;border:2px solid var(--lab-line);box-shadow:0 3px 0 #c9d4de;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:4px 3px;color:var(--lab-ink);
+  transition:transform .15s,background .15s,box-shadow .15s}
+.gtile img,.gtile .blob{width:74%;aspect-ratio:1;image-rendering:pixelated;object-fit:contain;margin:-8% 0 -6%}
+.gtile img{transform:scale(1.18)}
+.gtile .blob{border-radius:50%;background:var(--tc);transform:scale(.7)}
+.gtile span{font-family:var(--display);font-size:clamp(6px,1.9vw,8px);line-height:1.45;text-align:center;overflow-wrap:anywhere;max-width:100%}
+.gtile[aria-pressed="true"]{background:#2a3b4f;border-color:#2a3b4f;color:#fff;transform:translateY(-5px);box-shadow:0 8px 0 #12202e}
+.gtile.shake{animation:tshake .45s linear}
+.gtile.leave{animation:tleave .35s ease-in forwards}
+.gbtns{display:flex;gap:8px}
+.gbtns button{flex:1;padding:13px 6px;border-radius:999px;border:2px solid #1b2a3a;background:#fff;color:#1b2a3a;font-weight:600;font-size:14px}
+.gbtns button.primary{background:#1b2a3a;color:#fff}
+.gbtns button:disabled{opacity:.4;cursor:default}
+.gmsg{min-height:22px;text-align:center;font-family:var(--display);font-size:9px;line-height:1.6;color:#1d4f8a}
+.gmsg.pop{animation:rise .3s both}
+#s-groups .lpanel.sect h2{color:#1d4f8a}
+#s-groups .stat{background:#f4f7fa}
+#s-groups .stat b{color:var(--lab-ink)}
+#s-groups .stat span,#s-groups .fine{color:var(--lab-dim)}
+#s-groups .ghead{font-family:var(--display);font-size:13px;line-height:1.5;margin-bottom:8px}
+#s-groups .ghead.win{color:#1f9d4a}#s-groups .ghead.lose{color:#c0392b}
+#groupsShareBox{width:100%;padding:10px;border-radius:12px;border:1px solid var(--lab-line);background:#fff;color:var(--lab-ink);font:14px/1.4 var(--body);resize:none}
+@keyframes tshake{0%,100%{transform:translateY(-5px)}20%,60%{transform:translate(-6px,-5px)}40%,80%{transform:translate(6px,-5px)}}
+@keyframes tleave{to{transform:translateY(-40px) scale(.85);opacity:0}}
+@keyframes barup{from{transform:translateY(26px);opacity:0}to{transform:none;opacity:1}}
+@keyframes crack{0%{transform:scale(1.4) rotate(-10deg)}100%{transform:none}}
+
 /* ---------- modal ---------- */
 #modal{position:fixed;inset:0;z-index:5;background:rgba(0,0,0,.6);display:grid;place-items:end center;padding:12px}
 #modal .sheet{width:100%;max-width:528px;max-height:100%;overflow-y:auto;background:var(--panel-solid);border:1px solid var(--line);border-radius:22px;padding:18px 16px;display:flex;flex-direction:column;gap:14px;animation:rise .25s both}
@@ -467,6 +531,7 @@ form{display:flex;gap:8px;margin-top:14px}
     </div>
     <button class="btn primary" id="btn-daily">Daily Dive<small id="daily-sub"></small></button>
     <button class="btn raidbtn" id="btn-raid">Max Raid<small id="raid-sub"></small></button>
+    <button class="btn labbtn" id="btn-groups">Professor's Groups<small id="groups-sub"></small></button>
     <div class="panel sect">
       <h2>Regions</h2>
       <div class="rchips" id="region-chips"></div>
@@ -639,6 +704,34 @@ form{display:flex;gap:8px;margin-top:14px}
       <div class="stats two" id="raid-stats"></div>
       <h2 style="margin-top:14px">Guess distribution</h2>
       <div class="bars" id="raid-dist"></div>
+    </div>
+  </section>
+
+  <!-- PROFESSOR'S GROUPS -->
+  <section class="screen" id="s-groups" hidden>
+    <div class="bar"><button class="sq" data-home aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5l-7 7 7 7"/></svg></button><h2>PROFESSOR'S GROUPS</h2></div>
+    <div class="lpanel host">
+      <div class="prof"><img id="g-prof" alt=""></div>
+      <div class="say"><b id="g-title"></b><span id="g-hello"></span></div>
+    </div>
+    <div class="solved" id="g-solved"></div>
+    <div class="ggrid" id="g-grid" role="group" aria-label="Pokémon tiles"></div>
+    <div class="gmsg" id="g-msg" aria-live="polite"></div>
+    <div class="gstatus" id="g-status"><span class="lbl">Mistakes left</span><div class="balls" id="g-balls" aria-label="Mistakes left"></div></div>
+    <div class="gbtns" id="g-btns">
+      <button type="button" id="g-shuffle">Shuffle</button>
+      <button type="button" id="g-clear">Deselect all</button>
+      <button type="button" class="primary" id="g-submit">Submit</button>
+    </div>
+    <div class="lpanel sect" id="g-end" hidden></div>
+    <textarea id="groupsShareBox" rows="7" readonly hidden aria-label="Result to copy"></textarea>
+    <div class="lpanel sect">
+      <h2>How to play</h2>
+      <p class="fine">Pick 4 Pokémon that share something and tap Submit. Find all four groups before you use up 4 mistakes. Group colors go from easiest to hardest: <b style="color:#ee3d2f">Poké Ball</b>, <b style="color:#3b7fe0">Great Ball</b>, <b style="color:#a88500">Ultra Ball</b>, <b style="color:#8a4fd8">Master Ball</b>. A new puzzle every day.</p>
+    </div>
+    <div class="lpanel sect">
+      <h2>Lab stats</h2>
+      <div class="stats" id="g-stats"></div>
     </div>
   </section>
 
@@ -1317,6 +1410,10 @@ var BADGES=[
  {id:'raidperfect',n:'Perfect Raid',d:'Win a raid in 1 or 2 guesses',s:'burst',c:'#e03a5f',g:gt('2',16),ok:function(){return !!store.raidStats.perfect;}},
  {id:'raid7',n:'7-Day Raid Streak',d:'Win 7 raids in a row',s:'shield',c:'#b0306a',g:gt('R7',11),ok:function(){return store.raidStats.best>=7;}},
  {id:'raid25',n:'Den Master',d:'25 Raid catches',s:'hex',c:'#a02a8a',g:gt('25',11),ok:function(){return count(store.raidCaught)>=25;}},
+ {id:'lab1',n:'First Lab Report',d:"Solve a Professor's Groups puzzle",s:'shield',c:'#3b7fe0',g:gl('M17 12h14M19 12v10l-6 12h22l-6-12V12'),ok:function(){return store.groupsStats.wins>=1;}},
+ {id:'labperfect',n:'Flawless Research',d:'Solve a puzzle with no mistakes',s:'diamond',c:'#1f9d6b',g:gl('M14 24l7 7 13-15'),ok:function(){return store.groupsStats.perfect>=1;}},
+ {id:'labmaster',n:'Master Ball First',d:'Find the Master Ball group first',s:'circle',c:'#8a4fd8',g:gt('M',16),ok:function(){return !!store.groupsStats.masterFirst;}},
+ {id:'lab7',n:'7-Day Lab Streak',d:'Solve 7 puzzles in a row',s:'hex',c:'#1d4f8a',g:gt('L7',11),ok:function(){return store.groupsStats.best>=7;}},
  {id:'explorer',n:'Explorer',d:'Dive in Water, Fire and Grass',s:'diamond',c:'#5b6ad9',g:gl('M24 11l5 13-5 13-5-13z',1),ok:function(){return ['ocean','lava','forest'].every(function(t){return store.themesUsed[t];});}}
 ];
 function badgeSVG(b){
@@ -1327,7 +1424,8 @@ function badgeSVG(b){
 var KEY='pokedive.v1';
 var store={avatar:'ocean:7',avatarBy:{},shinyOn:{},theme:'ocean',played:0,best:0,streak:0,longest:0,lastDaily:'',dailies:{},mode:'normal',regions:null,
   bestBy:{},regionsDived:{},exp:0,title:'rookie',trail:'none',badges:{},unlocked:{},dex:{},shinyCount:{},tc:{},cat:{},rarest:null,mpPlayed:0,themesUsed:{},party:null,formsOpen:{},formSel:{},
-  raid:null,raidCaught:{},raidStats:{played:0,wins:0,streak:0,best:0,last:'',perfect:0,dist:[0,0,0,0,0,0]}};
+  raid:null,raidCaught:{},raidStats:{played:0,wins:0,streak:0,best:0,last:'',perfect:0,dist:[0,0,0,0,0,0]},
+  groups:null,groupsStats:{played:0,wins:0,streak:0,best:0,last:'',perfect:0,masterFirst:0}};
 try{var saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&typeof saved==='object'){for(var k0 in store){if(saved[k0]!==undefined&&saved[k0]!==null)store[k0]=saved[k0];}}}catch(e){}
 if(!DIFFS[store.mode])store.mode='normal';
 if(typeof store.exp!=='number'||!(store.exp>=0))store.exp=0;
@@ -1335,6 +1433,10 @@ if(!Array.isArray(store.regions)||store.regions.length!==REGIONS.length||!store.
 ['shinyOn','dailies','bestBy','regionsDived','badges','unlocked','dex','shinyCount','tc','cat','themesUsed'].forEach(function(k){if(!store[k]||typeof store[k]!=='object')store[k]={};});
 if(!store.raidCaught||typeof store.raidCaught!=='object')store.raidCaught={};
 ['formsOpen','formSel'].forEach(function(k){if(!store[k]||typeof store[k]!=='object')store[k]={};});
+(function(){var s=store.groupsStats,d={played:0,wins:0,streak:0,best:0,last:'',perfect:0,masterFirst:0};
+  if(!s||typeof s!=='object')s=store.groupsStats={};
+  for(var k in d){if(typeof s[k]!==typeof d[k])s[k]=d[k];}
+})();
 (function(){var s=store.raidStats,d={played:0,wins:0,streak:0,best:0,last:'',perfect:0};
   if(!s||typeof s!=='object')s=store.raidStats={};
   for(var k in d){if(typeof s[k]!==typeof d[k])s[k]=d[k];}
@@ -1976,9 +2078,10 @@ function evolveCheck(mine){
 
 /* ================= GAME ================= */
 var run=null,mp=null,state='idle',deadline=0,nextT=0,LIMIT=25000,C=138.23;
-var SCREENS=['start','raid','party','pass','play','results','race','dex','stats'];
+var SCREENS=['start','raid','groups','party','pass','play','results','race','dex','stats'];
 function show(name){
   SCREENS.forEach(function(s){$('s-'+s).hidden=(s!==name);});
+  document.body.classList.toggle('lab',name==='groups');
   $('lane').hidden=(name!=='play');
 }
 function total(res){return res.reduce(function(s,r){return s+r.p;},0);}
@@ -2006,6 +2109,7 @@ function renderStart(){
   $('free-sub').textContent=DIFFS[diff]+', '+regionLabel(store.regions);
   $('stats-sub').textContent=count(store.badges)+' of '+BADGES.length+' badges';
   $('raid-sub').textContent=raidSub();
+  $('groups-sub').textContent=groupsSub();
   renderTrainer();
   disp=target=0;lastZone=zoneAt(0)[1];
   show('start');paintDepth();
@@ -3960,6 +4064,212 @@ function raidAuto(){
   host.hidden=false;
 }
 
+/* ================= PROFESSOR'S GROUPS ================= */
+/* Professor's Groups puzzle bank: [tier, group name, [4 Pokédex numbers]] x4, tiers P Poké, G Great, U Ultra, M Master.
+   Checked by tools/groups_lib.py: every Pokémon in a puzzle fits exactly one of its four groups. */
+var GROUPS_BANK=[
+[["P","Eeveelutions",[134,135,136,197]],["G","Evolve by trading",[68,94,76,186]],["U","Revived from fossils",[139,141,142,348]],["M","Kanto Gym Leaders' aces in Red and Blue",[95,121,26,45]]],
+[["P","Regis",[377,378,379,486]],["G","Final-stage starters",[3,157,260,395]],["U","Evolve with a Fire Stone",[59,136,514,952]],["M","\"King\" is hiding in the name",[34,99,199,983]]],
+[["P","Ghost types",[94,609,778,477]],["G","Baby Pokémon",[172,173,175,446]],["U","Johto starters (any stage)",[152,156,159,154]],["M","Can have the Ability Levitate",[437,330,110,635]]],
+[["P","Revived from fossils",[697,699,567,565]],["G","Can Mega Evolve",[303,302,181,428]],["U","Final pseudo-legendaries",[706,635,887,784]],["M","Johto Gym Leaders' aces in Gold and Silver",[241,230,221,62]]],
+[["P","Fire-type starters (first stage)",[4,155,255,390]],["G","Electric types",[125,181,26,523]],["U","Based on dogs",[229,262,745,508]],["M","Weigh 1 kg or less",[92,669,742,187]]],
+[["P","Pikachu clones",[311,312,417,702]],["G","Tapus",[785,786,787,788]],["U","Unova starters (any stage)",[495,499,502,497]],["M","Have an Alolan form",[37,27,50,88]]],
+[["P","Water-type starters (first stage)",[7,158,258,393]],["G","Ice types",[124,365,478,713]],["U","Based on cats",[53,405,432,510]],["M","Have a Gigantamax form",[68,99,143,839]]],
+[["P","Psychic types",[97,196,282,80]],["G","Evolve with a Moon Stone",[36,40,34,31]],["U","Evolve by trading",[208,212,186,230]],["M","Kanto Gym Leaders' aces in Red and Blue",[95,26,110,112]]],
+[["P","Mythical Pokémon",[151,251,385,491]],["G","Ultra Beasts",[793,794,795,798]],["U","Paradox Pokémon",[984,987,1006,1005]],["M","Treasures of Ruin",[1001,1002,1003,1004]]],
+[["P","Bug types",[123,214,12,637]],["G","Steel types",[208,448,227,823]],["U","Names start with Z",[41,263,571,807]],["M","Can have the Ability Intimidate",[130,59,262,398]]],
+[["P","Fighting types",[68,57,297,534]],["G","Fairy types",[36,468,210,671]],["U","Evolve through friendship",[169,242,197,196]],["M","Weigh 400 kg or more",[383,797,790,750]]],
+[["P","Grass types",[3,254,470,465]],["G","Ghost types",[354,356,302,442]],["U","Final pseudo-legendaries",[706,635,784,998]],["M","Pink in the Pokédex",[79,113,209,108]]],
+[["P","Eeveelutions",[196,134,471,700]],["G","Fire types",[6,257,157,229]],["U","Johto Gym Leaders' aces in Gold and Silver",[241,94,62,230]],["M","Evolve with a Leaf Stone",[45,71,103,275]]],
+[["P","Pikachu clones",[311,312,417,702]],["G","Water types",[130,121,350,134]],["U","Weigh 1 kg or less",[92,93,669,789]],["M","Have a Gigantamax form",[12,68,569,884]]],
+[["P","Can Mega Evolve",[115,127,142,214]],["G","Grass-type starters (middle stage)",[2,153,253,388]],["U","Psychic types",[122,178,203,202]],["M","Third stage of an evolution line",[12,31,76,62]]],
+[["P","Forces of Nature",[641,642,645,905]],["G","Swords of Justice",[638,639,640,647]],["U","Regis",[894,377,378,379]],["M","Legendary Dragon types",[483,484,487,384]]],
+[["P","Based on dogs",[58,228,506,835]],["G","Based on cats",[52,300,431,677]],["U","Debuted in Alola (Gen 7)",[722,731,734,749]],["M","Evolve with a Moon Stone",[36,40,518,34]]],
+[["P","Fire types",[78,126,136,323]],["G","Rock types",[76,112,185,476]],["U","Ice types",[124,461,473,365]],["M","Can have the Ability Swift Swim",[272,419,226,119]]],
+[["P","Electric types",[25,125,181,405]],["G","Baby Pokémon",[238,236,298,360]],["U","Final-stage Water starters",[9,160,503,658]],["M","Debuted in Paldea (Gen 9)",[915,959,983,979]]],
+[["P","Dragon types",[149,230,334,612]],["G","Normal and Flying types",[18,22,398,164]],["U","Water and Ground types",[195,260,340,423]],["M","Have a Galarian form",[77,263,110,79]]],
+[["P","Final-stage Fire starters",[6,157,257,392]],["G","First stage of a pseudo-legendary",[147,246,371,443]],["U","Eeveelutions",[134,135,197,471]],["M","Never evolve (no Legendaries)",[128,115,214,359]]],
+[["P","Ghost types",[355,353,854,708]],["G","Fairy types",[209,303,184,36]],["U","Debuted in Sinnoh (Gen 4)",[399,418,417,415]],["M","Have a Hisuian form",[58,100,211,215]]],
+[["P","Psychic types",[282,579,518,576]],["G","Steel types",[306,625,395,462]],["U","Evolve by trading",[68,76,94,534]],["M","Revived from fossils",[696,698,408,566]]],
+[["P","Water types",[121,171,321,222]],["G","Grass types",[182,421,549,275]],["U","Normal types",[113,115,241,128]],["M","Debuted in Kalos (Gen 6)",[701,702,703,714]]],
+[["P","Kanto Gym Leaders' aces in Red and Blue",[121,110,59,45]],["G","Ground types",[450,232,553,330]],["U","Johto Gym Leaders' aces in Gold and Silver",[17,123,241,230]],["M","Have an Alolan form",[19,38,53,89]]],
+[["P","Grass-type starters (first stage)",[1,152,252,387]],["G","Baby Pokémon",[172,174,240,440]],["U","Never evolve (no Legendaries)",[131,132,227,302]],["M","Evolve with a Sun Stone",[192,182,547,549]]],
+[["P","Ice types",[362,91,614,131]],["G","Dark types",[197,229,248,359]],["U","Fighting types",[68,297,448,308]],["M","Evolve with a Shiny Stone",[468,407,573,671]]],
+[["P","Bug types",[127,402,542,637]],["G","Poison types",[89,24,454,758]],["U","Steel types",[601,476,395,227]],["M","Have a Gigantamax form",[99,131,834,844]]],
+[["P","Normal types",[132,137,352,235]],["G","Electric types",[479,462,135,807]],["U","Dragon types",[621,715,706,776]],["M","Evolve by trading while holding an item",[464,477,186,467]]],
+[["P","Fairy types",[35,175,209,183]],["G","Ghost types",[200,607,426,592]],["U","Ice types",[361,220,363,238]],["M","Have a Hisuian form",[570,705,628,157]]],
+[["P","Kanto starters (any stage)",[1,5,8,3]],["G","Kanto fossils (any stage)",[138,140,142,141]],["U","Eevee and its Kanto evolutions",[133,134,135,136]],["M","Pink in the Pokédex",[151,79,39,113]]],
+[["P","Dark types",[215,198,228,359]],["G","Normal types",[115,133,216,190]],["U","Mythical Pokémon",[251,385,490,492]],["M","Evolve through friendship",[169,196,176,448]]],
+[["P","Water types",[54,60,129,118]],["G","Final-stage Grass starters",[3,154,254,389]],["U","Fossils (final stage)",[348,346,409,411]],["M","Ultra Beasts",[796,797,799,806]]]
+];
+
+var GTIER={P:{n:'Poké Ball',e:'🔴'},G:{n:'Great Ball',e:'🔵'},U:{n:'Ultra Ball',e:'🟡'},M:{n:'Master Ball',e:'🟣'}};
+/* rotating host: [Showdown trainer sprite file, display name, home region] */
+var PROFS=[['oak','Oak','Kanto'],['elm','Elm','Johto'],['birch','Birch','Hoenn'],['rowan','Rowan','Sinnoh'],['juniper','Juniper','Unova'],['sycamore','Sycamore','Kalos'],
+  ['kukui','Kukui','Alola'],['magnolia','Magnolia','Galar'],['sonia','Sonia','Galar'],['sada','Sada','Paldea'],['turo','Turo','Paldea']];
+var TRAINER_SPR='https://play.pokemonshowdown.com/sprites/trainers/';
+/* original fallback host: a pixel-art scientist with goggles and a flask, not modeled on any professor */
+var LABSCI=(function(){
+  var g=['.....hhhh.....','....hhhhhh....','...hggggggh...','...hgwbwbgh...','...hssssssh...','....ssmmss....','.....ssss.....','...cccttccc...','..ccccttcccc..','..cfcccccccfc.','..csccccccsfc.','..cscccccccff.','...cccccccc...','...cccccccc...','....pp..pp....','....kk..kk....'];
+  var c={h:'#3a4a7a',g:'#7fd0ff',w:'#ffffff',b:'#2a2a3a',s:'#f2c8a0',m:'#c0706a',c:'#f4f7fa',t:'#3b7fe0',f:'#8a4fd8',p:'#3a4a5a',k:'#1b2a3a'},s='';
+  g.forEach(function(r,y){for(var x=0;x<r.length;x++)if(r[x]!=='.')s+='<rect x="'+x+'" y="'+y+'" width="1" height="1" fill="'+c[r[x]]+'"/>';});
+  s+='<rect x="1" y="9" width="1" height="1" fill="#1b2a3a"/>';
+  return 'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1 -1 16 18" shape-rendering="crispEdges">'+s+'</svg>');
+})();
+function dayNum(date){var p=date.split('-');return Math.floor(Date.UTC(+p[0],+p[1]-1,+p[2])/864e5);}
+function groupsPuzzle(date){
+  var n=GROUPS_BANK.length,day=dayNum(date),idx=GROUPS_BANK.map(function(_,i){return i;});
+  shuffle(idx,rng('pokedive|groups|'+Math.floor(day/n)));
+  return GROUPS_BANK[idx[day%n]];
+}
+function groupsHost(date){return PROFS[((dayNum(date)%PROFS.length)+PROFS.length)%PROFS.length];}
+var groupsDate='',gSel=[],gBusy=false,gTimer=0,gTok=0;
+function groupsState(date){
+  var t=date||today(),r=store.groups;
+  if(r&&r.date===t&&Array.isArray(r.solved)&&Array.isArray(r.guesses)&&Array.isArray(r.order))return r;
+  if(r&&r.date>t)return {date:t,solved:[],guesses:[],mistakes:0,order:[],done:false,won:false};
+  var pz=groupsPuzzle(t),ids=[];pz.forEach(function(g){ids=ids.concat(g[2]);});
+  return store.groups={date:t,solved:[],guesses:[],mistakes:0,order:shuffle(ids,rng('pokedive|gorder|'+t)),done:false,won:false};
+}
+function groupOf(pz,id){for(var i=0;i<4;i++){if(pz[i][2].indexOf(id)>=0)return i;}return -1;}
+function groupsStreak(){var s=store.groupsStats;return (s.last===today()||s.last===yesterday())?s.streak:0;}
+function groupsSub(){
+  var r=store.groups,t=today();
+  var h=groupsHost(t);
+  if(!r||r.date!==t||(!r.guesses.length&&!r.done))return 'Professor '+h[1]+' has 16 Pokémon to sort into 4 groups';
+  if(!r.done)return 'In progress: '+r.solved.length+' of 4 groups found';
+  return r.won?'Solved with '+r.mistakes+(r.mistakes===1?' mistake':' mistakes')+'. New puzzle at midnight.':'Not solved today. New puzzle at midnight.';
+}
+function tileImg(id){
+  var img=el('img');img.alt='';img.width=48;img.height=48;
+  img.onerror=function(){var b=el('span','blob');b.style.setProperty('--tc',TYPECOL[DTYPE.charCodeAt((id-1)*2)-97]);this.onerror=null;if(this.parentNode)this.parentNode.replaceChild(b,this);};
+  img.src=SPR+id+'.png';return img;
+}
+function renderGroups(){
+  gTok++;gBusy=false;gSel=[];clearInterval(gTimer);
+  groupsDate=today();
+  var r=groupsState(groupsDate),h=groupsHost(groupsDate);
+  show('groups');
+  var img=$('g-prof');img.onerror=function(){this.onerror=null;this.src=LABSCI;};img.alt='Professor '+h[1];img.src=TRAINER_SPR+h[0]+'.png';
+  $('g-title').textContent='Professor '+h[1]+"'s Research Notes";
+  $('g-hello').textContent='Fresh from the '+h[2]+' lab: sort these 16 Pokémon into four groups of four.';
+  $('groupsShareBox').hidden=true;
+  gRender(false);
+  groupsStatsRender();
+  $('s-groups').scrollTop=0;
+}
+function gRender(animateLast){
+  var r=groupsState(groupsDate),pz=groupsPuzzle(r.date);
+  var sv=$('g-solved');sv.textContent='';
+  r.solved.forEach(function(gi,k){sv.appendChild(gBar(pz[gi],animateLast&&k===r.solved.length-1));});
+  if(r.done)pz.forEach(function(g,gi){if(r.solved.indexOf(gi)<0)sv.appendChild(gBar(g,false));});
+  var grid=$('g-grid');grid.textContent='';
+  if(!r.done)r.order.forEach(function(id){
+    if(r.solved.indexOf(groupOf(pz,id))>=0)return;
+    var b=el('button','gtile');b.type='button';b.dataset.id=id;b.setAttribute('aria-pressed',String(gSel.indexOf(id)>=0));
+    b.appendChild(tileImg(id));b.appendChild(el('span','',DEX[id-1]));
+    b.addEventListener('click',function(){gToggle(id);});
+    grid.appendChild(b);
+  });
+  grid.hidden=r.done;$('g-btns').hidden=r.done;$('g-status').hidden=r.done;
+  gBalls(4-r.mistakes,false);gButtons();
+  if(r.done)gFinal(r,pz);else{$('g-end').hidden=true;}
+}
+function gBar(g,anim){
+  var d=el('div','gbar '+g[0]);if(!anim)d.style.animation='none';
+  d.appendChild(el('i','tier',GTIER[g[0]].n.toUpperCase()));
+  d.appendChild(el('b','',g[1]));
+  d.appendChild(el('span','',g[2].map(function(id){return DEX[id-1];}).join(', ')));
+  return d;
+}
+function gBalls(left,breaking){
+  var host=$('g-balls');host.textContent='';
+  for(var i=0;i<4;i++){var p=el('span','pball'+(i>=left?' cracked':''));if(breaking&&i===left)p.className+=' cracking';host.appendChild(p);}
+}
+function gButtons(){
+  $('g-submit').disabled=gSel.length!==4||gBusy;
+  $('g-clear').disabled=!gSel.length||gBusy;
+  $('g-shuffle').disabled=gBusy;
+}
+function gMsg(t){var m=$('g-msg');m.className='gmsg';void m.offsetWidth;m.className='gmsg pop';m.textContent=t;}
+function gToggle(id){
+  var r=groupsState(groupsDate);if(r.done||gBusy)return;
+  var i=gSel.indexOf(id);
+  if(i>=0)gSel.splice(i,1);else{if(gSel.length>=4)return;gSel.push(id);}
+  var t=document.querySelector('.gtile[data-id="'+id+'"]');if(t)t.setAttribute('aria-pressed',String(gSel.indexOf(id)>=0));
+  gMsg('');gButtons();
+}
+function gLater(tok,ms,fn){setTimeout(function(){if(tok===gTok&&!$('s-groups').hidden)fn();},calm?0:ms);}
+function gSubmit(){
+  var r=groupsState(groupsDate),pz=groupsPuzzle(r.date);
+  if(r.done||gBusy||gSel.length!==4)return;
+  var key=gSel.slice().sort(function(a,b){return a-b;}).join(',');
+  if(r.guesses.some(function(g){return g.slice().sort(function(a,b){return a-b;}).join(',')===key;})){gMsg('Already guessed!');return;}
+  var counts=[0,0,0,0];gSel.forEach(function(id){counts[groupOf(pz,id)]++;});
+  var best=Math.max.apply(null,counts),gi=counts.indexOf(best),tok=gTok,picked=gSel.slice();
+  r.guesses.push(picked);gBusy=true;gButtons();
+  if(best===4){
+    r.solved.push(gi);
+    if(r.solved.length===4){r.done=true;r.won=true;gStats(r,pz);}
+    save();
+    picked.forEach(function(id){var t=document.querySelector('.gtile[data-id="'+id+'"]');if(t)t.className='gtile leave';});
+    gLater(tok,380,function(){gSel=[];gBusy=false;gMsg(r.done?'':['Nice work!','Great find!','Excellent!'][r.solved.length%3]);gRender(true);if(r.done)checkProgress(null);});
+    return;
+  }
+  r.mistakes++;
+  var over=r.mistakes>=4;
+  if(over){r.done=true;r.won=false;gStats(r,pz);}
+  save();
+  picked.forEach(function(id){var t=document.querySelector('.gtile[data-id="'+id+'"]');if(t){t.classList.remove('shake');void t.offsetWidth;t.classList.add('shake');}});
+  gBalls(4-r.mistakes,true);
+  gMsg(best===3?'One away!':over?'Out of Poké Balls!':'Not quite.');
+  gLater(tok,over?900:500,function(){
+    gBusy=false;
+    if(over){gSel=[];gRender(false);checkProgress(null);return;}
+    gButtons();
+  });
+}
+function gStats(r,pz){
+  var s=store.groupsStats;s.played++;
+  if(r.won){
+    s.wins++;s.streak=(s.last===dayBefore(r.date)||s.last===r.date)?s.streak+1:1;
+    if(!s.last||s.last<r.date)s.last=r.date;
+    if(s.streak>s.best)s.best=s.streak;
+    if(!r.mistakes)s.perfect++;
+    if(pz[r.solved[0]][0]==='M')s.masterFirst=1;
+  }else s.streak=0;
+}
+function groupsShare(r,pz){
+  return "PokéDive Professor's Groups "+r.date+'\n'+r.guesses.map(function(g){return g.map(function(id){return GTIER[pz[groupOf(pz,id)][0]].e;}).join('');}).join('\n');
+}
+function gFinal(r,pz){
+  var end=$('g-end');end.textContent='';end.hidden=false;$('g-msg').textContent='';
+  end.appendChild(el('div','ghead '+(r.won?'win':'lose'),r.won?'RESEARCH COMPLETE':'BETTER LUCK TOMORROW'));
+  end.appendChild(el('p','fine',r.won?'You found all four groups with '+r.mistakes+(r.mistakes===1?' mistake.':' mistakes.'):'You used all 4 mistakes. The groups you missed are shown above.'));
+  var cd=el('p','fine');cd.style.marginTop='8px';end.appendChild(cd);
+  function tick(){
+    if($('s-groups').hidden){clearInterval(gTimer);return;}
+    if(today()!==r.date){clearInterval(gTimer);cd.textContent='A new puzzle is ready. Reopen Professor\'s Groups to play it.';return;}
+    var n=new Date(),mid=new Date(n.getFullYear(),n.getMonth(),n.getDate()+1),s=Math.max(0,Math.floor((mid-n)/1000));
+    cd.textContent='Next puzzle in '+('0'+Math.floor(s/3600)).slice(-2)+':'+('0'+Math.floor(s%3600/60)).slice(-2)+':'+('0'+s%60).slice(-2);
+  }
+  tick();clearInterval(gTimer);gTimer=setInterval(tick,1000);
+  var btn=el('button','btn primary','Copy result');btn.type='button';btn.style.marginTop='12px';
+  btn.addEventListener('click',function(){
+    var text=groupsShare(r,pz);
+    function fb(){var b=$('groupsShareBox');b.value=text;b.hidden=false;b.focus();b.select();btn.textContent='Select and copy';}
+    try{if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(function(){btn.textContent='Copied';},fb);else fb();}catch(e){fb();}
+  });
+  end.appendChild(btn);
+  groupsStatsRender();
+}
+function groupsStatsRender(){
+  var s=store.groupsStats,host=$('g-stats');host.textContent='';
+  [[String(s.played),'Played'],[(s.played?Math.round(s.wins/s.played*100):0)+'%','Win rate'],[String(s.perfect),'Perfect'],[String(groupsStreak()),'Current streak'],[String(s.best),'Best streak']].forEach(function(x){
+    var d=el('div','stat');d.appendChild(el('b','',x[0]));d.appendChild(el('span','',x[1]));host.appendChild(d);
+  });
+}
+
 /* ================= MODAL ================= */
 var pickCb=null;
 function openSettings(){
@@ -3993,6 +4303,10 @@ $('btn-party').addEventListener('click',renderParty);
 $('btn-dex').addEventListener('click',renderDex);
 $('btn-stats').addEventListener('click',renderStats);
 $('btn-raid').addEventListener('click',renderRaid);
+$('btn-groups').addEventListener('click',renderGroups);
+$('g-submit').addEventListener('click',gSubmit);
+$('g-clear').addEventListener('click',function(){gSel=[];gMsg('');gRender(false);});
+$('g-shuffle').addEventListener('click',function(){var r=groupsState(groupsDate);if(r.done||gBusy)return;shuffle(r.order,Math.random);save();gRender(false);});
 $('raid-form').addEventListener('submit',function(e){e.preventDefault();raidSubmit();});
 $('raid-input').addEventListener('input',raidAuto);
 $('raid-swap').addEventListener('click',openSettings);
