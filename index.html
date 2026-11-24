@@ -419,8 +419,39 @@ body.lab #scene,body.lab #fx{display:none}
 .labbtn{background:#f4f7fa;color:#1d3a5c;border:2px solid #9fb6cc;box-shadow:0 5px 0 #7c93a8}
 .labbtn small{color:#3d5878}
 .labbtn:active{transform:translateY(3px);box-shadow:0 2px 0 #7c93a8}
-#s-groups{--lab-ink:#1b2a3a;--lab-dim:#5a6b7d;--lab-line:#c9d4de;color:var(--lab-ink);
-  background:linear-gradient(180deg,#f7fafc 0,#e9eef2 62%,#d9c3a2 62%,#c9ae86 100%)}
+#s-groups{--lab-ink:#1b2a3a;--lab-dim:#5a6b7d;--lab-line:#c9d4de;color:var(--lab-ink);background:#eef2f5}
+/* lab scene: original pixel-art room drawn on a low-res canvas, professor standing in it */
+.labscene{position:relative;width:100%;aspect-ratio:16/10;border-radius:18px;overflow:hidden;border:3px solid #2a3b4f;box-shadow:0 4px 0 #c9d4de;background:#efe6cf}
+.labscene canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated}
+.labscene .prof{position:absolute;left:3%;bottom:4%;height:66%;aspect-ratio:1;object-fit:contain;image-rendering:pixelated;transform-origin:50% 100%;
+  filter:drop-shadow(0 2px 0 rgba(42,59,79,.25));animation:profidle 1.2s steps(2,end) infinite}
+.labscene .prof.hop{animation:profhop .5s ease-out 2}
+.labscene .prof.nope{animation:profnope .45s linear}
+.bubble{position:absolute;left:40%;right:3%;top:5%;background:#fff;border:3px solid #2a3b4f;border-radius:10px;padding:8px 10px;box-shadow:0 3px 0 rgba(42,59,79,.25);z-index:2}
+.bubble::before{content:"";position:absolute;left:-12px;bottom:18px;width:0;height:0;border:7px solid transparent;border-right:9px solid #2a3b4f}
+.bubble::after{content:"";position:absolute;left:-6px;bottom:20px;width:0;height:0;border:5px solid transparent;border-right:6px solid #fff}
+.bubble b{display:block;font-family:var(--display);font-size:7px;line-height:1.6;font-weight:400;color:#c0392b;margin-bottom:3px}
+.bubble span{display:block;font-family:var(--display);font-size:clamp(7px,2.1vw,9px);line-height:1.75;color:#1b2a3a;min-height:3.5em}
+.bubble span::after{content:"▼";display:inline-block;margin-left:4px;font-size:.8em;color:#c0392b;animation:caret .8s steps(2,end) infinite;opacity:0}
+.bubble.done span::after{opacity:1}
+.labscene .confetti{position:absolute;top:-6px;width:6px;height:6px;pointer-events:none;z-index:3;animation:conffall var(--t) linear forwards}
+/* correct-group animation */
+.ggrid .gtile.gfound,.ggrid .gtile.gfound[aria-pressed]{border-color:var(--gc);box-shadow:0 0 0 3px var(--gc),0 0 16px var(--gc);background:#fff;color:#1b2a3a;animation:tilehit .32s ease-out}
+.gbar{position:relative;overflow:visible}
+.gbar.fresh{animation:barup .45s cubic-bezier(.2,.9,.3,1.1) both}
+.gbar.fresh::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.75) 45%,transparent 60%);background-size:250% 100%;animation:shine .9s .3s ease-out both;pointer-events:none}
+.gbar .spark{position:absolute;left:50%;top:50%;width:7px;height:7px;background:var(--sc);box-shadow:0 0 6px var(--sc);pointer-events:none;animation:barspark .8s ease-out forwards}
+.gbar.M.fresh{animation:barup .45s cubic-bezier(.2,.9,.3,1.1) both,masterglow 1.2s .3s ease-out}
+@keyframes profidle{0%{transform:translateY(0)}100%{transform:translateY(-2%)}}
+@keyframes profhop{0%,100%{transform:none}40%{transform:translateY(-14%) scale(1.04,.98)}}
+@keyframes profnope{0%,100%{transform:none}25%{transform:translateX(-5%)}75%{transform:translateX(5%)}}
+@keyframes caret{0%{transform:translateY(0)}100%{transform:translateY(2px)}}
+@keyframes conffall{0%{transform:translate(0,0) rotate(0)}100%{transform:translate(var(--dx),calc(var(--h) + 20px)) rotate(540deg);opacity:.9}}
+@keyframes tilehit{0%{transform:translateY(-5px) scale(1)}50%{transform:translateY(-9px) scale(1.08)}100%{transform:translateY(-5px) scale(1)}}
+@keyframes shine{0%{background-position:120% 0}100%{background-position:-60% 0}}
+@keyframes barspark{0%{transform:translate(-50%,-50%) scale(1);opacity:1}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.3);opacity:0}}
+@keyframes masterglow{0%{box-shadow:0 0 0 0 rgba(138,79,216,.9)}100%{box-shadow:0 0 0 18px rgba(138,79,216,0)}}
+
 #s-groups .bar h2{color:var(--lab-ink);text-shadow:none}
 #s-groups .sq{background:#fff;border-color:var(--lab-line);color:var(--lab-ink)}
 .lpanel{background:#fff;border:1px solid var(--lab-line);border-radius:20px;box-shadow:0 2px 0 rgba(27,42,58,.06),0 8px 22px rgba(27,42,58,.08)}
@@ -710,9 +741,10 @@ body.lab #scene,body.lab #fx{display:none}
   <!-- PROFESSOR'S GROUPS -->
   <section class="screen" id="s-groups" hidden>
     <div class="bar"><button class="sq" data-home aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 5l-7 7 7 7"/></svg></button><h2>PROFESSOR'S GROUPS</h2></div>
-    <div class="lpanel host">
-      <div class="prof"><img id="g-prof" alt=""></div>
-      <div class="say"><b id="g-title"></b><span id="g-hello"></span></div>
+    <div class="labscene" id="g-scene">
+      <canvas id="g-lab" aria-hidden="true"></canvas>
+      <img class="prof" id="g-prof" alt="">
+      <div class="bubble" id="g-bubble" aria-live="polite"><b id="g-title"></b><span id="g-say"></span></div>
     </div>
     <div class="solved" id="g-solved"></div>
     <div class="ggrid" id="g-grid" role="group" aria-label="Pokémon tiles"></div>
@@ -4065,6 +4097,117 @@ function raidAuto(){
 }
 
 /* ================= PROFESSOR'S GROUPS ================= */
+/* ---------- the lab: an original retro pixel-art room ---------- */
+var LAB={c:null,ctx:null,t:0,timer:0,W:128,H:80};
+function labDraw(full){
+  var x=LAB.ctx,W=LAB.W;if(!x)return;
+  function r(a,b,w,h,c){x.fillStyle=c;x.fillRect(a,b,w,h);}
+  function hh(a,b){var v=Math.imul(a*73856093^b*19349663,2654435761)>>>0;return (v%1000)/1000;}
+  if(full){
+    /* back wall, trim and wainscot */
+    r(0,0,W,52,'#efe6cf');r(0,0,W,3,'#b89a6a');r(0,3,W,1,'#d9c79f');
+    for(var v=0;v<W;v+=16)r(v,44,1,8,'#c4ad80');
+    r(0,44,W,8,'#d9c79f');r(0,44,W,1,'#b89a6a');for(v=8;v<W;v+=16)r(v,45,1,7,'#c4ad80');
+    /* window with sky */
+    r(5,7,28,20,'#7a5a38');r(7,9,24,16,'#9fd8f5');r(7,19,24,6,'#bfe6fa');
+    r(10,12,7,2,'#fff');r(11,11,4,1,'#fff');r(22,15,6,2,'#fff');r(23,14,3,1,'#fff');
+    r(18,9,2,16,'#7a5a38');r(7,16,24,1,'#7a5a38');r(4,27,30,2,'#a8845a');
+    /* research machine */
+    r(37,12,26,32,'#8f9aa6');r(37,12,26,2,'#c2ccd6');r(37,12,1,32,'#a9b3bd');r(62,12,1,32,'#6f7a86');
+    r(40,16,20,11,'#0f2a1e');r(40,16,20,1,'#2a4a3a');
+    r(41,37,18,1,'#6f7a86');r(41,39,18,1,'#6f7a86');r(36,42,28,3,'#6f7a86');
+    r(64,20,4,2,'#6f7a86');r(66,22,2,22,'#6f7a86');
+    /* two bookshelves */
+    [69,90].forEach(function(sx,si){
+      r(sx,8,20,37,'#7a5232');r(sx+2,10,16,33,'#4e321e');
+      [18,28,38].forEach(function(sy){r(sx+2,sy,16,2,'#8a6240');});
+      [[10,18],[20,28],[30,38]].forEach(function(row,ri){
+        var bx=sx+2;var cols=['#c0392b','#3b7fe0','#2f9d4a','#e8b800','#8a4fd8','#e07a2a','#2a8a8a','#d24a8a'];
+        while(bx<sx+17){
+          var w=2+Math.floor(hh(bx+si*7,ri)*2),h=row[1]-row[0]-1-Math.floor(hh(bx,ri+si)*3);
+          if(bx+w>sx+18)w=sx+18-bx;
+          var c=cols[Math.floor(hh(bx*3+si,ri*5)*cols.length)];
+          if(hh(bx,ri*9+si)<0.12){bx+=w;continue;}
+          r(bx,row[1]-h,w,h,c);r(bx,row[1]-h,w,1,'rgba(255,255,255,.25)');bx+=w;
+        }
+      });
+    });
+    /* potted plant */
+    r(114,36,9,8,'#b0603a');r(114,36,9,1,'#d08050');r(115,44,7,1,'#7a3a20');
+    r(117,26,3,10,'#2f7a28');r(113,29,5,3,'#3f9e34');r(119,27,5,3,'#3f9e34');r(115,24,4,3,'#58b83e');r(119,31,4,2,'#58b83e');
+    /* checkered floor */
+    for(var ty=52;ty<80;ty+=7)for(var tx=-4;tx<W;tx+=8){
+      r(tx,ty,8,7,((tx+4)/8+(ty-52)/7)%2?'#ddd3bf':'#e9e1cf');
+    }
+    for(ty=52;ty<80;ty+=7)r(0,ty,W,1,'#c9bc9f');
+    for(tx=4;tx<W;tx+=8)r(tx,52,1,28,'#d2c6ab');
+    r(0,52,W,2,'#b8aa8c');
+    /* rug for the professor */
+    r(3,66,40,12,'#8a2a24');r(4,67,38,10,'#c0453a');r(6,69,34,6,'#a8362e');r(6,71,34,1,'#e8c070');r(6,73,34,1,'#e8c070');
+    /* table with three Poké Balls */
+    r(74,58,48,4,'#a8784a');r(74,58,48,1,'#c8986a');r(74,62,48,2,'#7a5232');r(77,64,3,13,'#7a5232');r(116,64,3,13,'#7a5232');
+    r(74,77,48,2,'rgba(90,70,40,.18)');
+    [84,96,108].forEach(function(bx){
+      r(bx+1,52,4,1,'#1b2a3a');r(bx,53,6,1,'#1b2a3a');
+      r(bx+1,53,4,2,'#e8433a');r(bx,55,6,1,'#1b2a3a');r(bx+1,56,4,1,'#f4f4f4');r(bx,56,1,1,'#1b2a3a');r(bx+5,56,1,1,'#1b2a3a');r(bx+1,57,4,1,'#1b2a3a');
+      r(bx+2,55,2,1,'#fff');
+    });
+  }
+  /* animated bits: scrolling readout and blinking lights */
+  var t=LAB.t;
+  r(41,17,18,9,'#0f2a1e');
+  for(var ln=0;ln<4;ln++){var w=4+Math.floor(hh(ln+t,7)*13);r(42,18+ln*2,w,1,ln===(t%4)?'#b8ffcf':'#5ef08a');}
+  [['#e8433a',0],['#f5c518',1],['#5ef08a',2]].forEach(function(l,i){
+    var on=(t+i)%3!==0;r(42+i*5,31,3,3,on?l[0]:'#4a525c');
+  });
+  r(57,31,3,3,t%2?'#9fd8f5':'#4a525c');
+}
+function labStart(){
+  var c=$('g-lab');LAB.c=c;c.width=LAB.W;c.height=LAB.H;LAB.ctx=c.getContext('2d');
+  labDraw(true);clearInterval(LAB.timer);
+  if(!calm)LAB.timer=setInterval(function(){if($('s-groups').hidden){clearInterval(LAB.timer);return;}LAB.t++;labDraw(false);},450);
+}
+/* speech bubble with a typewriter effect */
+var gSayTok=0;
+function gSay(text){
+  var span=$('g-say'),bub=$('g-bubble'),tok=++gSayTok,i=0;
+  bub.classList.remove('done');
+  if(calm){span.textContent=text;bub.classList.add('done');return;}
+  span.textContent='';
+  (function step(){
+    if(tok!==gSayTok)return;
+    i+=2;span.textContent=text.slice(0,i);
+    if(i<text.length)setTimeout(step,28);else bub.classList.add('done');
+  })();
+}
+function profReact(kind){
+  var p=$('g-prof');p.classList.remove('hop','nope');void p.offsetWidth;p.classList.add(kind);
+  setTimeout(function(){p.classList.remove(kind);},1100);
+}
+var GTIERCOL={P:'#ee3d2f',G:'#3b7fe0',U:'#f5c518',M:'#8a4fd8'};
+function labConfetti(){
+  if(calm)return;
+  var sc=$('g-scene'),cols=['#ee3d2f','#3b7fe0','#f5c518','#8a4fd8','#5ef08a'],H=sc.clientHeight;
+  for(var i=0;i<36;i++){
+    var d=el('span','confetti');d.style.left=(Math.random()*100)+'%';d.style.background=cols[i%cols.length];
+    d.style.setProperty('--t',(1.4+Math.random()*1.2)+'s');d.style.setProperty('--dx',(Math.random()*60-30)+'px');d.style.setProperty('--h',H+'px');
+    d.style.animationDelay=(Math.random()*0.6)+'s';sc.appendChild(d);
+    (function(n){setTimeout(function(){if(n.parentNode)n.parentNode.removeChild(n);},3400);})(d);
+  }
+}
+function barSparks(bar,tier){
+  if(calm)return;
+  var n=tier==='M'?22:14;
+  for(var i=0;i<n;i++){
+    var s=el('span','spark'),a=i/n*6.283+Math.random()*.3,d=(tier==='M'?70:48)+Math.random()*30;
+    s.style.setProperty('--sc',i%3?GTIERCOL[tier]:'#ffffff');s.style.setProperty('--dx',(Math.cos(a)*d*1.6)+'px');s.style.setProperty('--dy',(Math.sin(a)*d*0.6)+'px');
+    s.style.animationDelay=(Math.random()*0.12)+'s';bar.appendChild(s);
+    (function(n2){setTimeout(function(){if(n2.parentNode)n2.parentNode.removeChild(n2);},1100);})(s);
+  }
+}
+var SAY_RIGHT=['Brilliant! That group is {g}.','You found it: {g}!','Excellent research! {g}.','That is it! {g}.'];
+function hostIntro(h){return "Hi! I'm Professor "+h[1]+'. My research notes got mixed up. Can you help me sort these 16 Pokémon into four groups of four?';}
+
 /* Professor's Groups puzzle bank: [tier, group name, [4 Pokédex numbers]] x4, tiers P Poké, G Great, U Ultra, M Master.
    Checked by tools/groups_lib.py: every Pokémon in a puzzle fits exactly one of its four groups. */
 var GROUPS_BANK=[
@@ -4151,8 +4294,9 @@ function renderGroups(){
   var r=groupsState(groupsDate),h=groupsHost(groupsDate);
   show('groups');
   var img=$('g-prof');img.onerror=function(){this.onerror=null;this.src=LABSCI;};img.alt='Professor '+h[1];img.src=TRAINER_SPR+h[0]+'.png';
-  $('g-title').textContent='Professor '+h[1]+"'s Research Notes";
-  $('g-hello').textContent='Fresh from the '+h[2]+' lab: sort these 16 Pokémon into four groups of four.';
+  $('g-title').textContent='PROF. '+h[1].toUpperCase();
+  labStart();
+  gSay(r.done?(r.won?'Thanks again! Every group is sorted. Come back tomorrow for new notes.':'Here are the answers. Come back tomorrow for new notes!'):r.solved.length?'Welcome back! '+(4-r.solved.length)+' groups left to sort.':hostIntro(h));
   $('groupsShareBox').hidden=true;
   gRender(false);
   groupsStatsRender();
@@ -4176,7 +4320,7 @@ function gRender(animateLast){
   if(r.done)gFinal(r,pz);else{$('g-end').hidden=true;}
 }
 function gBar(g,anim){
-  var d=el('div','gbar '+g[0]);if(!anim)d.style.animation='none';
+  var d=el('div','gbar '+g[0]+(anim?' fresh':''));if(!anim)d.style.animation='none';
   d.appendChild(el('i','tier',GTIER[g[0]].n.toUpperCase()));
   d.appendChild(el('b','',g[1]));
   d.appendChild(el('span','',g[2].map(function(id){return DEX[id-1];}).join(', ')));
@@ -4212,8 +4356,16 @@ function gSubmit(){
     r.solved.push(gi);
     if(r.solved.length===4){r.done=true;r.won=true;gStats(r,pz);}
     save();
-    picked.forEach(function(id){var t=document.querySelector('.gtile[data-id="'+id+'"]');if(t)t.className='gtile leave';});
-    gLater(tok,380,function(){gSel=[];gBusy=false;gMsg(r.done?'':['Nice work!','Great find!','Excellent!'][r.solved.length%3]);gRender(true);if(r.done)checkProgress(null);});
+    var g=pz[gi];
+    picked.forEach(function(id){var t=document.querySelector('.gtile[data-id="'+id+'"]');if(t){t.style.setProperty('--gc',GTIERCOL[g[0]]);t.classList.add('gfound');}});
+    profReact('hop');
+    gSay(r.done?'Amazing work! You sorted every group. My notes are finally in order!':SAY_RIGHT[(r.solved.length+r.date.length)%SAY_RIGHT.length].replace('{g}',g[1]));
+    gLater(tok,340,function(){picked.forEach(function(id){var t=document.querySelector('.gtile[data-id="'+id+'"]');if(t)t.className='gtile leave';});});
+    gLater(tok,720,function(){
+      gSel=[];gBusy=false;gMsg('');gRender(true);
+      var bars=document.querySelectorAll('#g-solved .gbar.fresh');if(bars.length)barSparks(bars[bars.length-1],g[0]);
+      if(r.done){labConfetti();setTimeout(function(){profReact('hop');},600);checkProgress(null);}
+    });
     return;
   }
   r.mistakes++;
@@ -4223,6 +4375,8 @@ function gSubmit(){
   picked.forEach(function(id){var t=document.querySelector('.gtile[data-id="'+id+'"]');if(t){t.classList.remove('shake');void t.offsetWidth;t.classList.add('shake');}});
   gBalls(4-r.mistakes,true);
   gMsg(best===3?'One away!':over?'Out of Poké Balls!':'Not quite.');
+  profReact('nope');
+  gSay(over?"No worries! Let's look at the answers together.":best===3?'So close! Just one of those is out of place.':"Hmm, those don't quite fit together.");
   gLater(tok,over?900:500,function(){
     gBusy=false;
     if(over){gSel=[];gRender(false);checkProgress(null);return;}
