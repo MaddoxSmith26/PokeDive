@@ -528,6 +528,68 @@ body.lab #scene,body.lab #fx{display:none}
 @keyframes r-shake{0%,100%{transform:none}15%,45%,75%{transform:translateX(-6px)}30%,60%,90%{transform:translateX(6px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media (min-width:480px){.grid{grid-template-columns:repeat(6,1fr)}.badges{grid-template-columns:repeat(5,1fr)}}
+
+/* ===== lab rewards, bag, mystery eggs ===== */
+.greward{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.grw{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:#f4f7fa;border:1px solid var(--lab-line);animation:barup .45s cubic-bezier(.2,.9,.3,1.1) both}
+.grw:nth-child(2){animation-delay:.12s}.grw:nth-child(3){animation-delay:.24s}
+.grw .ic{width:46px;height:46px;flex:none;display:grid;place-items:center;border-radius:12px;background:#fff;border:1px solid var(--lab-line);font-family:var(--display);font-size:7px;color:#1d4f8a;text-align:center;line-height:1.5}
+.grw .ic img{width:38px;height:38px;image-rendering:pixelated;object-fit:contain}
+.grw b{display:block;font-family:var(--display);font-size:9px;line-height:1.6;font-weight:400;color:#1b2a3a}
+.grw span{display:block;font-size:12.5px;line-height:1.4;color:var(--lab-dim)}
+.grw.rare{background:linear-gradient(135deg,#fff8dc,#ffe9a8);border-color:#e3bd4f}
+.grw.rare .ic{animation:giftglow 1.6s ease-in-out infinite alternate}
+@keyframes giftglow{0%{box-shadow:0 0 0 0 rgba(227,189,79,.0)}100%{box-shadow:0 0 14px 2px rgba(227,189,79,.8)}}
+.stamps{display:grid;grid-template-columns:repeat(6,1fr);gap:8px 6px}
+.stampw{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.stampw i{font-style:normal;font-family:var(--display);font-size:5.5px;line-height:1.4;color:var(--lab-dim);text-align:center}
+.stamp{position:relative;width:100%;aspect-ratio:1;border-radius:50%;background:#f4f7fa;border:2px dashed #c3cfda;overflow:hidden}
+.stamp img{position:absolute;left:-30%;top:-8%;width:160%;height:160%;object-fit:contain;object-position:50% 0;image-rendering:pixelated;filter:grayscale(1);opacity:.28}
+.stamp.on{border:2px solid #c2374a;background:#fff1f1}
+.stamp.on img{filter:none;opacity:1}
+.stampw .ok{position:relative;width:100%}
+.stampw.on .ok::after{content:"";position:absolute;right:-3px;bottom:-3px;width:15px;height:15px;border-radius:50%;background:#c2374a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.6L12 5.6' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat;border:2px solid #fff}
+.stampw.new .ok{animation:stampin .55s cubic-bezier(.2,.9,.3,1.3) both}
+@keyframes stampin{0%{transform:scale(2.4) rotate(-14deg);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
+.stampw.fellow i{color:#c2374a}
+.bag{display:flex;flex-direction:column;gap:10px}
+.bagi{display:flex;align-items:center;gap:12px}
+.bagi .ic{width:42px;height:42px;flex:none;display:grid;place-items:center;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid var(--line)}
+.bagi .ic img{width:34px;height:34px;image-rendering:pixelated;object-fit:contain}
+.bagi .tx{flex:1;min-width:0}
+.bagi b{display:block;font-family:var(--display);font-size:9px;line-height:1.6;font-weight:400}
+.bagi span{display:block;font-size:12px;color:var(--ink-dim);line-height:1.4}
+.bagi .n{flex:none;font-family:var(--display);font-size:10px;color:var(--accent)}
+.bagi.ready .ic{animation:giftglow 1.2s ease-in-out infinite alternate}
+.pip.potion{background:linear-gradient(180deg,#e4d6ff,#8a5ad8)}
+.scopeline{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-top:10px;border-radius:14px;background:rgba(6,22,44,.75);border:1px solid rgba(120,200,255,.45)}
+.scopeline[hidden]{display:none}
+.scopeline img{width:30px;height:30px;flex:none;image-rendering:pixelated}
+.scopeline b{display:block;font-family:var(--display);font-size:8px;line-height:1.6;font-weight:400;color:#8fd3ff}
+.scopeline span{display:block;font-size:13px;line-height:1.4}
+.dx .etag{background:#3d9b5a;margin-left:2px}
+.dx .etag.sh{background:#d4a514}
+#hatch{position:fixed;inset:0;z-index:9;display:grid;place-items:center;padding:20px;background:rgba(5,10,22,.82)}
+#hatch[hidden]{display:none}
+.hcard{width:100%;max-width:340px;padding:22px 18px 18px;border-radius:22px;background:linear-gradient(180deg,#1b2d4d,#101c33);border:1px solid rgba(255,255,255,.14);text-align:center;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.hstage{position:relative;width:184px;height:184px;margin:0 auto 12px}
+.hstage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+#hatch-egg{transform-origin:50% 88%}
+#hatch-egg.wob{animation:eggwob 2.6s ease-in-out both}
+#hatch-egg.gone{opacity:0;transition:opacity .15s}
+@keyframes eggwob{0%,8%{transform:none}13%{transform:rotate(-9deg)}18%{transform:rotate(9deg)}23%,42%{transform:none}47%{transform:rotate(-13deg)}52%{transform:rotate(13deg)}57%{transform:rotate(-13deg)}62%,72%{transform:none}76%{transform:rotate(-17deg) translateY(-4px)}80%{transform:rotate(17deg) translateY(-4px)}84%{transform:rotate(-17deg) translateY(-4px)}88%{transform:rotate(17deg)}100%{transform:scale(1.15)}}
+#hatch-mon{opacity:0;transform:scale(.2)}
+#hatch-mon.in{animation:monin .55s cubic-bezier(.2,.9,.3,1.35) forwards}
+@keyframes monin{to{opacity:1;transform:none}}
+.hflash{position:absolute;left:50%;top:50%;width:300px;height:300px;margin:-150px;border-radius:50%;background:radial-gradient(circle,#fff 0,rgba(255,255,255,.85) 25%,rgba(255,255,255,0) 68%);opacity:0;pointer-events:none}
+.hflash.go{animation:hflash .9s ease-out}
+@keyframes hflash{0%{opacity:0;transform:scale(.3)}25%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.4)}}
+.hspark{position:absolute;color:#ffe27a;font-size:20px;line-height:1;text-shadow:0 0 8px #ffd84d;pointer-events:none;animation:hspark 1.4s ease-in-out infinite}
+@keyframes hspark{0%,100%{transform:scale(.4);opacity:0}50%{transform:scale(1.1);opacity:1}}
+#hatch-h{display:block;font-family:var(--display);font-size:11px;line-height:1.7;font-weight:400}
+#hatch-h .shy{display:inline-block;margin-left:6px;padding:2px 6px;border-radius:6px;background:#d4a514;color:#1b1b1b;font-size:8px;vertical-align:middle}
+#hatch-p{margin:8px 0 14px;font-size:13px;line-height:1.5;color:rgba(255,255,255,.75);min-height:20px}
+#hatch-ok[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -563,6 +625,11 @@ body.lab #scene,body.lab #fx{display:none}
     <button class="btn primary" id="btn-daily">Daily Dive<small id="daily-sub"></small></button>
     <button class="btn raidbtn" id="btn-raid">Max Raid<small id="raid-sub"></small></button>
     <button class="btn labbtn" id="btn-groups">Professor's Groups<small id="groups-sub"></small></button>
+    <div class="panel sect" id="bag" hidden>
+      <h2>Bag</h2>
+      <div class="bag" id="bag-list"></div>
+      <p class="fine" style="margin-top:12px">Items are used automatically. Solve Professor's Groups to earn more.</p>
+    </div>
     <div class="panel sect">
       <h2>Regions</h2>
       <div class="rchips" id="region-chips"></div>
@@ -714,6 +781,7 @@ body.lab #scene,body.lab #fx{display:none}
       </form>
       <div class="sug" id="raid-sug" hidden></div>
       <div class="note" id="raid-note"></div>
+      <div class="scopeline" id="raid-scope" hidden></div>
       <button class="btn ghost" id="raid-swap" style="margin-top:8px;padding:12px">Change raid partner</button>
     </div>
     <div class="panel sect" id="raid-end" hidden></div>
@@ -728,7 +796,7 @@ body.lab #scene,body.lab #fx{display:none}
         <span><b>▲ ▼</b> The answer's stage or generation is higher or lower</span>
       </div>
       <div class="habkey" id="raid-habkey"></div>
-      <p class="fine" style="margin-top:12px">Raids can be any Pokémon from #0001 to #1025. Six guesses, one raid a day. Gen 4 and later have no official habitat data, so their habitats follow their evolution line and types.</p>
+      <p class="fine" style="margin-top:12px">Raids can be any Pokémon from #0001 to #1025. Six guesses (seven with a Max Potion), one raid a day. Gen 4 and later have no official habitat data, so their habitats follow their evolution line and types.</p>
     </div>
     <div class="panel sect">
       <h2>Raid stats</h2>
@@ -765,6 +833,11 @@ body.lab #scene,body.lab #fx{display:none}
       <h2>Lab stats</h2>
       <div class="stats" id="g-stats"></div>
     </div>
+    <div class="lpanel sect">
+      <h2>Professor stamp card</h2>
+      <div class="stamps" id="g-stamps"></div>
+      <p class="fine" id="g-stamp-note" style="margin-top:12px"></p>
+    </div>
   </section>
 
   <!-- DEX -->
@@ -797,6 +870,7 @@ body.lab #scene,body.lab #fx{display:none}
   <div id="lane-ticks"></div>
   <div id="diver"><span class="evo" id="diver-evo"><span class="react" id="diver-react"><img id="diver-img" alt=""></span></span></div>
 </div>
+<div id="hatch" hidden role="dialog" aria-modal="true" aria-labelledby="hatch-h"><div class="hcard"><div class="hstage" id="hatch-stage"><img id="hatch-egg" alt=""><img id="hatch-mon" alt=""><div class="hflash" id="hatch-flash"></div></div><b id="hatch-h"></b><p id="hatch-p"></p><button class="btn primary" id="hatch-ok" type="button" hidden>Nice!</button></div></div>
 <div class="panel" id="toast" aria-live="polite"></div>
 
 <div id="modal" hidden>
@@ -1446,6 +1520,8 @@ var BADGES=[
  {id:'labperfect',n:'Flawless Research',d:'Solve a puzzle with no mistakes',s:'diamond',c:'#1f9d6b',g:gl('M14 24l7 7 13-15'),ok:function(){return store.groupsStats.perfect>=1;}},
  {id:'labmaster',n:'Master Ball First',d:'Find the Master Ball group first',s:'circle',c:'#8a4fd8',g:gt('M',16),ok:function(){return !!store.groupsStats.masterFirst;}},
  {id:'lab7',n:'7-Day Lab Streak',d:'Solve 7 puzzles in a row',s:'hex',c:'#1d4f8a',g:gt('L7',11),ok:function(){return store.groupsStats.best>=7;}},
+ {id:'fellow',n:'Research Fellow',d:'Collect every professor stamp',s:'burst',c:'#c2374a',g:gl('M24 12l3.5 7.2 7.9 1.1-5.7 5.6 1.3 7.9L24 30l-7 3.8 1.3-7.9-5.7-5.6 7.9-1.1z',1),ok:function(){return fellowDone();}},
+ {id:'hatch1',n:'Egg Hatcher',d:'Hatch a Mystery Egg',s:'circle',c:'#3d9b5a',g:gl('M24 11c-6 0-10 9-10 15a10 10 0 0 0 20 0c0-6-4-15-10-15z'),ok:function(){return count(store.eggCaught)>=1;}},
  {id:'explorer',n:'Explorer',d:'Dive in Water, Fire and Grass',s:'diamond',c:'#5b6ad9',g:gl('M24 11l5 13-5 13-5-13z',1),ok:function(){return ['ocean','lava','forest'].every(function(t){return store.themesUsed[t];});}}
 ];
 function badgeSVG(b){
@@ -1456,7 +1532,8 @@ function badgeSVG(b){
 var KEY='pokedive.v1';
 var store={avatar:'ocean:7',avatarBy:{},shinyOn:{},theme:'ocean',played:0,best:0,streak:0,longest:0,lastDaily:'',dailies:{},mode:'normal',regions:null,
   bestBy:{},regionsDived:{},exp:0,title:'rookie',trail:'none',badges:{},unlocked:{},dex:{},shinyCount:{},tc:{},cat:{},rarest:null,mpPlayed:0,themesUsed:{},party:null,formsOpen:{},formSel:{},
-  raid:null,raidCaught:{},raidStats:{played:0,wins:0,streak:0,best:0,last:'',perfect:0,dist:[0,0,0,0,0,0]},
+  raid:null,raidCaught:{},raidStats:{played:0,wins:0,streak:0,best:0,last:'',perfect:0,dist:[0,0,0,0,0,0,0]},
+  items:{lucky:0,candy:0,scope:0,potion:0},eggs:[],stamps:{},eggCaught:{},
   groups:null,groupsStats:{played:0,wins:0,streak:0,best:0,last:'',perfect:0,masterFirst:0}};
 try{var saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&typeof saved==='object'){for(var k0 in store){if(saved[k0]!==undefined&&saved[k0]!==null)store[k0]=saved[k0];}}}catch(e){}
 if(!DIFFS[store.mode])store.mode='normal';
@@ -1464,6 +1541,13 @@ if(typeof store.exp!=='number'||!(store.exp>=0))store.exp=0;
 if(!Array.isArray(store.regions)||store.regions.length!==REGIONS.length||!store.regions.some(Boolean))store.regions=ALLF.slice();
 ['shinyOn','dailies','bestBy','regionsDived','badges','unlocked','dex','shinyCount','tc','cat','themesUsed'].forEach(function(k){if(!store[k]||typeof store[k]!=='object')store[k]={};});
 if(!store.raidCaught||typeof store.raidCaught!=='object')store.raidCaught={};
+['stamps','eggCaught'].forEach(function(k){if(!store[k]||typeof store[k]!=='object'||Array.isArray(store[k]))store[k]={};});
+(function(){var it=store.items,d={lucky:0,candy:0,scope:0,potion:0};
+  if(!it||typeof it!=='object')it=store.items={};
+  for(var k in d){var v=it[k];it[k]=(typeof v==='number'&&v>0)?Math.floor(v):0;}
+  if(!Array.isArray(store.eggs))store.eggs=[];
+  store.eggs=store.eggs.filter(function(e){return e&&typeof e.got==='string'&&e.id>=1&&e.id<=1025;});
+})();
 ['formsOpen','formSel'].forEach(function(k){if(!store[k]||typeof store[k]!=='object')store[k]={};});
 (function(){var s=store.groupsStats,d={played:0,wins:0,streak:0,best:0,last:'',perfect:0,masterFirst:0};
   if(!s||typeof s!=='object')s=store.groupsStats={};
@@ -1472,7 +1556,8 @@ if(!store.raidCaught||typeof store.raidCaught!=='object')store.raidCaught={};
 (function(){var s=store.raidStats,d={played:0,wins:0,streak:0,best:0,last:'',perfect:0};
   if(!s||typeof s!=='object')s=store.raidStats={};
   for(var k in d){if(typeof s[k]!==typeof d[k])s[k]=d[k];}
-  if(!Array.isArray(s.dist)||s.dist.length!==6)s.dist=[0,0,0,0,0,0];
+  if(!Array.isArray(s.dist)||(s.dist.length!==6&&s.dist.length!==7))s.dist=[0,0,0,0,0,0,0];
+  if(s.dist.length===6)s.dist.push(0);
 })();
 if(!SKINS[store.theme])store.theme='ocean';
 /* migrate saves from before sceneries had lineups (numeric diver ids, Space theme) */
@@ -1568,7 +1653,7 @@ function renderPickers(){
       var im=el('img');im.alt='';im.width=44;im.height=44;loadSprite(im,{av:k,stage:st,shiny:open&&myShiny()});b.appendChild(im);
       b.appendChild(el('span','',open?DEX[id-1]:'Evolve to unlock'));
       b.setAttribute('aria-label',open?'Dive as '+DEX[id-1]:DEX[id-1]+', locked: evolve into it during a dive');
-      if(open)b.addEventListener('click',function(){store.formSel[k]=st;save();if(run&&run.mode!=='mp'&&!run.res.length){run.start=st;}renderPickers();refreshDiver();if(!$('s-raid').hidden)raidPartner();});
+      if(open)b.addEventListener('click',function(){store.formSel[k]=st;save();if(run&&run.mode!=='mp'&&!run.res.length){run.start=startStage(run);}renderPickers();refreshDiver();if(!$('s-raid').hidden)raidPartner();});
       else b.disabled=true;
       fh.appendChild(b);
     });
@@ -1587,7 +1672,7 @@ function renderPickers(){
 function chooseAvatar(id){
   if(!isOpen(id))return;
   store.avatar=id;store.avatarBy[store.theme]=id;save();renderPickers();
-  if(run&&run.mode!=='mp'){run.av=id;run.shiny=myShiny();run.start=myForm(id);}
+  if(run&&run.mode!=='mp'){run.av=id;run.shiny=myShiny();run.start=startStage(run);}
   refreshDiver();
 }
 
@@ -1653,7 +1738,7 @@ function setSkin(name,quiet){
     store.avatarBy[store.theme]=store.avatar;
     var nx=store.avatarBy[name];if(!nx||!EVO[nx]||!isOpen(nx))nx=lineup(name)[0][0];
     store.avatar=nx;
-    if(run&&run.mode!=='mp'){run.av=nx;run.shiny=myShiny();run.start=myForm(nx);}
+    if(run&&run.mode!=='mp'){run.av=nx;run.shiny=myShiny();run.start=startStage(run);}
   }
   store.theme=name;skin=SKINS[name];
   document.documentElement.setAttribute('data-skin',name);
@@ -2142,11 +2227,19 @@ function renderStart(){
   $('stats-sub').textContent=count(store.badges)+' of '+BADGES.length+' badges';
   $('raid-sub').textContent=raidSub();
   $('groups-sub').textContent=groupsSub();
-  renderTrainer();
+  renderTrainer();renderBag();
   disp=target=0;lastZone=zoneAt(0)[1];
   show('start');paintDepth();
+  checkEggs();
 }
-function titleName(){var r=reward('title',store.title);return r&&trainerLv()>=r.lv?r.n:'Rookie Diver';}
+function titleName(){if(store.title==='fellow')return fellowDone()?'Research Fellow':'Rookie Diver';var r=reward('title',store.title);return r&&trainerLv()>=r.lv?r.n:'Rookie Diver';}
+function addExp(gain){
+  var oldLv=trainerLv();store.exp+=gain;var newLv=trainerLv();
+  for(var lv=oldLv+1;lv<=newLv;lv++){
+    var got=REWARDS.filter(function(x){return x.lv===lv&&x.k!=='diver';}).map(function(x){return x.n;});
+    toast('LEVEL UP','TRAINER LV '+lv,got.length?'Unlocked: '+got.join(', '):'Keep diving');
+  }
+}
 function nextReward(lv){for(var i=0;i<REWARDS.length;i++){if(REWARDS[i].lv>lv)return REWARDS[i];}return null;}
 function renderTrainer(){
   var L=levelInfo(store.exp),nx=nextReward(L.lv);
@@ -2198,6 +2291,15 @@ function beginRun(r){
   if(r.mode!=='mp'){r.av=store.avatar;r.shiny=myShiny();}
   disp=target=total(r.res)*10;lastZone=zoneAt(disp)[1];
   r.start=r.mode==='mp'?0:myForm(r.av);
+  if(r.mode!=='mp'){
+    var dd0=r.mode==='daily'?dailyOf(r.diff,r.date):null;
+    if(dd0&&dd0.candy)r.candy=1;
+    else if(!r.res.length&&store.items.candy>0&&r.start<EVO[r.av].length-1){
+      store.items.candy--;r.candy=1;if(dd0)dd0.candy=1;save();
+      toast('RARE CANDY',DEX[EVO[r.av][r.start+1]-1].toUpperCase(),'Your diver starts one stage up',itemIcon('candy'));
+    }
+    r.start=startStage(r);
+  }
   r.level=levelFor(disp);
   store.themesUsed[store.theme]=1;
   var dl=r.diff==='legend'?'LEGENDARY':'NORMAL';
@@ -2355,13 +2457,9 @@ function endRun(){
   var mult=r.diff==='legend'?2:1,bonus=0,parts=[fmt(depth)+' m'];
   if(mult>1)parts.push('×2 Legendary');
   if(r.mode==='daily'){var sb=Math.min(0.5,0.05*liveStreak());bonus=0.25+sb;parts.push('+25% daily');if(sb>0)parts.push('+'+Math.round(sb*100)+'% streak');}
-  var gain=Math.round(depth*mult*(1+bonus)),oldLv=trainerLv();
-  store.exp+=gain;r.expGain=gain;r.expParts=parts;
-  var newLv=trainerLv();
-  for(var lv=oldLv+1;lv<=newLv;lv++){
-    var got=REWARDS.filter(function(x){return x.lv===lv&&x.k!=='diver';}).map(function(x){return x.n;});
-    toast('LEVEL UP','TRAINER LV '+lv,got.length?'Unlocked: '+got.join(', '):'Keep diving');
-  }
+  if(r.mode==='daily'&&store.items.lucky>0){store.items.lucky--;mult*=2;parts.push('×2 Lucky Egg');r.lucky=1;}
+  var gain=Math.round(depth*mult*(1+bonus));
+  r.expGain=gain;r.expParts=parts;addExp(gain);
   checkProgress(ctx);
   showResults(r);
 }
@@ -2543,6 +2641,7 @@ function renderDex(){
     c.appendChild(img);
     c.appendChild(el('b','',got?DEX[id-1]:'???'));
     if(store.raidCaught[id])c.appendChild(el('i','rtag','RAID'));
+    if(store.eggCaught[id])c.appendChild(el('i','rtag etag'+(store.eggCaught[id]===2?' sh':''),'EGG'));
     if(got)c.style.setProperty('--tc',TYPECOL[DTYPE.charCodeAt((id-1)*2)-97]);
     frag.appendChild(c);
   }
@@ -2578,6 +2677,17 @@ function renderStats(){
     }
     rw.appendChild(row);
   });
+  (function(){
+    var have=fellowDone(),row=el('div','rw'+(have?'':' off'));
+    row.appendChild(el('span','lv','LAB'));
+    var nm=el('span','nm','Research Fellow');nm.appendChild(el('small','','Title. Collect all '+PROFS.length+' professor stamps ('+stampCount()+' / '+PROFS.length+')'));row.appendChild(nm);
+    if(have){
+      var on=store.title==='fellow',b=el('button','',on?'Equipped':'Equip');b.type='button';b.setAttribute('aria-pressed',String(on));
+      b.addEventListener('click',function(){store.title='fellow';save();renderStats();});
+      row.appendChild(b);
+    }
+    rw.appendChild(row);
+  })();
   var tiles=$('st-tiles');tiles.textContent='';
   [['Lv '+L.lv,'Trainer level'],[fmt(store.exp),'Total EXP'],[fmt(store.best)+' m','Best depth'],[String(store.played),'Dives played'],[String(liveStreak()),'Current streak'],[String(store.longest),'Longest streak'],
    [String(store.mpPlayed),'Party games'],[count(store.dex)+' / 1025','Pokédex']].forEach(function(s){
@@ -3785,19 +3895,20 @@ function raidPartner(){
 }
 function raidPips(left,breaking){
   var host=$('raid-pips');host.textContent='';
-  for(var i=0;i<6;i++){var p=el('span','pip'+(i>=left?' gone':''));if(breaking&&i===left)p.className+=' breaking';host.appendChild(p);}
+  for(var i=0,mx=MAXG(raidState(raidDate||today()));i<mx;i++){var p=el('span','pip'+(i>=left?' gone':'')+(i===6?' potion':''));if(breaking&&i===left)p.className+=' breaking';host.appendChild(p);}
 }
 function raidSub(){
   var r=store.raid,t=today();
-  if(!r||r.date!==t||!r.g.length)return 'Guess today\'s Dynamax Pokémon in 6 tries';
+  if(!r||r.date!==t||!r.g.length)return 'Guess today\'s Dynamax Pokémon in '+((r&&r.date===t&&r.max===7)||store.items.potion>0?7:6)+' tries';
   var a=raidAnswer(t);
-  if(!r.done)return 'In progress: '+r.g.length+' of 6 guesses used';
+  if(!r.done)return 'In progress: '+r.g.length+' of '+MAXG(r)+' guesses used';
   return r.won?'Caught '+a.name+' in '+r.g.length+'. Next raid at midnight.':a.name+' fled. Next raid at midnight.';
 }
 function renderRaid(){
   raidTok++;raidBusy=false;clearInterval(raidTimer);
   raidDate=today();
   var r=raidState(raidDate),a=raidAnswer(r.date);
+  raidItems(r);
   show('raid');
   /* den */
   var motes=$('den-motes');
@@ -3808,7 +3919,7 @@ function renderRaid(){
   raidCloud();
   bi.onerror=function(){this.onerror=null;this.src='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5 0 9 4 9 9 0 3-1 5-3 7l1 4-5-2-2 1-2-1-5 2 1-4c-2-2-3-4-3-7 0-5 4-9 9-9z" fill="'+TYPECOL[TYPEKEYS.indexOf(a.t1)]+'"/></svg>');};
   bi.dataset.src=SPR+a.id+'.png';bi.dataset.name=a.name;
-  raidPartner();raidPips(6-(r.won?r.g.length-1:r.g.length));
+  raidPartner();raidPips(MAXG(r)-(r.won?r.g.length-1:r.g.length));raidScopeRender(r,a);
   var ball=$('raid-ball');ball.hidden=true;ball.className='ball';
   var msg=$('raid-msg');msg.hidden=true;
   /* table */
@@ -3821,7 +3932,7 @@ function renderRaid(){
   if(r.done)raidFinal(r,a);else{
     $('raid-entry').hidden=false;$('raid-end').hidden=true;
     $('raid-swap').hidden=r.g.length>0;
-    $('raid-note').className='note';$('raid-note').textContent=r.g.length?(6-r.g.length)+' guesses left.':'A Dynamax Pokémon is hiding in the den. Each guess reveals clues.';
+    $('raid-note').className='note';$('raid-note').textContent=r.g.length?guessesLeft(r):'A Dynamax Pokémon is hiding in the den. Each guess reveals clues.';
   }
   raidStatsRender();
   $('s-raid').scrollTop=0;
@@ -3859,11 +3970,11 @@ function raidStatsRender(){
   });
   var dh=$('raid-dist'),max=1;dh.textContent='';
   s.dist.forEach(function(v){if(v>max)max=v;});
-  s.dist.forEach(function(v,i){dh.appendChild(barRow((i+1)+(i?' guesses':' guess'),v/max,String(v),'#ff4f8b'));});
+  s.dist.forEach(function(v,i){if(i===6&&!v)return;dh.appendChild(barRow((i+1)+(i?' guesses':' guess'),v/max,String(v),'#ff4f8b'));});
 }
 function raidShare(r,a){
   var E={g:'🟩',y:'🟨',r:'🟥'};
-  return 'PokéDive Max Raid '+r.date+'\n'+(r.won?r.g.length:'X')+'/6\n'+r.g.map(function(id){return raidCells(RAIDBY[id],a).map(function(c){return E[c.s];}).join('');}).join('\n');
+  return 'PokéDive Max Raid '+r.date+'\n'+(r.won?r.g.length:'X')+'/'+MAXG(r)+'\n'+r.g.map(function(id){return raidCells(RAIDBY[id],a).map(function(c){return E[c.s];}).join('');}).join('\n');
 }
 /* finished state: also what you see if you come back later the same day */
 function raidFinal(r,a){
@@ -3873,7 +3984,7 @@ function raidFinal(r,a){
   var ball=$('raid-ball');ball.hidden=!r.won;ball.className='ball rest';
   var msg=$('raid-msg');msg.hidden=false;msg.textContent=r.won?'Gotcha! '+a.name+' was caught!':a.name+' fled the den...';
   var end=$('raid-end');end.textContent='';end.hidden=false;
-  end.appendChild(el('div','rhead '+(r.won?'win':'lose'),r.won?'RAID WON IN '+r.g.length+(r.g.length===1?' GUESS':' GUESSES'):'RAID FAILED AFTER 6 GUESSES'));
+  end.appendChild(el('div','rhead '+(r.won?'win':'lose'),r.won?'RAID WON IN '+r.g.length+(r.g.length===1?' GUESS':' GUESSES'):'RAID FAILED AFTER '+r.g.length+' GUESSES'));
   var card=el('div','ans'),tile=el('div','tile');tile.appendChild(monImg(a,76));card.appendChild(tile);
   var info=el('div');info.appendChild(el('b','','#'+('000'+a.id).slice(-4)+' '+a.name));
   info.appendChild(el('small','',cap(a.t1)+(a.t2?' / '+cap(a.t2):'')+' type. Stage '+a.stage+', '+(a.full?'fully evolved':'not fully evolved')+'. '+cap(a.color)+'. '+a.habs.map(function(h){return HABS[h];}).join(' and ')+'. Gen '+a.gen+'.'));
@@ -3902,7 +4013,7 @@ function raidGuess(m){
   if(r.g.indexOf(m.id)>=0){raidReject('You already guessed '+m.name+'.');return;}
   raidBusy=true;raidHideSug();$('raid-ac').hidden=true;$('raid-input').value='';$('raid-swap').hidden=true;
   r.g.push(m.id);
-  var won=m.id===a.id,over=won||r.g.length>=6,st=store.raidStats;
+  var won=m.id===a.id,over=won||r.g.length>=MAXG(r),st=store.raidStats;
   if(over){
     r.done=true;r.won=won;st.played++;
     if(won){
@@ -3935,10 +4046,10 @@ function raidGuess(m){
     /* wrong: the boss lunges, the den shakes, a shield breaks */
     var boss=$('raid-boss'),den=$('den');
     boss.className='boss';den.className='den';void boss.offsetWidth;boss.className='boss lunge';den.className='den shake';
-    raidPips(6-r.g.length,true);
+    raidPips(MAXG(r)-r.g.length,true);
     if(over){raidLater(tok,700,function(){raidLose(tok,r,a);});return;}
     raidLater(tok,550,function(){
-      raidBusy=false;$('raid-note').textContent=(6-r.g.length)+(6-r.g.length===1?' guess left.':' guesses left.');
+      raidBusy=false;$('raid-note').textContent=guessesLeft(r);
       try{$('raid-input').focus();}catch(e){}
     });
   });
@@ -4296,6 +4407,7 @@ function renderGroups(){
   var img=$('g-prof');img.onerror=function(){this.onerror=null;this.src=LABSCI;};img.alt='Professor '+h[1];img.src=TRAINER_SPR+h[0]+'.png';
   $('g-title').textContent='PROF. '+h[1].toUpperCase();
   labStart();
+  if(r.done&&r.won&&!r.reward){groupsReward(r);save();}
   gSay(r.done?(r.won?'Thanks again! Every group is sorted. Come back tomorrow for new notes.':'Here are the answers. Come back tomorrow for new notes!'):r.solved.length?'Welcome back! '+(4-r.solved.length)+' groups left to sort.':hostIntro(h));
   $('groupsShareBox').hidden=true;
   gRender(false);
@@ -4354,7 +4466,7 @@ function gSubmit(){
   r.guesses.push(picked);gBusy=true;gButtons();
   if(best===4){
     r.solved.push(gi);
-    if(r.solved.length===4){r.done=true;r.won=true;gStats(r,pz);}
+    if(r.solved.length===4){r.done=true;r.won=true;gStats(r,pz);groupsReward(r);}
     save();
     var g=pz[gi];
     picked.forEach(function(id){var t=document.querySelector('.gtile[data-id="'+id+'"]');if(t){t.style.setProperty('--gc',GTIERCOL[g[0]]);t.classList.add('gfound');}});
@@ -4364,7 +4476,7 @@ function gSubmit(){
     gLater(tok,720,function(){
       gSel=[];gBusy=false;gMsg('');gRender(true);
       var bars=document.querySelectorAll('#g-solved .gbar.fresh');if(bars.length)barSparks(bars[bars.length-1],g[0]);
-      if(r.done){labConfetti();setTimeout(function(){profReact('hop');},600);checkProgress(null);}
+      if(r.done){labConfetti();setTimeout(function(){profReact('hop');},600);checkProgress(null);gLater(tok,2600,function(){profReact('hop');gSay(giftLine(r));});}
     });
     return;
   }
@@ -4399,7 +4511,8 @@ function groupsShare(r,pz){
 function gFinal(r,pz){
   var end=$('g-end');end.textContent='';end.hidden=false;$('g-msg').textContent='';
   end.appendChild(el('div','ghead '+(r.won?'win':'lose'),r.won?'RESEARCH COMPLETE':'BETTER LUCK TOMORROW'));
-  end.appendChild(el('p','fine',r.won?'You found all four groups with '+r.mistakes+(r.mistakes===1?' mistake.':' mistakes.'):'You used all 4 mistakes. The groups you missed are shown above.'));
+  end.appendChild(el('p','fine',r.won?(r.mistakes?'You found all four groups with '+r.mistakes+(r.mistakes===1?' mistake.':' mistakes.'):'You found all four groups with no mistakes!'):'You used all 4 mistakes. The groups you missed are shown above.'));
+  if(r.won&&r.reward)end.appendChild(gRewards(r));
   var cd=el('p','fine');cd.style.marginTop='8px';end.appendChild(cd);
   function tick(){
     if($('s-groups').hidden){clearInterval(gTimer);return;}
@@ -4418,9 +4531,156 @@ function gFinal(r,pz){
   groupsStatsRender();
 }
 function groupsStatsRender(){
+  stampsRender();
   var s=store.groupsStats,host=$('g-stats');host.textContent='';
   [[String(s.played),'Played'],[(s.played?Math.round(s.wins/s.played*100):0)+'%','Win rate'],[String(s.perfect),'Perfect'],[String(groupsStreak()),'Current streak'],[String(s.best),'Best streak']].forEach(function(x){
     var d=el('div','stat');d.appendChild(el('b','',x[0]));d.appendChild(el('span','',x[1]));host.appendChild(d);
+  });
+}
+
+
+/* ================= LAB REWARDS, ITEMS AND MYSTERY EGGS ================= */
+var ITEMSPR='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/';
+var LABITEMS={
+  lucky:{n:'Lucky Egg',img:'lucky-egg',d:'Doubles the EXP from your next Daily Dive.'},
+  candy:{n:'Rare Candy',img:'rare-candy',d:'Your next solo dive starts one evolution stage up.'},
+  scope:{n:'Silph Scope',img:'silph-scope',d:'Reveals one clue in your next Max Raid.'},
+  potion:{n:'Max Potion',img:'max-potion',d:'Gives your next Max Raid a 7th guess.'},
+  egg:{n:'Mystery Egg',img:'mystery-egg',d:'Hatches tomorrow into a random baby, first-stage or single-stage Pokémon. 1 in 10 hatch shiny.'}
+};
+/* the professor's gift odds, in percent */
+var GIFTODDS=[['lucky',60],['candy',15],['scope',9],['potion',9],['egg',6]];
+function rollGift(rand){var x=(rand||Math.random)()*100;for(var i=0;i<GIFTODDS.length;i++){x-=GIFTODDS[i][1];if(x<0)return GIFTODDS[i][0];}return GIFTODDS[0][0];}
+function itemImg(k,size){var img=el('img');img.alt='';img.width=size;img.height=size;img.src=ITEMSPR+LABITEMS[k].img+'.png';img.onerror=function(){this.onerror=null;this.style.visibility='hidden';};return img;}
+function itemIcon(k){return '<img src="'+ITEMSPR+LABITEMS[k].img+'.png" alt="" width="34" height="34" style="width:34px;height:34px;flex:none;image-rendering:pixelated">';}
+function stampCount(){var n=0;PROFS.forEach(function(p){if(store.stamps[p[0]])n++;});return n;}
+function fellowDone(){return stampCount()>=PROFS.length;}
+function startStage(r){var s=myForm(r.av);if(r.candy)s=Math.min(s+1,EVO[r.av].length-1);return s;}
+function MAXG(r){return r&&r.max===7?7:6;}
+function guessesLeft(r){var n=MAXG(r)-r.g.length;return n+(n===1?' guess left.':' guesses left.');}
+/* Mystery Egg pool: every species with no pre-evolution (babies, first stages and single-stage Pokémon),
+   leaving out Legendaries, Mythicals, Ultra Beasts and Paradox Pokémon */
+var EGGPOOL=null;
+function eggPool(){
+  if(EGGPOOL)return EGGPOOL;EGGPOOL=[];
+  var skip={793:1,794:1,795:1,796:1,797:1,798:1,799:1,803:1,804:1,805:1,806:1};
+  for(var x=984;x<=995;x++)skip[x]=1;for(x=1005;x<=1010;x++)skip[x]=1;for(x=1020;x<=1023;x++)skip[x]=1;
+  for(var id=1;id<=1025;id++){
+    if(SPD.stage.charAt(id-1)!=='1'||skip[id])continue;
+    if(parseInt(SPD.flag.charAt(id-1),32)&6)continue;
+    EGGPOOL.push(id);
+  }
+  return EGGPOOL;
+}
+function rollEgg(rand){var p=eggPool(),R=rand||Math.random;return {id:p[Math.floor(R()*p.length)],shiny:R()<0.1};}
+/* runs once per solved puzzle; the result is saved on the day's record so a reload never rerolls it */
+function groupsReward(r){
+  if(r.reward)return;
+  var h=groupsHost(r.date),exp=Math.max(600,1500-300*r.mistakes),k=rollGift(),had=stampCount();
+  r.reward={exp:exp,item:k,prof:h[0]};
+  if(k==='egg'){var e=rollEgg();e.got=r.date;store.eggs.push(e);}
+  else store.items[k]=(store.items[k]||0)+1;
+  if(!store.stamps[h[0]])store.stamps[h[0]]=r.date;
+  r.reward.newStamp=stampCount()>had;
+  addExp(exp);
+  toast('LAB GIFT',LABITEMS[k].n.toUpperCase(),'+'+fmt(exp)+' research EXP',itemIcon(k));
+  if(had<PROFS.length&&fellowDone())toast('TITLE UNLOCKED','RESEARCH FELLOW','Every professor stamped. Equip it in Stats.');
+}
+function giftLine(r){
+  if(!r.reward)return 'Thanks for the help!';
+  var k=r.reward.item;
+  if(k==='egg')return 'I found this Mystery Egg in the lab. Take good care of it. It should hatch tomorrow!';
+  return 'As thanks, please take this '+LABITEMS[k].n+'! '+LABITEMS[k].d;
+}
+function gRewards(r){
+  var w=el('div','greward'),rw=r.reward,h=null;
+  PROFS.forEach(function(p){if(p[0]===rw.prof)h=p;});
+  function row(cls,icon,title,sub){var d=el('div','grw'+(cls?' '+cls:''));var ic=el('div','ic');if(typeof icon==='string')ic.textContent=icon;else ic.appendChild(icon);d.appendChild(ic);var t=el('div');t.appendChild(el('b','',title));t.appendChild(el('span','',sub));d.appendChild(t);w.appendChild(d);}
+  row('','EXP','+'+fmt(rw.exp)+' RESEARCH EXP','Counts toward your Trainer Level.'+(r.mistakes?' Fewer mistakes earn more.':' Full marks for a flawless solve.'));
+  var k=rw.item;
+  row(k==='egg'||k==='scope'||k==='potion'||k==='candy'?'rare':'',itemImg(k,38),LABITEMS[k].n.toUpperCase(),k==='egg'?'It hatches tomorrow on the home screen. 1 in 10 hatch shiny.':LABITEMS[k].d+' Used automatically.');
+  var stampImg=el('img');stampImg.alt='';stampImg.onerror=function(){this.onerror=null;this.src=LABSCI;};stampImg.src=TRAINER_SPR+rw.prof+'.png';stampImg.style.objectPosition='50% 0';stampImg.style.objectFit='cover';
+  row('',stampImg,'PROF. '+(h?h[1]:'').toUpperCase()+' STAMP',rw.newStamp?'New stamp! '+stampCount()+' of '+PROFS.length+' on your card.':'Already on your card ('+stampCount()+' of '+PROFS.length+').');
+  return w;
+}
+function stampsRender(){
+  var host=$('g-stamps');if(!host)return;host.textContent='';
+  var r=store.groups,fresh=r&&r.date===today()&&r.reward&&r.reward.newStamp?r.reward.prof:'';
+  PROFS.forEach(function(p){
+    var on=!!store.stamps[p[0]],w=el('div','stampw'+(on?' on':'')+(p[0]===fresh?' new':'')),ok=el('div','ok'),c=el('div','stamp'+(on?' on':''));
+    var img=el('img');img.alt='';img.onerror=function(){this.onerror=null;this.src=LABSCI;};img.src=TRAINER_SPR+p[0]+'.png';
+    c.appendChild(img);ok.appendChild(c);w.appendChild(ok);w.appendChild(el('i','',p[1].toUpperCase()));
+    w.title='Prof. '+p[1]+(on?' (stamped)':'');host.appendChild(w);
+  });
+  var n=stampCount();
+  $('g-stamp-note').textContent=n>=PROFS.length?'Every professor stamped! The Research Fellow title is yours in Stats.':'Solve a puzzle to get that day\'s professor stamp. '+n+' of '+PROFS.length+' collected. Fill the card to earn the Research Fellow title.';
+}
+function renderBag(){
+  var host=$('bag-list');if(!host)return;host.textContent='';
+  var rows=[],t=today();
+  ['lucky','candy','scope','potion'].forEach(function(k){if(store.items[k]>0)rows.push({k:k,n:LABITEMS[k].n,d:LABITEMS[k].d,c:'×'+store.items[k]});});
+  store.eggs.forEach(function(e){var ready=e.got<t;rows.push({k:'egg',n:'Mystery Egg',d:ready?'Ready to hatch!':'Hatches tomorrow. Something is moving inside.',c:'',ready:ready});});
+  $('bag').hidden=!rows.length;
+  rows.forEach(function(x){
+    var d=el('div','bagi'+(x.ready?' ready':'')),ic=el('div','ic');ic.appendChild(itemImg(x.k,34));d.appendChild(ic);
+    var tx=el('div','tx');tx.appendChild(el('b','',x.n.toUpperCase()));tx.appendChild(el('span','',x.d));d.appendChild(tx);
+    if(x.c)d.appendChild(el('span','n',x.c));host.appendChild(d);
+  });
+}
+/* raid items are applied when you open a raid that isn't finished yet */
+var SCOPEKEYS=['t1','color','gen','hab'];
+function raidItems(r){
+  if(r.done||r.date!==today()||store.raid!==r)return;
+  var used=false;
+  if(r.max!==7&&store.items.potion>0){store.items.potion--;r.max=7;used=true;toast('MAX POTION','7 GUESSES TODAY','An extra shield for today\'s raid',itemIcon('potion'));}
+  if(r.scope==null&&store.items.scope>0){store.items.scope--;r.scope=SCOPEKEYS[Math.floor(Math.random()*SCOPEKEYS.length)];used=true;toast('SILPH SCOPE','CLUE REVEALED','Check above the clue table',itemIcon('scope'));}
+  if(used)save();
+}
+function scopeClue(k,a){
+  if(k==='t1')return 'Its first type is '+cap(a.t1)+'.';
+  if(k==='color')return 'Its color is '+cap(a.color)+'.';
+  if(k==='gen')return 'It was introduced in Gen '+a.gen+'.';
+  return 'It lives in the '+HABS[a.habs[0]]+' habitat.';
+}
+function raidScopeRender(r,a){
+  var sc=$('raid-scope');sc.textContent='';sc.hidden=r.scope==null;
+  if(r.scope==null)return;
+  sc.appendChild(itemImg('scope',30));
+  var d=el('div');d.appendChild(el('b','','SILPH SCOPE'));d.appendChild(el('span','',scopeClue(r.scope,a)));sc.appendChild(d);
+}
+/* ---------- Mystery Egg hatching ---------- */
+var hatchQ=[],hatchTok=0;
+function checkEggs(){
+  var t=today(),due=store.eggs.filter(function(e){return e.got<t;});
+  if(!due.length)return;
+  store.eggs=store.eggs.filter(function(e){return due.indexOf(e)<0;});
+  due.forEach(function(e){store.dex[e.id]=1;store.eggCaught[e.id]=Math.max(store.eggCaught[e.id]||0,e.shiny?2:1);});
+  save();
+  hatchQ=hatchQ.concat(due);
+  if($('hatch').hidden)hatchNext();
+}
+function hatchNext(){
+  var tok=++hatchTok,H=$('hatch');
+  if(!hatchQ.length){H.hidden=true;renderBag();$('dex-sub').textContent=count(store.dex)+' / 1025 caught';checkProgress(null);return;}
+  var e=hatchQ.shift(),egg=$('hatch-egg'),mon=$('hatch-mon'),stg=$('hatch-stage');
+  H.hidden=false;$('hatch-ok').hidden=true;
+  Array.prototype.slice.call(stg.querySelectorAll('.hspark')).forEach(function(x){x.parentNode.removeChild(x);});
+  egg.className='';mon.className='';$('hatch-flash').className='hflash';
+  egg.onerror=function(){this.onerror=null;this.src=ITEMSPR+'mystery-egg.png';};egg.src=SPR+'egg.png';
+  var chain=e.shiny?[SPR+'shiny/'+e.id+'.png',SPR+e.id+'.png']:[SPR+e.id+'.png'],ci=0;
+  mon.onerror=function(){ci++;if(ci<chain.length)mon.src=chain[ci];else mon.onerror=null;};
+  mon.removeAttribute('src');
+  $('hatch-h').textContent='OH?';$('hatch-p').textContent='Your Mystery Egg is hatching!';
+  function later(ms,fn){setTimeout(function(){if(tok===hatchTok)fn();},calm?0:ms);}
+  later(60,function(){void egg.offsetWidth;egg.className='wob';});
+  later(2650,function(){
+    $('hatch-flash').className='hflash go';egg.className='gone';
+    mon.src=chain[0];mon.alt=DEX[e.id-1];mon.className='in';
+    var h=$('hatch-h');h.textContent=DEX[e.id-1].toUpperCase()+' HATCHED!';
+    if(e.shiny){h.appendChild(el('span','shy','SHINY'));
+      [[12,18],[78,10],[86,62],[8,70],[48,2]].forEach(function(p,i){var s=el('span','hspark','✦');s.style.left=p[0]+'%';s.style.top=p[1]+'%';s.style.animationDelay=(i*0.22)+'s';stg.appendChild(s);});}
+    $('hatch-p').textContent='#'+('000'+e.id).slice(-4)+' '+DEX[e.id-1]+' was added to your Pokédex'+(e.shiny?' as a shiny Egg hatch.':' as an Egg hatch.');
+    var ok=$('hatch-ok');ok.hidden=false;ok.textContent=hatchQ.length?'Next egg':'Nice!';try{ok.focus();}catch(err){}
   });
 }
 
@@ -4458,6 +4718,7 @@ $('btn-dex').addEventListener('click',renderDex);
 $('btn-stats').addEventListener('click',renderStats);
 $('btn-raid').addEventListener('click',renderRaid);
 $('btn-groups').addEventListener('click',renderGroups);
+$('hatch-ok').addEventListener('click',function(){hatchNext();});
 $('g-submit').addEventListener('click',gSubmit);
 $('g-clear').addEventListener('click',function(){gSel=[];gMsg('');gRender(false);});
 $('g-shuffle').addEventListener('click',function(){var r=groupsState(groupsDate);if(r.done||gBusy)return;shuffle(r.order,Math.random);save();gRender(false);});
