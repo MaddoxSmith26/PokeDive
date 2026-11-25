@@ -590,6 +590,31 @@ body.lab #scene,body.lab #fx{display:none}
 #hatch-h .shy{display:inline-block;margin-left:6px;padding:2px 6px;border-radius:6px;background:#d4a514;color:#1b1b1b;font-size:8px;vertical-align:middle}
 #hatch-p{margin:8px 0 14px;font-size:13px;line-height:1.5;color:rgba(255,255,255,.75);min-height:20px}
 #hatch-ok[hidden]{display:none}
+
+/* ===== overlays: dive lobby, confirm ===== */
+.ovl{position:fixed;inset:0;z-index:9;display:grid;place-items:center;padding:20px;background:rgba(5,10,22,.82)}
+.ovl[hidden]{display:none}
+.ovh{display:block;font-family:var(--display);font-size:11px;line-height:1.7;font-weight:400;color:#fff}
+.ovp{margin:8px 0 14px;font-size:13px;line-height:1.5;color:rgba(255,255,255,.75)}
+.ovbtns{display:flex;gap:10px}
+.ovbtns .btn{flex:1;padding:14px 8px}
+.lobimg{display:block;width:112px;height:112px;margin:0 auto 2px;image-rendering:pixelated;object-fit:contain}
+.lobdiver{font-family:var(--display);font-size:8px;line-height:1.6;color:rgba(255,255,255,.7);margin-bottom:6px}
+.lih{font-family:var(--display);font-size:8px;line-height:1.6;color:var(--accent);text-align:left;margin:4px 0 8px}
+.litems{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;text-align:left}
+.litems:empty{display:none}
+.litem{display:flex;align-items:center;gap:10px;width:100%;padding:10px;border-radius:14px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.14);color:#fff;text-align:left}
+.litem img{width:32px;height:32px;flex:none;image-rendering:pixelated}
+.litem .tx{flex:1;min-width:0}
+.litem b{display:block;font-family:var(--display);font-size:8px;line-height:1.6;font-weight:400}
+.litem span{display:block;font-size:12px;line-height:1.35;color:rgba(255,255,255,.72)}
+.litem .chk{flex:none;padding:5px 8px;border-radius:8px;font-family:var(--display);font-size:7px;line-height:1.4;background:rgba(255,255,255,.12);color:#fff}
+.litem[aria-pressed="true"]{border-color:#ffd84d;background:rgba(255,216,77,.13)}
+.litem[aria-pressed="true"] .chk{background:#ffd84d;color:#1b1b1b}
+.litem:disabled{opacity:.45;cursor:default}
+.ritems{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.ritems:empty{display:none}
+.ritems .litem .chk{background:#ffd84d;color:#1b1b1b}
 </style>
 </head>
 <body>
@@ -628,7 +653,7 @@ body.lab #scene,body.lab #fx{display:none}
     <div class="panel sect" id="bag" hidden>
       <h2>Bag</h2>
       <div class="bag" id="bag-list"></div>
-      <p class="fine" style="margin-top:12px">Items are used automatically. Solve Professor's Groups to earn more.</p>
+      <p class="fine" style="margin-top:12px">Each item works once and is gone after you use it. Solve Professor's Groups to earn more.</p>
     </div>
     <div class="panel sect">
       <h2>Regions</h2>
@@ -677,12 +702,14 @@ body.lab #scene,body.lab #fx{display:none}
       <img id="pass-img" alt="">
       <p class="fine" id="pass-note"></p>
       <button class="btn primary" id="btn-pass-go">Start my dive</button>
+      <button class="btn ghost" id="btn-pass-end" type="button" style="margin-top:10px">End party</button>
     </div>
   </section>
 
   <!-- PLAY -->
   <section class="screen" id="s-play" hidden>
     <div class="panel hud">
+      <button class="gear" id="btn-exit" type="button" aria-label="Leave dive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       <button class="gear" id="btn-gear" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></button>
       <div class="step"><span id="hud-mode">DAILY</span><b id="hud-step">1/7</b></div>
       <div class="depth"><b id="hud-depth">0 m</b><span id="hud-zone">Shallows</span></div>
@@ -782,6 +809,7 @@ body.lab #scene,body.lab #fx{display:none}
       <div class="sug" id="raid-sug" hidden></div>
       <div class="note" id="raid-note"></div>
       <div class="scopeline" id="raid-scope" hidden></div>
+      <div class="ritems" id="raid-items"></div>
       <button class="btn ghost" id="raid-swap" style="margin-top:8px;padding:12px">Change raid partner</button>
     </div>
     <div class="panel sect" id="raid-end" hidden></div>
@@ -870,6 +898,8 @@ body.lab #scene,body.lab #fx{display:none}
   <div id="lane-ticks"></div>
   <div id="diver"><span class="evo" id="diver-evo"><span class="react" id="diver-react"><img id="diver-img" alt=""></span></span></div>
 </div>
+<div id="lobby" class="ovl" hidden role="dialog" aria-modal="true" aria-labelledby="lobby-h"><div class="hcard"><b class="ovh" id="lobby-h"></b><p class="ovp" id="lobby-p"></p><img class="lobimg" id="lobby-img" alt=""><div class="lobdiver" id="lobby-diver"></div><div class="lih" id="lobby-ih" hidden>USE AN ITEM? ONCE USED, IT'S GONE.</div><div class="litems" id="lobby-items"></div><div class="ovbtns"><button class="btn ghost" type="button" id="lobby-back">Back</button><button class="btn primary" type="button" id="lobby-go">Dive!</button></div></div></div>
+<div id="confirm" class="ovl" hidden role="alertdialog" aria-modal="true" aria-labelledby="confirm-h"><div class="hcard"><b class="ovh" id="confirm-h"></b><p class="ovp" id="confirm-p"></p><div class="ovbtns"><button class="btn ghost" type="button" id="confirm-no"></button><button class="btn primary" type="button" id="confirm-yes"></button></div></div></div>
 <div id="hatch" hidden role="dialog" aria-modal="true" aria-labelledby="hatch-h"><div class="hcard"><div class="hstage" id="hatch-stage"><img id="hatch-egg" alt=""><img id="hatch-mon" alt=""><div class="hflash" id="hatch-flash"></div></div><b id="hatch-h"></b><p id="hatch-p"></p><button class="btn primary" id="hatch-ok" type="button" hidden>Nice!</button></div></div>
 <div class="panel" id="toast" aria-live="polite"></div>
 
@@ -2272,20 +2302,26 @@ function renderRegions(){
   $('region-note').textContent='Applies to Unlimited and Party Dive. Daily Dives always use every region. Megas need Kalos on, Gigantamax needs Galar.';
 }
 
-function startDaily(){
+function startDaily(opts){
   var diff=store.mode,t=today(),d=dailyOf(diff);
   var ps=dailyPrompts(t,diff);
   if(d.done){showResults({mode:'daily',diff:diff,date:t,F:ALLF,prompts:ps,res:d.res});return;}
+  /* a fresh daily opens the dive lobby first: pick items, or back out with nothing spent */
+  if(!opts&&!d.res.length&&d.cur<0){openLobby('daily',function(o){startDaily(o);});return;}
   if(d.cur>=d.res.length&&d.res.length<7)d.res.push({a:'',t:'X',p:0,why:'left'});
   save();
-  beginRun({mode:'daily',diff:diff,date:t,F:ALLF,prompts:ps,res:d.res.slice()});
+  beginRun({mode:'daily',diff:diff,date:t,F:ALLF,prompts:ps,res:d.res.slice(),lucky:opts&&opts.lucky?1:0,candy:opts&&opts.candy?1:0});
 }
 function freePrompts(){
   var ps=pickRun(store.mode,store.regions,Math.random);
   if(ps.length<7){toast('NOT ENOUGH PROMPTS','TRY MORE REGIONS','Those regions only have '+ps.length+' prompts');return null;}
   return ps;
 }
-function startFree(){var ps=freePrompts();if(ps)beginRun({mode:'free',diff:store.mode,F:store.regions.slice(),prompts:ps,res:[]});}
+function startFree(){
+  var ps=freePrompts();if(!ps)return;
+  function go(o){beginRun({mode:'free',diff:store.mode,F:store.regions.slice(),prompts:ps,res:[],candy:o&&o.candy?1:0});}
+  if(store.items.candy>0)openLobby('free',go);else go(null);
+}
 function beginRun(r){
   run=r;
   if(r.mode!=='mp'){r.av=store.avatar;r.shiny=myShiny();}
@@ -2293,11 +2329,7 @@ function beginRun(r){
   r.start=r.mode==='mp'?0:myForm(r.av);
   if(r.mode!=='mp'){
     var dd0=r.mode==='daily'?dailyOf(r.diff,r.date):null;
-    if(dd0&&dd0.candy)r.candy=1;
-    else if(!r.res.length&&store.items.candy>0&&r.start<EVO[r.av].length-1){
-      store.items.candy--;r.candy=1;if(dd0)dd0.candy=1;save();
-      toast('RARE CANDY',DEX[EVO[r.av][r.start+1]-1].toUpperCase(),'Your diver starts one stage up',itemIcon('candy'));
-    }
+    if(dd0){if(r.candy)dd0.candy=1;if(r.lucky)dd0.lucky=1;if(dd0.candy)r.candy=1;if(dd0.lucky)r.lucky=1;}
     r.start=startStage(r);
   }
   r.level=levelFor(disp);
@@ -2457,7 +2489,7 @@ function endRun(){
   var mult=r.diff==='legend'?2:1,bonus=0,parts=[fmt(depth)+' m'];
   if(mult>1)parts.push('×2 Legendary');
   if(r.mode==='daily'){var sb=Math.min(0.5,0.05*liveStreak());bonus=0.25+sb;parts.push('+25% daily');if(sb>0)parts.push('+'+Math.round(sb*100)+'% streak');}
-  if(r.mode==='daily'&&store.items.lucky>0){store.items.lucky--;mult*=2;parts.push('×2 Lucky Egg');r.lucky=1;}
+  if(r.mode==='daily'&&r.lucky){mult*=2;parts.push('×2 Lucky Egg');}
   var gain=Math.round(depth*mult*(1+bonus));
   r.expGain=gain;r.expParts=parts;addExp(gain);
   checkProgress(ctx);
@@ -3899,7 +3931,7 @@ function raidPips(left,breaking){
 }
 function raidSub(){
   var r=store.raid,t=today();
-  if(!r||r.date!==t||!r.g.length)return 'Guess today\'s Dynamax Pokémon in '+((r&&r.date===t&&r.max===7)||store.items.potion>0?7:6)+' tries';
+  if(!r||r.date!==t||!r.g.length)return 'Guess today\'s Dynamax Pokémon in '+(r&&r.date===t&&r.max===7?7:6)+' tries';
   var a=raidAnswer(t);
   if(!r.done)return 'In progress: '+r.g.length+' of '+MAXG(r)+' guesses used';
   return r.won?'Caught '+a.name+' in '+r.g.length+'. Next raid at midnight.':a.name+' fled. Next raid at midnight.';
@@ -3908,7 +3940,6 @@ function renderRaid(){
   raidTok++;raidBusy=false;clearInterval(raidTimer);
   raidDate=today();
   var r=raidState(raidDate),a=raidAnswer(r.date);
-  raidItems(r);
   show('raid');
   /* den */
   var motes=$('den-motes');
@@ -3919,7 +3950,7 @@ function renderRaid(){
   raidCloud();
   bi.onerror=function(){this.onerror=null;this.src='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5 0 9 4 9 9 0 3-1 5-3 7l1 4-5-2-2 1-2-1-5 2 1-4c-2-2-3-4-3-7 0-5 4-9 9-9z" fill="'+TYPECOL[TYPEKEYS.indexOf(a.t1)]+'"/></svg>');};
   bi.dataset.src=SPR+a.id+'.png';bi.dataset.name=a.name;
-  raidPartner();raidPips(MAXG(r)-(r.won?r.g.length-1:r.g.length));raidScopeRender(r,a);
+  raidPartner();raidPips(MAXG(r)-(r.won?r.g.length-1:r.g.length));raidScopeRender(r,a);raidItemsRender(r);
   var ball=$('raid-ball');ball.hidden=true;ball.className='ball';
   var msg=$('raid-msg');msg.hidden=true;
   /* table */
@@ -3965,12 +3996,14 @@ function raidReveal(){
 }
 function raidStatsRender(){
   var s=store.raidStats,host=$('raid-stats');host.textContent='';
-  [[String(s.played),'Raids played'],[(s.played?Math.round(s.wins/s.played*100):0)+'%','Win rate'],[String(raidStreak()),'Current streak'],[String(s.best),'Best streak']].forEach(function(x){
+  var lost=Math.max(0,s.played-s.wins);
+  [[String(s.played),'Raids played'],[(s.played?Math.round(s.wins/s.played*100):0)+'%','Win rate'],[String(s.wins),'Raids won'],[String(lost),'Raids lost'],[String(raidStreak()),'Current streak'],[String(s.best),'Best streak']].forEach(function(x){
     var d=el('div','stat');d.appendChild(el('b','',x[0]));d.appendChild(el('span','',x[1]));host.appendChild(d);
   });
   var dh=$('raid-dist'),max=1;dh.textContent='';
-  s.dist.forEach(function(v){if(v>max)max=v;});
+  s.dist.forEach(function(v){if(v>max)max=v;});if(lost>max)max=lost;
   s.dist.forEach(function(v,i){if(i===6&&!v)return;dh.appendChild(barRow((i+1)+(i?' guesses':' guess'),v/max,String(v),'#ff4f8b'));});
+  dh.appendChild(barRow('Lost',lost/max,String(lost),'#8a93a3'));
 }
 function raidShare(r,a){
   var E={g:'🟩',y:'🟨',r:'🟥'};
@@ -4542,10 +4575,10 @@ function groupsStatsRender(){
 /* ================= LAB REWARDS, ITEMS AND MYSTERY EGGS ================= */
 var ITEMSPR='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/';
 var LABITEMS={
-  lucky:{n:'Lucky Egg',img:'lucky-egg',d:'Doubles the EXP from your next Daily Dive.'},
-  candy:{n:'Rare Candy',img:'rare-candy',d:'Your next solo dive starts one evolution stage up.'},
-  scope:{n:'Silph Scope',img:'silph-scope',d:'Reveals one clue in your next Max Raid.'},
-  potion:{n:'Max Potion',img:'max-potion',d:'Gives your next Max Raid a 7th guess.'},
+  lucky:{n:'Lucky Egg',img:'lucky-egg',d:'Doubles the EXP from one Daily Dive.',u:'Choose it when you start a Daily Dive.'},
+  candy:{n:'Rare Candy',img:'rare-candy',d:'Your diver starts a dive one evolution stage up.',u:'Choose it when you start a dive.'},
+  scope:{n:'Silph Scope',img:'silph-scope',d:'Reveals one clue in a Max Raid.',u:'Use it on the Max Raid screen.'},
+  potion:{n:'Max Potion',img:'max-potion',d:'Gives a Max Raid a 7th guess.',u:'Use it on the Max Raid screen.'},
   egg:{n:'Mystery Egg',img:'mystery-egg',d:'Hatches tomorrow into a random baby, first-stage or single-stage Pokémon. 1 in 10 hatch shiny.'}
 };
 /* the professor's gift odds, in percent */
@@ -4598,7 +4631,7 @@ function gRewards(r){
   function row(cls,icon,title,sub){var d=el('div','grw'+(cls?' '+cls:''));var ic=el('div','ic');if(typeof icon==='string')ic.textContent=icon;else ic.appendChild(icon);d.appendChild(ic);var t=el('div');t.appendChild(el('b','',title));t.appendChild(el('span','',sub));d.appendChild(t);w.appendChild(d);}
   row('','EXP','+'+fmt(rw.exp)+' RESEARCH EXP','Counts toward your Trainer Level.'+(r.mistakes?' Fewer mistakes earn more.':' Full marks for a flawless solve.'));
   var k=rw.item;
-  row(k==='egg'||k==='scope'||k==='potion'||k==='candy'?'rare':'',itemImg(k,38),LABITEMS[k].n.toUpperCase(),k==='egg'?'It hatches tomorrow on the home screen. 1 in 10 hatch shiny.':LABITEMS[k].d+' Used automatically.');
+  row(k==='egg'||k==='scope'||k==='potion'||k==='candy'?'rare':'',itemImg(k,38),LABITEMS[k].n.toUpperCase(),k==='egg'?'It hatches tomorrow on the home screen. 1 in 10 hatch shiny.':LABITEMS[k].d+' '+LABITEMS[k].u);
   var stampImg=el('img');stampImg.alt='';stampImg.onerror=function(){this.onerror=null;this.src=LABSCI;};stampImg.src=TRAINER_SPR+rw.prof+'.png';stampImg.style.objectPosition='50% 0';stampImg.style.objectFit='cover';
   row('',stampImg,'PROF. '+(h?h[1]:'').toUpperCase()+' STAMP',rw.newStamp?'New stamp! '+stampCount()+' of '+PROFS.length+' on your card.':'Already on your card ('+stampCount()+' of '+PROFS.length+').');
   return w;
@@ -4618,7 +4651,7 @@ function stampsRender(){
 function renderBag(){
   var host=$('bag-list');if(!host)return;host.textContent='';
   var rows=[],t=today();
-  ['lucky','candy','scope','potion'].forEach(function(k){if(store.items[k]>0)rows.push({k:k,n:LABITEMS[k].n,d:LABITEMS[k].d,c:'×'+store.items[k]});});
+  ['lucky','candy','scope','potion'].forEach(function(k){if(store.items[k]>0)rows.push({k:k,n:LABITEMS[k].n,d:LABITEMS[k].d+' '+LABITEMS[k].u,c:'×'+store.items[k]});});
   store.eggs.forEach(function(e){var ready=e.got<t;rows.push({k:'egg',n:'Mystery Egg',d:ready?'Ready to hatch!':'Hatches tomorrow. Something is moving inside.',c:'',ready:ready});});
   $('bag').hidden=!rows.length;
   rows.forEach(function(x){
@@ -4627,14 +4660,32 @@ function renderBag(){
     if(x.c)d.appendChild(el('span','n',x.c));host.appendChild(d);
   });
 }
-/* raid items are applied when you open a raid that isn't finished yet */
+/* raid items: you pick when to use them, and each one is used up */
 var SCOPEKEYS=['t1','color','gen','hab'];
-function raidItems(r){
-  if(r.done||r.date!==today()||store.raid!==r)return;
-  var used=false;
-  if(r.max!==7&&store.items.potion>0){store.items.potion--;r.max=7;used=true;toast('MAX POTION','7 GUESSES TODAY','An extra shield for today\'s raid',itemIcon('potion'));}
-  if(r.scope==null&&store.items.scope>0){store.items.scope--;r.scope=SCOPEKEYS[Math.floor(Math.random()*SCOPEKEYS.length)];used=true;toast('SILPH SCOPE','CLUE REVEALED','Check above the clue table',itemIcon('scope'));}
-  if(used)save();
+function raidItemsRender(r){
+  var host=$('raid-items');host.textContent='';
+  if(r.done||store.raid!==r)return;
+  var rows=[];
+  if(store.items.potion>0&&r.max!==7)rows.push(['potion','Add a 7th guess to this raid.']);
+  if(store.items.scope>0&&r.scope==null)rows.push(['scope','Reveal one clue about the hidden Pokémon.']);
+  rows.forEach(function(x){
+    var k=x[0],b=el('button','litem');b.type='button';
+    b.appendChild(itemImg(k,32));
+    var tx=el('div','tx');tx.appendChild(el('b','',LABITEMS[k].n.toUpperCase()+'  ×'+store.items[k]));tx.appendChild(el('span','',x[1]));b.appendChild(tx);
+    b.appendChild(el('span','chk','USE'));
+    b.addEventListener('click',function(){raidUse(k);});
+    host.appendChild(b);
+  });
+}
+function raidUse(k){
+  var r=raidState(raidDate||today()),a=raidAnswer(r.date);
+  if(r.done||raidBusy||store.raid!==r||!(store.items[k]>0))return;
+  if(k==='potion'){if(r.max===7)return;store.items.potion--;r.max=7;raidPips(MAXG(r)-r.g.length);
+    if(r.g.length)$('raid-note').textContent=guessesLeft(r);
+    toast('MAX POTION','7 GUESSES TODAY','An extra shield for this raid',itemIcon('potion'));}
+  if(k==='scope'){if(r.scope!=null)return;store.items.scope--;r.scope=SCOPEKEYS[Math.floor(Math.random()*SCOPEKEYS.length)];raidScopeRender(r,a);
+    toast('SILPH SCOPE','CLUE REVEALED',scopeClue(r.scope,a),itemIcon('scope'));}
+  save();raidItemsRender(r);
 }
 function scopeClue(k,a){
   if(k==='t1')return 'Its first type is '+cap(a.t1)+'.';
@@ -4647,6 +4698,55 @@ function raidScopeRender(r,a){
   if(r.scope==null)return;
   sc.appendChild(itemImg('scope',30));
   var d=el('div');d.appendChild(el('b','','SILPH SCOPE'));d.appendChild(el('span','',scopeClue(r.scope,a)));sc.appendChild(d);
+}
+
+/* ---------- dive lobby: choose items before a dive, or back out ---------- */
+var lobbyCb=null,lobbyKind='',lobbySel={};
+function openLobby(kind,cb){
+  lobbyCb=cb;lobbyKind=kind;lobbySel={lucky:false,candy:false};
+  $('lobby-h').textContent=kind==='daily'?(DIFFS[store.mode]+' Daily Dive').toUpperCase():'UNLIMITED DIVE';
+  $('lobby-p').textContent=kind==='daily'?'Seven prompts for '+today()+', the same for everyone. Once the first prompt appears, leaving counts it as a miss.':'Seven random prompts. '+DIFFS[store.mode]+', '+regionLabel(store.regions)+'.';
+  renderLobby();$('lobby').hidden=false;
+  try{$('lobby-go').focus();}catch(e){}
+}
+function renderLobby(){
+  var av=store.avatar,line=EVO[av],st=myForm(av),can=st<line.length-1,shown=lobbySel.candy&&can?st+1:st;
+  loadSprite($('lobby-img'),{av:av,stage:shown,shiny:myShiny(),animated:true});
+  $('lobby-diver').textContent='DIVER: '+DEX[line[shown]-1].toUpperCase();
+  var host=$('lobby-items'),rows=[];host.textContent='';
+  if(store.items.lucky>0)rows.push(['lucky',lobbyKind==='daily',lobbyKind==='daily'?'Double the EXP from this dive.':'Only works on Daily Dives.']);
+  if(store.items.candy>0)rows.push(['candy',can,can?'Start this dive as '+DEX[line[st+1]-1]+'.':DEX[line[st]-1]+' is already fully evolved.']);
+  $('lobby-ih').hidden=!rows.length;
+  rows.forEach(function(x){
+    var k=x[0],on=!!lobbySel[k]&&x[1],b=el('button','litem');b.type='button';b.disabled=!x[1];b.setAttribute('aria-pressed',String(on));
+    b.appendChild(itemImg(k,32));
+    var tx=el('div','tx');tx.appendChild(el('b','',LABITEMS[k].n.toUpperCase()+'  ×'+store.items[k]));tx.appendChild(el('span','',x[2]));b.appendChild(tx);
+    b.appendChild(el('span','chk',on?'USING':'USE'));
+    b.addEventListener('click',function(){lobbySel[k]=!lobbySel[k];renderLobby();});
+    host.appendChild(b);
+  });
+}
+function lobbyGo(){
+  var cb=lobbyCb,sel={lucky:false,candy:false},line=EVO[store.avatar];
+  $('lobby').hidden=true;lobbyCb=null;if(!cb)return;
+  if(lobbySel.lucky&&lobbyKind==='daily'&&store.items.lucky>0){store.items.lucky--;sel.lucky=true;}
+  if(lobbySel.candy&&store.items.candy>0&&myForm(store.avatar)<line.length-1){store.items.candy--;sel.candy=true;}
+  if(sel.lucky||sel.candy)save();
+  cb(sel);
+}
+/* ---------- confirm box ---------- */
+var confirmCb=null;
+function confirmBox(h,p,no,yes,cb){
+  $('confirm-h').textContent=h;$('confirm-p').textContent=p;$('confirm-no').textContent=no;$('confirm-yes').textContent=yes;
+  confirmCb=cb;$('confirm').hidden=false;try{$('confirm-no').focus();}catch(e){}
+}
+function leaveDive(){
+  if(!run||$('s-play').hidden)return;
+  var mine=run,m=run.mode,h,p;
+  if(m==='mp'){h='END THE PARTY?';p='Everyone\'s dives so far will be lost.';}
+  else if(m==='daily'){h='LEAVE THE DAILY DIVE?';p='Your answers so far are saved, so you can resume from the home screen.'+(state==='ask'?' The prompt on screen will count as a miss.':'');}
+  else{h='LEAVE THIS DIVE?';p='Unlimited dives you leave are not saved and give no EXP.'+(run.candy?' The Rare Candy you used is gone.':'');}
+  confirmBox(h,p,m==='mp'?'Keep playing':'Keep diving',m==='mp'?'End party':'Leave',function(){if(run===mine&&!$('s-play').hidden)renderStart();});
 }
 /* ---------- Mystery Egg hatching ---------- */
 var hatchQ=[],hatchTok=0;
@@ -4711,14 +4811,20 @@ function closeModal(){$('modal').hidden=true;pickCb=null;if(!$('s-raid').hidden)
 /* ================= WIRING ================= */
 $('form').addEventListener('submit',onSubmit);
 $('answer').addEventListener('input',function(){if(sugRaw!==null){hideSug();if(state==='ask'){$('note').className='note';$('note').textContent='Keep guessing until time runs out.';}}});
-$('btn-daily').addEventListener('click',startDaily);
-$('btn-free').addEventListener('click',startFree);
+$('btn-daily').addEventListener('click',function(){startDaily();});
+$('btn-free').addEventListener('click',function(){startFree();});
 $('btn-party').addEventListener('click',renderParty);
 $('btn-dex').addEventListener('click',renderDex);
 $('btn-stats').addEventListener('click',renderStats);
 $('btn-raid').addEventListener('click',renderRaid);
 $('btn-groups').addEventListener('click',renderGroups);
 $('hatch-ok').addEventListener('click',function(){hatchNext();});
+$('lobby-go').addEventListener('click',lobbyGo);
+$('lobby-back').addEventListener('click',function(){$('lobby').hidden=true;lobbyCb=null;});
+$('confirm-no').addEventListener('click',function(){$('confirm').hidden=true;confirmCb=null;});
+$('confirm-yes').addEventListener('click',function(){$('confirm').hidden=true;var c=confirmCb;confirmCb=null;if(c)c();});
+$('btn-exit').addEventListener('click',leaveDive);
+$('btn-pass-end').addEventListener('click',function(){confirmBox('END THE PARTY?','Everyone\'s dives so far will be lost.','Keep playing','End party',function(){if(!$('s-pass').hidden)renderStart();});});
 $('g-submit').addEventListener('click',gSubmit);
 $('g-clear').addEventListener('click',function(){gSel=[];gMsg('');gRender(false);});
 $('g-shuffle').addEventListener('click',function(){var r=groupsState(groupsDate);if(r.done||gBusy)return;shuffle(r.order,Math.random);save();gRender(false);});
@@ -4729,7 +4835,7 @@ $('btn-trainer').addEventListener('click',renderStats);
 $('btn-party-go').addEventListener('click',startParty);
 $('btn-pass-go').addEventListener('click',function(){var pl=mp.players[mp.turn];beginRun({mode:'mp',diff:mp.diff,F:mp.F,name:pl.name,av:pl.av,shiny:false,prompts:mp.prompts,res:[]});});
 $('btn-rematch').addEventListener('click',startParty);
-$('btn-again').addEventListener('click',startFree);
+$('btn-again').addEventListener('click',function(){startFree();});
 $('btn-share').addEventListener('click',function(){copyText(shareText,$('btn-share'));});
 $('btn-set').addEventListener('click',openSettings);
 $('btn-gear').addEventListener('click',openSettings);
