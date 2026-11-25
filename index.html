@@ -615,6 +615,33 @@ body.lab #scene,body.lab #fx{display:none}
 .ritems{display:flex;flex-direction:column;gap:8px;margin-top:10px}
 .ritems:empty{display:none}
 .ritems .litem .chk{background:#ffd84d;color:#1b1b1b}
+
+/* ===== accounts ===== */
+.acctchip{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;text-align:left;color:var(--ink)}
+.acctchip[hidden]{display:none}
+.acctchip .av{width:34px;height:34px;flex:none;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.1);font-family:var(--display);font-size:11px;color:var(--accent)}
+.acctchip .av svg{width:18px;height:18px}
+.acctchip .tx{flex:1;min-width:0}
+.acctchip b{display:block;font-family:var(--display);font-size:9px;line-height:1.6;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.acctchip span{display:block;font-size:12px;line-height:1.4;color:var(--ink-dim)}
+.acctchip.guest{border-color:rgba(255,216,77,.55)}
+.acctchip.guest b{color:var(--accent)}
+.acctchip .dot{width:9px;height:9px;border-radius:50%;flex:none;background:#4cc36a}
+.acctchip .dot.busy{background:#ffd84d}
+.acctchip .dot.err{background:#ff6b7d}
+.hcard{max-height:calc(100vh - 40px);overflow:auto}
+.afield{display:block;width:100%;padding:13px 14px;margin-bottom:8px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);color:#fff;font-size:16px}
+.afield::placeholder{color:rgba(255,255,255,.5)}
+.afield[hidden]{display:none}
+.gbtn{background:#fff;color:#1f1f1f;box-shadow:0 5px 0 #b9c0c8}
+.gbtn:active{transform:translateY(3px);box-shadow:0 2px 0 #b9c0c8}
+.aor{font-size:12px;color:rgba(255,255,255,.55);margin:14px 0 10px}
+.alinks{display:flex;justify-content:space-between;gap:8px;margin-top:8px}
+.alink{background:none;border:0;color:#8fd3ff;font-size:12.5px;text-decoration:underline;padding:6px 0}
+.aerr{min-height:18px;margin:8px 0 0;font-size:12.5px;line-height:1.4;color:#ff9aa8}
+.aerr.ok{color:#9be3a8}
+#acct-form{display:block}
+#acct-submit{margin-top:4px;width:100%}
 </style>
 </head>
 <body>
@@ -631,6 +658,7 @@ body.lab #scene,body.lab #fx{display:none}
       </div>
       <button class="sq" id="btn-set" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/></svg></button>
     </header>
+    <button class="panel acctchip guest" id="btn-acct" type="button" hidden><span class="av" id="acct-av"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span><span class="tx"><b id="acct-t">SAVE YOUR PROGRESS</b><span id="acct-s">Sign in so it's never lost</span></span><i class="dot" id="acct-dot" hidden></i></button>
     <button class="panel trainer" id="btn-trainer" aria-label="Trainer level and rewards">
       <span class="tl"><b id="tr-lv">LV 1</b><i id="tr-title">Rookie Diver</i></span>
       <span class="tb"><span class="meter"><i id="tr-bar" style="width:0"></i></span><small id="tr-next"></small></span>
@@ -899,6 +927,28 @@ body.lab #scene,body.lab #fx{display:none}
   <div id="diver"><span class="evo" id="diver-evo"><span class="react" id="diver-react"><img id="diver-img" alt=""></span></span></div>
 </div>
 <div id="lobby" class="ovl" hidden role="dialog" aria-modal="true" aria-labelledby="lobby-h"><div class="hcard"><b class="ovh" id="lobby-h"></b><p class="ovp" id="lobby-p"></p><img class="lobimg" id="lobby-img" alt=""><div class="lobdiver" id="lobby-diver"></div><div class="lih" id="lobby-ih" hidden>USE AN ITEM? ONCE USED, IT'S GONE.</div><div class="litems" id="lobby-items"></div><div class="ovbtns"><button class="btn ghost" type="button" id="lobby-back">Back</button><button class="btn primary" type="button" id="lobby-go">Dive!</button></div></div></div>
+<div id="acct" class="ovl" hidden role="dialog" aria-modal="true" aria-labelledby="acct-h"><div class="hcard">
+  <b class="ovh" id="acct-h">SAVE YOUR PROGRESS</b>
+  <div id="acct-out">
+    <p class="ovp" id="acct-intro">Sign in to keep your progress safe and play on any device.</p>
+    <button class="btn gbtn" id="acct-google" type="button">Continue with Google</button>
+    <div class="aor">or use email</div>
+    <form id="acct-form" novalidate>
+      <input class="afield" id="acct-name" type="text" placeholder="Trainer name" maxlength="20" autocomplete="nickname" hidden>
+      <input class="afield" id="acct-email" type="email" placeholder="Email" autocomplete="email" autocapitalize="off" spellcheck="false">
+      <input class="afield" id="acct-pass" type="password" placeholder="Password (6+ characters)" autocomplete="current-password">
+      <button class="btn primary" id="acct-submit" type="submit">Sign in</button>
+    </form>
+    <div class="alinks"><button type="button" class="alink" id="acct-toggle">New here? Create an account</button><button type="button" class="alink" id="acct-forgot">Forgot password?</button></div>
+  </div>
+  <div id="acct-in" hidden>
+    <p class="ovp" id="acct-who"></p>
+    <p class="ovp" id="acct-sync"></p>
+    <button class="btn ghost" id="acct-signout" type="button">Sign out</button>
+  </div>
+  <p class="aerr" id="acct-err" aria-live="polite"></p>
+  <button class="btn ghost" id="acct-close" type="button" style="margin-top:10px">Not now</button>
+</div></div>
 <div id="confirm" class="ovl" hidden role="alertdialog" aria-modal="true" aria-labelledby="confirm-h"><div class="hcard"><b class="ovh" id="confirm-h"></b><p class="ovp" id="confirm-p"></p><div class="ovbtns"><button class="btn ghost" type="button" id="confirm-no"></button><button class="btn primary" type="button" id="confirm-yes"></button></div></div></div>
 <div id="hatch" hidden role="dialog" aria-modal="true" aria-labelledby="hatch-h"><div class="hcard"><div class="hstage" id="hatch-stage"><img id="hatch-egg" alt=""><img id="hatch-mon" alt=""><div class="hflash" id="hatch-flash"></div></div><b id="hatch-h"></b><p id="hatch-p"></p><button class="btn primary" id="hatch-ok" type="button" hidden>Nice!</button></div></div>
 <div class="panel" id="toast" aria-live="polite"></div>
@@ -1564,7 +1614,7 @@ var store={avatar:'ocean:7',avatarBy:{},shinyOn:{},theme:'ocean',played:0,best:0
   bestBy:{},regionsDived:{},exp:0,title:'rookie',trail:'none',badges:{},unlocked:{},dex:{},shinyCount:{},tc:{},cat:{},rarest:null,mpPlayed:0,themesUsed:{},party:null,formsOpen:{},formSel:{},
   raid:null,raidCaught:{},raidStats:{played:0,wins:0,streak:0,best:0,last:'',perfect:0,dist:[0,0,0,0,0,0,0]},
   items:{lucky:0,candy:0,scope:0,potion:0},eggs:[],stamps:{},eggCaught:{},
-  groups:null,groupsStats:{played:0,wins:0,streak:0,best:0,last:'',perfect:0,masterFirst:0}};
+  groups:null,groupsStats:{played:0,wins:0,streak:0,best:0,last:'',perfect:0,masterFirst:0},updatedAt:0};
 try{var saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&typeof saved==='object'){for(var k0 in store){if(saved[k0]!==undefined&&saved[k0]!==null)store[k0]=saved[k0];}}}catch(e){}
 if(!DIFFS[store.mode])store.mode='normal';
 if(typeof store.exp!=='number'||!(store.exp>=0))store.exp=0;
@@ -1608,7 +1658,7 @@ if(store.theme==='space')store.theme='ocean';
 })();
 if(store.longest<store.streak)store.longest=store.streak;
 
-function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}}
+function save(){store.updatedAt=Date.now();try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}acctTouched();}
 function count(o){var n=0;for(var k in o){if(o[k])n++;}return n;}
 function isOpen(id){return FREE.indexOf(id)>=0||!!store.unlocked[id]||(!!DLV[id]&&trainerLv()>=DLV[id]);}
 function shinyReady(id){return (store.shinyCount[id]||0)>=3;}
@@ -4736,9 +4786,10 @@ function lobbyGo(){
 }
 /* ---------- confirm box ---------- */
 var confirmCb=null;
-function confirmBox(h,p,no,yes,cb){
+var confirmNoCb=null;
+function confirmBox(h,p,no,yes,cb,noCb){
   $('confirm-h').textContent=h;$('confirm-p').textContent=p;$('confirm-no').textContent=no;$('confirm-yes').textContent=yes;
-  confirmCb=cb;$('confirm').hidden=false;try{$('confirm-no').focus();}catch(e){}
+  confirmCb=cb;confirmNoCb=noCb||null;$('confirm').hidden=false;try{$('confirm-no').focus();}catch(e){}
 }
 function leaveDive(){
   if(!run||$('s-play').hidden)return;
@@ -4784,6 +4835,198 @@ function hatchNext(){
   });
 }
 
+
+/* ================= ACCOUNTS AND CLOUD SAVE =================
+   Firebase Auth signs players in (Google or email). Each player's save is one Firestore
+   document, saves/{uid}, written over the REST API with the player's ID token, so only
+   they can read or write it (see the Firestore rules). Guests keep playing on this device
+   exactly as before. FBCONFIG stays null until the Firebase project exists. */
+var FBCONFIG=null;
+var ACCTKEY='pokedive.acct',FB=null,fbUser=null,cloudT=0,cloudBusy=false,cloudTok='',localRev=0,acctStatus='',acctMode='in',lastSync=0;
+var ACCT=(function(){try{var a=JSON.parse(localStorage.getItem(ACCTKEY)||'null');if(a&&typeof a==='object'&&typeof a.uid==='string')return a;}catch(e){}return {uid:'',syncedAt:0,dirty:false};})();
+function acctSave(){try{localStorage.setItem(ACCTKEY,JSON.stringify(ACCT));}catch(e){}}
+function signedIn(){return !!(fbUser&&ACCT.uid===fbUser.uid);}
+function acctTouched(){
+  if(!ACCT||!ACCT.uid)return;
+  localRev++;if(!ACCT.dirty){ACCT.dirty=true;acctSave();}
+  if(signedIn())cloudQueue(3000);
+}
+function cloudQueue(ms){clearTimeout(cloudT);cloudT=setTimeout(function(){cloudPush(false);},ms);}
+function cloudUrl(uid){return (FBCONFIG.fsBase||'https://firestore.googleapis.com/v1')+'/projects/'+FBCONFIG.projectId+'/databases/(default)/documents/saves/'+uid;}
+function cloudFetch(method,body,keepalive){
+  var u=fbUser;
+  function go(tok){cloudTok=tok;var o={method:method,headers:{'Authorization':'Bearer '+tok}};if(body){o.headers['Content-Type']='application/json';o.body=JSON.stringify(body);}if(keepalive)o.keepalive=true;return fetch(cloudUrl(u.uid),o);}
+  if(keepalive&&cloudTok)return go(cloudTok);
+  return u.getIdToken().then(go);
+}
+function cloudGet(){
+  return cloudFetch('GET').then(function(r){if(r.status===404)return null;if(!r.ok)throw new Error('read '+r.status);return r.json();})
+    .then(function(d){if(!d||!d.fields)return null;var f=d.fields;return {data:(f.data&&f.data.stringValue)||'',updatedAt:+((f.updatedAt&&f.updatedAt.integerValue)||0)};});
+}
+function cloudPush(keepalive){
+  if(!signedIn()||!ACCT.dirty)return Promise.resolve();
+  if(cloudBusy&&!keepalive){cloudQueue(1500);return Promise.resolve();}
+  cloudBusy=true;acctStatus='busy';renderAcctChip();
+  var at=Date.now(),rev=localRev,doc={fields:{data:{stringValue:JSON.stringify(store)},updatedAt:{integerValue:String(at)},
+    name:{stringValue:(fbUser.displayName||'').slice(0,40)},lv:{integerValue:String(trainerLv())}}};
+  return cloudFetch('PATCH',doc,keepalive).then(function(r){
+    if(!r.ok)throw new Error('write '+r.status);
+    ACCT.syncedAt=at;if(rev===localRev)ACCT.dirty=false;acctSave();
+    cloudBusy=false;acctStatus='ok';lastSync=Date.now();renderAcctChip();
+    if(ACCT.dirty)cloudQueue(3000);
+  }).catch(function(e){cloudBusy=false;acctStatus='err';renderAcctChip();cloudQueue(30000);throw e;});
+}
+function hasProgress(o){return !!o&&((o.exp||0)>0||(o.played||0)>0||count(o.dex||{})>0||((o.raidStats||{}).played||0)>0||((o.groupsStats||{}).played||0)>0);}
+function saveDesc(o){return 'Trainer Lv '+levelInfo(o.exp||0).lv+', '+count(o.dex||{})+' Pokédex entries and '+(o.played||0)+(o.played===1?' dive':' dives');}
+/* take the account's save: write it as this device's save and reload so every screen starts from it */
+function cloudAdopt(c){
+  ACCT.uid=fbUser.uid;ACCT.syncedAt=c.updatedAt;ACCT.dirty=false;acctSave();
+  try{localStorage.setItem(KEY,c.data);}catch(e){}
+  location.reload();
+}
+/* keep this device's save and make it the account's */
+function cloudClaim(){ACCT.uid=fbUser.uid;ACCT.dirty=true;acctSave();localRev++;return cloudPush(false).catch(function(){});}
+function cloudChoose(obj,c){
+  $('acct').hidden=true;
+  confirmBox('WHICH SAVE DO YOU WANT?','Your account has '+saveDesc(obj)+'. This device has '+saveDesc(store)+'. The one you don\'t pick gets replaced.',
+    'This device','My account',function(){cloudAdopt(c);},function(){cloudClaim();});
+}
+function cloudPull(){
+  var u=fbUser;if(!u)return Promise.resolve();
+  acctStatus='busy';renderAcctChip();
+  return cloudGet().then(function(c){
+    if(fbUser!==u)return;
+    var obj=null;if(c&&c.data){try{obj=JSON.parse(c.data);}catch(e){obj=null;}}
+    if(!obj)return cloudClaim();                       /* nothing saved yet: this device's progress becomes the account's */
+    if(ACCT.uid===u.uid){                              /* this device already belongs to this account */
+      if(c.updatedAt<=ACCT.syncedAt){acctStatus='ok';lastSync=Date.now();renderAcctChip();return ACCT.dirty?cloudPush(false):null;}
+      if(!ACCT.dirty)return cloudAdopt(c);             /* played on another device since */
+      return cloudChoose(obj,c);                       /* both changed */
+    }
+    if(!hasProgress(store))return cloudAdopt(c);       /* first sign-in here, nothing to lose */
+    if(!hasProgress(obj))return cloudClaim();
+    return cloudChoose(obj,c);
+  }).catch(function(){acctStatus='err';renderAcctChip();});
+}
+function fbBoot(){
+  if(!FBCONFIG)return;
+  $('btn-acct').hidden=false;renderAcctChip();
+  var files=['fb/firebase-app-compat.js','fb/firebase-auth-compat.js'],i=0;
+  (function next(){
+    if(i>=files.length){fbInit();return;}
+    var sc=document.createElement('script');sc.src=files[i++];sc.onload=next;
+    sc.onerror=function(){acctStatus='err';renderAcctChip();};
+    document.head.appendChild(sc);
+  })();
+}
+function fbInit(){
+  try{FB=window.firebase.initializeApp(FBCONFIG);}catch(e){acctStatus='err';renderAcctChip();return;}
+  var auth=FB.auth();
+  if(FBCONFIG.emulator)auth.useEmulator(FBCONFIG.emulator,{disableWarnings:true});
+  auth.onAuthStateChanged(function(u){
+    fbUser=u||null;renderAcctChip();renderAcctModal();
+    if(u)cloudPull();
+  });
+  auth.getRedirectResult().catch(function(e){acctErr(e);});
+}
+function acctName(){if(!fbUser)return '';return fbUser.displayName||(fbUser.email||'Trainer').split('@')[0];}
+function agoText(ms){var s=Math.round((Date.now()-ms)/1000);if(s<20)return 'just now';if(s<90)return 'a minute ago';var m=Math.round(s/60);if(m<60)return m+' minutes ago';var h=Math.round(m/60);return h+(h===1?' hour ago':' hours ago');}
+function syncText(){
+  if(acctStatus==='busy')return 'Saving to your account...';
+  if(acctStatus==='err')return 'Can\'t reach your account right now. Progress is kept on this device and will save when you\'re back online.';
+  if(ACCT.dirty)return 'Saving soon.';
+  return 'All progress saved'+(lastSync?' '+agoText(lastSync):'')+'.';
+}
+function renderAcctChip(){
+  var b=$('btn-acct');if(!b||!FBCONFIG)return;
+  var dot=$('acct-dot'),av=$('acct-av');
+  if(fbUser){
+    b.className='panel acctchip';
+    av.textContent=(acctName().charAt(0)||'?').toUpperCase();
+    $('acct-t').textContent=acctName().toUpperCase();
+    $('acct-s').textContent=acctStatus==='err'?'Offline. Saving on this device for now.':acctStatus==='busy'?'Saving...':'Progress saved to your account';
+    dot.hidden=false;dot.className='dot'+(acctStatus==='busy'?' busy':acctStatus==='err'?' err':'');
+  }else{
+    b.className='panel acctchip guest';
+    av.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>';
+    $('acct-t').textContent='SAVE YOUR PROGRESS';
+    $('acct-s').textContent=FB?'Sign in so it\'s never lost':'Loading sign-in...';
+    dot.hidden=true;
+  }
+  if(!$('acct').hidden)renderAcctModal();
+}
+function renderAcctModal(){
+  var on=!!fbUser;
+  $('acct-out').hidden=on;$('acct-in').hidden=!on;
+  $('acct-h').textContent=on?'SIGNED IN':acctMode==='up'?'CREATE AN ACCOUNT':'SAVE YOUR PROGRESS';
+  $('acct-close').textContent=on?'Close':'Not now';
+  if(on){
+    $('acct-who').textContent=acctName()+(fbUser.email?' ('+fbUser.email+')':'');
+    $('acct-sync').textContent=syncText();
+  }else{
+    $('acct-name').hidden=acctMode!=='up';
+    $('acct-submit').textContent=acctMode==='up'?'Create account':'Sign in';
+    $('acct-toggle').textContent=acctMode==='up'?'Have an account? Sign in':'New here? Create an account';
+    $('acct-forgot').hidden=acctMode==='up';
+    $('acct-pass').setAttribute('autocomplete',acctMode==='up'?'new-password':'current-password');
+  }
+}
+function openAcct(){acctMsg('');renderAcctModal();$('acct').hidden=false;}
+function acctMsg(t,ok){var e=$('acct-err');e.textContent=t||'';e.className='aerr'+(ok?' ok':'');}
+var AUTHERR={
+  'auth/invalid-credential':'That email and password don\'t match an account.','auth/wrong-password':'That email and password don\'t match an account.',
+  'auth/user-not-found':'No account uses that email yet. Tap "Create an account".','auth/invalid-email':'That email doesn\'t look right.',
+  'auth/missing-email':'Type your email first.','auth/missing-password':'Type a password.',
+  'auth/email-already-in-use':'An account already uses that email. Try signing in instead.','auth/weak-password':'Your password needs at least 6 characters.',
+  'auth/too-many-requests':'Too many tries. Wait a minute and try again.','auth/network-request-failed':'No connection. Check your internet and try again.',
+  'auth/popup-closed-by-user':'','auth/cancelled-popup-request':'','auth/user-cancelled':'',
+  'auth/unauthorized-domain':'Sign-in isn\'t set up for this web address yet.','auth/operation-not-allowed':'That sign-in method isn\'t turned on yet.',
+  'auth/web-storage-unsupported':'This browser blocks sign-in. Open the game in Safari or Chrome.','auth/operation-not-supported-in-this-environment':'This browser blocks sign-in. Open the game in Safari or Chrome.'
+};
+function acctErr(e){var c=e&&e.code||'';acctMsg(c in AUTHERR?AUTHERR[c]:'Something went wrong. Try again.');}
+function acctGoogle(){
+  if(!FB){acctMsg('Sign-in is still loading.');return;}
+  var auth=FB.auth(),prov=new window.firebase.auth.GoogleAuthProvider();
+  acctMsg('');
+  auth.signInWithPopup(prov).catch(function(e){
+    if(e&&e.code==='auth/popup-blocked'){auth.signInWithRedirect(prov).catch(acctErr);return;}
+    acctErr(e);
+  });
+}
+function acctSubmit(ev){
+  if(ev)ev.preventDefault();
+  if(!FB){acctMsg('Sign-in is still loading.');return;}
+  var auth=FB.auth(),em=$('acct-email').value.trim(),pw=$('acct-pass').value,nm=$('acct-name').value.trim().slice(0,20);
+  if(!em){acctMsg(AUTHERR['auth/missing-email']);return;}
+  if(!pw){acctMsg(AUTHERR['auth/missing-password']);return;}
+  var btn=$('acct-submit');btn.disabled=true;acctMsg('');
+  var p=acctMode==='up'
+    ?auth.createUserWithEmailAndPassword(em,pw).then(function(cr){return nm?cr.user.updateProfile({displayName:nm}).then(function(){renderAcctChip();renderAcctModal();acctTouched();}):null;})
+    :auth.signInWithEmailAndPassword(em,pw);
+  p.then(function(){$('acct-pass').value='';},acctErr).then(function(){btn.disabled=false;});
+}
+function acctForgot(){
+  if(!FB)return;
+  var em=$('acct-email').value.trim();
+  if(!em){acctMsg('Type your email above, then tap "Forgot password?" again.');return;}
+  FB.auth().sendPasswordResetEmail(em).then(function(){acctMsg('Check your email for a link to reset your password.',true);},acctErr);
+}
+function acctSignOut(){
+  $('acct').hidden=true;
+  confirmBox('SIGN OUT?','Your progress is saved in your account. This device starts fresh until you sign in again.','Cancel','Sign out',function(){
+    var p=ACCT.dirty?cloudPush(false):Promise.resolve();
+    p.then(function(){return FB.auth().signOut();}).then(function(){
+      try{localStorage.removeItem(KEY);localStorage.removeItem(ACCTKEY);}catch(e){}
+      location.reload();
+    },function(){openAcct();acctMsg('Couldn\'t save to your account, so you\'re still signed in. Check your connection and try again.');});
+  });
+}
+document.addEventListener('visibilitychange',function(){
+  if(!signedIn())return;
+  if(document.visibilityState==='hidden'){if(ACCT.dirty){clearTimeout(cloudT);cloudPush(true).catch(function(){});}}
+  else if(!$('s-start').hidden&&!run&&$('confirm').hidden&&$('lobby').hidden&&$('hatch').hidden&&$('acct').hidden)cloudPull();
+});
+
 /* ================= MODAL ================= */
 var pickCb=null;
 function openSettings(){
@@ -4821,8 +5064,8 @@ $('btn-groups').addEventListener('click',renderGroups);
 $('hatch-ok').addEventListener('click',function(){hatchNext();});
 $('lobby-go').addEventListener('click',lobbyGo);
 $('lobby-back').addEventListener('click',function(){$('lobby').hidden=true;lobbyCb=null;});
-$('confirm-no').addEventListener('click',function(){$('confirm').hidden=true;confirmCb=null;});
-$('confirm-yes').addEventListener('click',function(){$('confirm').hidden=true;var c=confirmCb;confirmCb=null;if(c)c();});
+$('confirm-no').addEventListener('click',function(){$('confirm').hidden=true;confirmCb=null;var c=confirmNoCb;confirmNoCb=null;if(c)c();});
+$('confirm-yes').addEventListener('click',function(){$('confirm').hidden=true;var c=confirmCb;confirmCb=null;confirmNoCb=null;if(c)c();});
 $('btn-exit').addEventListener('click',leaveDive);
 $('btn-pass-end').addEventListener('click',function(){confirmBox('END THE PARTY?','Everyone\'s dives so far will be lost.','Keep playing','End party',function(){if(!$('s-pass').hidden)renderStart();});});
 $('g-submit').addEventListener('click',gSubmit);
@@ -4848,7 +5091,14 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('modal')
 
 ORDER.slice().reverse().forEach(function(t){$('tier-legend').appendChild(chip(t,true));});
 document.documentElement.setAttribute('data-skin',store.theme);
-resize();renderStart();
+$('btn-acct').addEventListener('click',openAcct);
+$('acct-close').addEventListener('click',function(){$('acct').hidden=true;});
+$('acct-google').addEventListener('click',acctGoogle);
+$('acct-form').addEventListener('submit',acctSubmit);
+$('acct-toggle').addEventListener('click',function(){acctMode=acctMode==='up'?'in':'up';acctMsg('');renderAcctModal();});
+$('acct-forgot').addEventListener('click',acctForgot);
+$('acct-signout').addEventListener('click',acctSignOut);
+resize();renderStart();fbBoot();
 requestAnimationFrame(frame);
 })();
 </script>
